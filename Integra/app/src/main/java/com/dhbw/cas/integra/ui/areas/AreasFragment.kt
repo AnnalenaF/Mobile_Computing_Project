@@ -1,4 +1,4 @@
-package com.dhbw.cas.integra.ui.slideshow
+package com.dhbw.cas.integra.ui.areas
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,20 +10,20 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.dhbw.cas.integra.R
 
-class SlideshowFragment : Fragment() {
+class AreasFragment : Fragment() {
 
-    private lateinit var slideshowViewModel: SlideshowViewModel
+    private lateinit var areasViewModel: AreasViewModel
 
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        slideshowViewModel =
-                ViewModelProvider(this).get(SlideshowViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_slideshow, container, false)
+        areasViewModel =
+                ViewModelProvider(this).get(AreasViewModel::class.java)
+        val root = inflater.inflate(R.layout.fragment_areas, container, false)
         val textView: TextView = root.findViewById(R.id.text_slideshow)
-        slideshowViewModel.text.observe(viewLifecycleOwner, Observer {
+        areasViewModel.text.observe(viewLifecycleOwner, Observer {
             textView.text = it
         })
         return root
