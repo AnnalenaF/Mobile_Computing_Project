@@ -1,12 +1,10 @@
 package com.dhbw.cas.integra.ui.areas
 
-import android.graphics.drawable.Drawable
 import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import com.dhbw.cas.integra.R
 import android.view.ViewGroup
 import android.view.LayoutInflater
-import android.widget.TextView
 import kotlinx.android.synthetic.main.item_area.view.*
 
 class AreasAdapter :
