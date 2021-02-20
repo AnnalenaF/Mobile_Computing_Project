@@ -34,7 +34,7 @@ class AreasFragment : Fragment() {
 
         // get recycler view containing area list and set adapter
         val recyclerView: RecyclerView = binding.areasList
-        val areasAdapter = AreasAdapter()
+        val areasAdapter = AreasAdapter(this.context, activity)
         areasAdapter.setAreas(areasViewModel.areas)
         recyclerView.adapter = areasAdapter
 

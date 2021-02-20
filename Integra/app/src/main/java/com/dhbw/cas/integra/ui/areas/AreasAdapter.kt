@@ -1,23 +1,29 @@
 package com.dhbw.cas.integra.ui.areas
 
+import android.content.Context
 import android.text.InputType.TYPE_NULL
 import androidx.recyclerview.widget.RecyclerView
-import android.view.View
 import com.dhbw.cas.integra.R
-import android.view.ViewGroup
-import android.view.LayoutInflater
 import kotlinx.android.synthetic.main.item_area.view.*
 import android.text.InputType.*
+import android.view.*
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
+import androidx.appcompat.view.ActionMode
+import androidx.fragment.app.FragmentActivity
+import kotlinx.android.synthetic.main.fragment_areas.view.*
 
-class AreasAdapter :
-    RecyclerView.Adapter<AreasAdapter.AreasViewHolder>() {
+class AreasAdapter(private val context: Context?, private val activity: FragmentActivity?) :
+    RecyclerView.Adapter<AreasAdapter.AreasViewHolder>(), ActionMode.Callback {
     private var areas = emptyList<Area>()
     val labelArray = arrayOf(R.drawable.shape_area_label_0, R.drawable.shape_area_label_1,
                              R.drawable.shape_area_label_2, R.drawable.shape_area_label_3,
                              R.drawable.shape_area_label_4, R.drawable.shape_area_label_5,
                              R.drawable.shape_area_label_6, R.drawable.shape_area_label_7,
                              R.drawable.shape_area_label_8, R.drawable.shape_area_label_9)
+    private var multiSelect = false
+    private val selectedItems = arrayListOf<Area>()
     inner class AreasViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val areaText = itemView.area_text
         val areaLabelSpinner = itemView.area_label_spinner
@@ -99,6 +105,53 @@ class AreasAdapter :
             viewHolder.areaText.setText(text)
             viewHolder.areaLabelSpinner.setSelection(labelArray.indexOf(label))
         }
+
+        // Get the current area
+        val currentArea = areas[position]
+        // for every item, check to see if it exists in the selected items array
+        if (selectedItems.contains(currentArea)) {
+            // if the item is selected, let the user know by adding a dark layer above it
+            viewHolder.itemView.alpha = 0.3f
+        } else {
+            // else, keep it as it is
+            viewHolder.itemView.alpha = 1.0f
+        }
+
+        // set handler to define what happens when an item is long pressed
+        viewHolder.itemView.setOnLongClickListener {
+            // if multiSelect is false, set it to true and select the item
+            if (!multiSelect) {
+                // We have started multi selection, so set the flag to true
+                multiSelect = true
+                // Add it to the list containing all the selected images
+                selectItem(viewHolder, currentArea)
+                // As soon as the user starts multi-select process, show the contextual menu
+                val appCompatActivity : AppCompatActivity = activity as AppCompatActivity
+                appCompatActivity.startSupportActionMode(this)
+                true
+            } else
+                false
+        }
+
+        // handler to define what happens when an item is tapped
+        viewHolder.itemView.setOnClickListener {
+            // if the user is in multi-select mode, add it to the multi select list
+            if (multiSelect)
+                selectItem(viewHolder, currentArea)
+        }
+    }
+
+    // helper function that adds/removes an item to the list depending on the app's state
+    private fun selectItem(viewHolder: AreasViewHolder, area: Area) {
+        // If the "selectedItems" list contains the item, remove it and set it's state to normal
+        if (selectedItems.contains(area)) {
+            selectedItems.remove(area)
+            viewHolder.itemView.alpha = 1.0f
+        } else {
+            // Else, add it to the list and add a darker shade over the item, letting the user know that it was selected
+            selectedItems.add(area)
+            viewHolder.itemView.alpha = 0.3f
+        }
     }
 
     override fun getItemCount() = areas.size
@@ -106,6 +159,43 @@ class AreasAdapter :
     fun setAreas(areas: MutableList<Area>) {
         this.areas = areas
         notifyDataSetChanged()
+    }
+
+    // Called when a menu item was clicked
+    override fun onActionItemClicked(
+        mode: ActionMode?,
+        item: MenuItem?
+    ): Boolean {
+        if (item?.itemId == R.id.action_area_delete) {
+            // Delete button is clicked, handle the deletion and finish the multi select process
+            Toast.makeText(context, "Selected images deleted", Toast.LENGTH_SHORT).show()
+            mode?.finish()
+        }
+        return true
+    }
+
+    // Called when the menu is created i.e. when the user starts multi-select mode (inflate your menu xml here)
+    override fun onCreateActionMode(
+        mode: ActionMode,
+        menu: Menu?
+    ): Boolean {
+        // Inflate the menu resource providing context menu items
+        val inflater: MenuInflater = mode.menuInflater
+        inflater.inflate(R.menu.areas_menu, menu)
+        return true
+    }
+
+    // Called when the Context ActionBar disappears i.e. when the user leaves multi-select mode
+    override fun onDestroyActionMode(mode: ActionMode?) {
+        // finished multi selection
+        multiSelect = false
+        selectedItems.clear()
+        notifyDataSetChanged()
+    }
+
+    // Called to refresh an action mode's action menu (we won't be using this here)
+    override fun onPrepareActionMode(mode: ActionMode?, menu: Menu?): Boolean {
+        return true
     }
 
 }

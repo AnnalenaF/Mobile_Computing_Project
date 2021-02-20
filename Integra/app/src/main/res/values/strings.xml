@@ -16,4 +16,5 @@
     <string name="button_cancel_edit_area">Bearbeiten Abbrechen</string>
     <string name="area_text_hint">Lebensbereich</string>
     <string name="area_text_autofill_hint">Lebensbereich</string>
+    <string name="menu_item_delete">Löschen</string>
 </resources>
