@@ -1,7 +1,5 @@
 package com.dhbw.cas.integra.ui.areas
 
-import android.graphics.Color
-import android.text.InputType
 import android.text.InputType.TYPE_NULL
 import androidx.recyclerview.widget.RecyclerView
 import android.view.View
@@ -30,37 +28,45 @@ class AreasAdapter :
                 if (!editMode) {
                     areaTextValue = areaText.text.toString()
                     editMode = true
-                    areaText.setInputType(TYPE_TEXT_FLAG_NO_SUGGESTIONS)
-                    areaText.setClickable(true)
-                    areaText.setCursorVisible(true)
-                    areaText.setFocusable(true)
-                    areaText.setFocusableInTouchMode(true)
-                    areaText.background = areaTextBackground
+                    areaText.apply {
+                        setInputType(TYPE_TEXT_FLAG_NO_SUGGESTIONS)
+                        setClickable(true)
+                        setCursorVisible(true)
+                        setFocusable(true)
+                        setFocusableInTouchMode(true)
+                        background = areaTextBackground
+                    }
                     areaEditButton.setImageDrawable(getDrawable(itemView.context, R.drawable.ic_baseline_check_24))
                     areaCancelEditButton.visibility = View.VISIBLE
-                    //notifyDataSetChanged()
                 } else {
                     editMode = false
-                    areaText.setInputType(TYPE_NULL)
-                    areaText.setClickable(false)
-                    areaText.setCursorVisible(false)
-                    areaText.setFocusable(false)
-                    areaText.setFocusableInTouchMode(false)
-                    areaText.background = null
+                    areaText.apply {
+                        setInputType(TYPE_NULL)
+                        setClickable(false)
+                        setCursorVisible(false)
+                        setFocusable(false)
+                        setFocusableInTouchMode(false)
+                        background = null
+                    }
                     areaEditButton.setImageDrawable(getDrawable(itemView.context, R.drawable.ic_baseline_edit_24))
                     areaCancelEditButton.visibility = View.GONE
+
+                    var pos = adapterPosition
+                    this@AreasAdapter.areas[pos].text = areaText.text.toString()
                     notifyDataSetChanged()
                 }
             }
             areaCancelEditButton.setOnClickListener { itemView ->
-                areaText.setText(areaTextValue)
                 editMode = false
-                areaText.setInputType(TYPE_NULL)
-                areaText.setClickable(false)
-                areaText.setCursorVisible(false)
-                areaText.setFocusable(false)
-                areaText.setFocusableInTouchMode(false)
-                areaText.background = null
+                areaText.apply {
+                    setText(areaTextValue)
+                    setInputType(TYPE_NULL)
+                    setClickable(false)
+                    setCursorVisible(false)
+                    setFocusable(false)
+                    setFocusableInTouchMode(false)
+                    background = null
+                }
                 areaEditButton.setImageDrawable(getDrawable(itemView.context, R.drawable.ic_baseline_edit_24))
                 areaCancelEditButton.visibility = View.GONE
             }
@@ -82,7 +88,7 @@ class AreasAdapter :
 
     override fun getItemCount() = areas.size
 
-    fun setAreas(areas: List<Area>) {
+    fun setAreas(areas: MutableList<Area>) {
         this.areas = areas
         notifyDataSetChanged()
     }
