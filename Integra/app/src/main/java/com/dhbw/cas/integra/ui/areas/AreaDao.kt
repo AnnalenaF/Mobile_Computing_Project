@@ -11,6 +11,9 @@ interface AreaDao {
     @Insert
     suspend fun insert(area: Area)
 
+    @Insert
+    fun insertNow(area: Area)
+
     @Delete
     suspend fun delete(area: Area)
 
