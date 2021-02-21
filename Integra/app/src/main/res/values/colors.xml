@@ -16,4 +16,5 @@
     <color name="area_7">#696969</color>
     <color name="area_8">#065535</color>
     <color name="area_9">#0A234A</color>
+    <color name="red_error">#FF0000</color>
 </resources>

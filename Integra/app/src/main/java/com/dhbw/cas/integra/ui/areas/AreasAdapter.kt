@@ -1,6 +1,8 @@
 package com.dhbw.cas.integra.ui.areas
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Color
 import android.text.InputType.TYPE_NULL
 import androidx.recyclerview.widget.RecyclerView
 import com.dhbw.cas.integra.R
@@ -11,11 +13,12 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.appcompat.view.ActionMode
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_areas.view.*
 
-class AreasAdapter(//private val context: Context?,
+class AreasAdapter(private val view: View,
                    private val activity: AppCompatActivity) :
     RecyclerView.Adapter<AreasAdapter.AreasViewHolder>(), ActionMode.Callback {
     private var areas = emptyList<Area>()
@@ -173,14 +176,26 @@ class AreasAdapter(//private val context: Context?,
         if (item?.itemId == R.id.action_area_delete) {
             // Delete button is clicked, handle the deletion and finish the multi select process
             if (areas.size - selectedItems.size == 0) {
-                Toast.makeText(activity, R.string.toast_area_no_deletion, Toast.LENGTH_LONG).show()
+                val snackbarError = Snackbar.make(view, R.string.message_area_no_deletion, Snackbar.LENGTH_LONG)
+                snackbarError.setTextColor(ContextCompat.getColor(context, R.color.red_error))
+                snackbarError.show()
             } else {
+                val areasOld = areas.toMutableList()
                 val areasMutable : MutableList<Area> = areas as MutableList<Area>
                 for (selItem in selectedItems) {
                     areasMutable.remove(selItem)
                 }
                 setAreas(areasMutable)
-                Toast.makeText(activity, R.string.toast_area_deleted, Toast.LENGTH_LONG).show()
+
+                val message : String
+                if (selectedItems.size == 1) {
+                    message = context.getString(R.string.message_area_deleted, 1)
+                } else {
+                    message = context.getString(R.string.message_areas_deleted, selectedItems.size)
+                }
+                val snackbarSuccess = Snackbar.make(view, message, Snackbar.LENGTH_LONG)
+                snackbarSuccess.setAction(R.string.action_undo, { setAreas(areasOld) })
+                snackbarSuccess.show()
                 mode?.finish()
             }
         }
