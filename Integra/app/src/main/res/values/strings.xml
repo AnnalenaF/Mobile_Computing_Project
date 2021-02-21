@@ -17,4 +17,6 @@
     <string name="area_text_hint">Lebensbereich</string>
     <string name="area_text_autofill_hint">Lebensbereich</string>
     <string name="menu_item_delete">Löschen</string>
+    <string name="toast_area_deleted">Ausgewählte Lebensbereiche wurden gelöscht</string>
+    <string name="toast_area_no_deletion">Das Löschen aller Lebensbereiche ist nicht möglich</string>
 </resources>

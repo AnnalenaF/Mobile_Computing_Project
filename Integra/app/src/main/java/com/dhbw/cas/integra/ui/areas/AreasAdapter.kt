@@ -12,9 +12,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.appcompat.view.ActionMode
 import androidx.fragment.app.FragmentActivity
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_areas.view.*
 
-class AreasAdapter(private val context: Context?, private val activity: AppCompatActivity) :
+class AreasAdapter(//private val context: Context?,
+                   private val activity: AppCompatActivity) :
     RecyclerView.Adapter<AreasAdapter.AreasViewHolder>(), ActionMode.Callback {
     private var areas = emptyList<Area>()
     val labelArray = arrayOf(R.drawable.shape_area_label_0, R.drawable.shape_area_label_1,
@@ -24,6 +26,7 @@ class AreasAdapter(private val context: Context?, private val activity: AppCompa
                              R.drawable.shape_area_label_8, R.drawable.shape_area_label_9)
     private var multiSelect = false
     private val selectedItems = arrayListOf<Area>()
+    private lateinit var context : Context
     inner class AreasViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val areaText = itemView.area_text
         val areaLabelSpinner = itemView.area_label_spinner
@@ -95,6 +98,7 @@ class AreasAdapter(private val context: Context?, private val activity: AppCompa
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AreasViewHolder {
+        context = parent.context
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_area, parent, false)
         return AreasViewHolder(view)
@@ -168,8 +172,17 @@ class AreasAdapter(private val context: Context?, private val activity: AppCompa
     ): Boolean {
         if (item?.itemId == R.id.action_area_delete) {
             // Delete button is clicked, handle the deletion and finish the multi select process
-            Toast.makeText(context, "Selected images deleted", Toast.LENGTH_SHORT).show()
-            mode?.finish()
+            if (areas.size - selectedItems.size == 0) {
+                Toast.makeText(activity, R.string.toast_area_no_deletion, Toast.LENGTH_LONG).show()
+            } else {
+                val areasMutable : MutableList<Area> = areas as MutableList<Area>
+                for (selItem in selectedItems) {
+                    areasMutable.remove(selItem)
+                }
+                setAreas(areasMutable)
+                Toast.makeText(activity, R.string.toast_area_deleted, Toast.LENGTH_LONG).show()
+                mode?.finish()
+            }
         }
         return true
     }
