@@ -163,6 +163,10 @@ class AreasAdapter(private val view: View,
         notifyDataSetChanged()
     }
 
+    fun getAreas() : List<Area> {
+        return this.areas
+    }
+
     // Called when a menu item was clicked
     override fun onActionItemClicked(
         mode: ActionMode?,

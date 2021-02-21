@@ -1,5 +1,6 @@
 package com.dhbw.cas.integra.ui.areas
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
