@@ -40,7 +40,7 @@ class AreasFragment : Fragment() {
         // get recycler view containing area list and set adapter
         val recyclerView: RecyclerView = root.findViewById(R.id.areas_list)
         val main : AppCompatActivity = activity as AppCompatActivity
-        val areasAdapter = AreasAdapter(root, main, labelArray)
+        val areasAdapter = AreasAdapter(root, areasViewModel, main, labelArray)
         areasViewModel.areas.observe(main) { areas -> areasAdapter.setAreas(areas) }
         recyclerView.adapter = areasAdapter
 

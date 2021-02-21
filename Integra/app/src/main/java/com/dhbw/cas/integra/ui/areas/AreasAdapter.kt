@@ -16,6 +16,7 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_areas.view.*
 
 class AreasAdapter(private val view: View,
+                   private val areasViewModel: AreasViewModel,
                    private val activity: AppCompatActivity,
                    private val labelArray: Array<Int>) :
     RecyclerView.Adapter<AreasAdapter.AreasViewHolder>(), ActionMode.Callback {
@@ -71,6 +72,7 @@ class AreasAdapter(private val view: View,
                     val pos = adapterPosition
                     this@AreasAdapter.areas[pos].text = areaText.text.toString()
                     this@AreasAdapter.areas[pos].label = areaLabelSpinner.selectedItem as Int
+                    areasViewModel.updateArea(areas[pos])
                     notifyDataSetChanged()
                 }
             }
@@ -173,12 +175,13 @@ class AreasAdapter(private val view: View,
                 snackbarError.setTextColor(ContextCompat.getColor(context, R.color.red_error))
                 snackbarError.show()
             } else {
-                val areasOld = areas.toMutableList()
-                val areasMutable : MutableList<Area> = areas as MutableList<Area>
+                val areasDel = mutableListOf<Area>()
+                //val areasMutable : MutableList<Area> = areas as MutableList<Area>
                 for (selItem in selectedItems) {
-                    areasMutable.remove(selItem)
+                    areasDel.add(selItem)
+                    areasViewModel.deleteArea(selItem)
                 }
-                setAreas(areasMutable)
+                //setAreas(areasMutable)
 
                 val message : String
                 if (selectedItems.size == 1) {
@@ -187,7 +190,11 @@ class AreasAdapter(private val view: View,
                     message = context.getString(R.string.message_areas_deleted, selectedItems.size)
                 }
                 val snackbarSuccess = Snackbar.make(view, message, Snackbar.LENGTH_LONG)
-                snackbarSuccess.setAction(R.string.action_undo, { setAreas(areasOld) })
+                snackbarSuccess.setAction(R.string.action_undo, {
+                    for (areaDel in areasDel) {
+                        areasViewModel.createArea(text = areaDel.text, label = areaDel.label)
+                    }
+                })
                 snackbarSuccess.show()
                 mode?.finish()
             }

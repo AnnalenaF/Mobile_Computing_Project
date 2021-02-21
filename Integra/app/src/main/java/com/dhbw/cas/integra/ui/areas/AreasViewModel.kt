@@ -13,4 +13,8 @@ class AreasViewModel(application: Application) : AndroidViewModel(application) {
 
     fun createArea(text: String, label: Int)
         = viewModelScope.launch { areaDao.insert(Area(text, label)) }
+
+    fun updateArea(area: Area) = viewModelScope.launch { areaDao.update(area) }
+
+    fun deleteArea(area: Area) = viewModelScope.launch { areaDao.delete(area) }
 }
