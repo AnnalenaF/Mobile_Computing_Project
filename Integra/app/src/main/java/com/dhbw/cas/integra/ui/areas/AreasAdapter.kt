@@ -19,14 +19,10 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_areas.view.*
 
 class AreasAdapter(private val view: View,
-                   private val activity: AppCompatActivity) :
+                   private val activity: AppCompatActivity,
+                   private val labelArray: Array<Int>) :
     RecyclerView.Adapter<AreasAdapter.AreasViewHolder>(), ActionMode.Callback {
     private var areas = emptyList<Area>()
-    val labelArray = arrayOf(R.drawable.shape_area_label_0, R.drawable.shape_area_label_1,
-                             R.drawable.shape_area_label_2, R.drawable.shape_area_label_3,
-                             R.drawable.shape_area_label_4, R.drawable.shape_area_label_5,
-                             R.drawable.shape_area_label_6, R.drawable.shape_area_label_7,
-                             R.drawable.shape_area_label_8, R.drawable.shape_area_label_9)
     private var multiSelect = false
     private val selectedItems = arrayListOf<Area>()
     private lateinit var context : Context

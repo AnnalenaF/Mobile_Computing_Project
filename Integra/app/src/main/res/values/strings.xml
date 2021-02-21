@@ -21,4 +21,7 @@
     <string name="message_areas_deleted">%1$d Lebensbereiche gelöscht</string>
     <string name="message_area_no_deletion">Das Löschen aller Lebensbereiche ist nicht möglich</string>
     <string name="action_undo">Rückgängig</string>
+    <string name="new_area">Neuer Lebensbereich</string>
+    <string name="okay">OK</string>
+    <string name="cancel">Abbrechen</string>
 </resources>
