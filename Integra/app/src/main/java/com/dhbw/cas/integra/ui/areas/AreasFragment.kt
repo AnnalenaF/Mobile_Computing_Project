@@ -1,15 +1,18 @@
 package com.dhbw.cas.integra.ui.areas
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.dhbw.cas.integra.MainActivity
 import com.dhbw.cas.integra.R
 import com.dhbw.cas.integra.databinding.FragmentAreasBinding
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -34,7 +37,8 @@ class AreasFragment : Fragment() {
 
         // get recycler view containing area list and set adapter
         val recyclerView: RecyclerView = binding.areasList
-        val areasAdapter = AreasAdapter(this.context, activity)
+        val main : AppCompatActivity = activity as AppCompatActivity
+        val areasAdapter = AreasAdapter(context, main)
         areasAdapter.setAreas(areasViewModel.areas)
         recyclerView.adapter = areasAdapter
 
@@ -53,5 +57,10 @@ class AreasFragment : Fragment() {
                 .setAction("Action", null).show()
         }
         return root
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
     }
 }

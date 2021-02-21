@@ -14,7 +14,7 @@ import androidx.appcompat.view.ActionMode
 import androidx.fragment.app.FragmentActivity
 import kotlinx.android.synthetic.main.fragment_areas.view.*
 
-class AreasAdapter(private val context: Context?, private val activity: FragmentActivity?) :
+class AreasAdapter(private val context: Context?, private val activity: AppCompatActivity) :
     RecyclerView.Adapter<AreasAdapter.AreasViewHolder>(), ActionMode.Callback {
     private var areas = emptyList<Area>()
     val labelArray = arrayOf(R.drawable.shape_area_label_0, R.drawable.shape_area_label_1,
@@ -126,7 +126,7 @@ class AreasAdapter(private val context: Context?, private val activity: Fragment
                 // Add it to the list containing all the selected images
                 selectItem(viewHolder, currentArea)
                 // As soon as the user starts multi-select process, show the contextual menu
-                val appCompatActivity : AppCompatActivity = activity as AppCompatActivity
+                val appCompatActivity : AppCompatActivity = activity
                 appCompatActivity.startSupportActionMode(this)
                 true
             } else
@@ -179,6 +179,7 @@ class AreasAdapter(private val context: Context?, private val activity: Fragment
         mode: ActionMode,
         menu: Menu?
     ): Boolean {
+        activity.supportActionBar?.hide()
         // Inflate the menu resource providing context menu items
         val inflater: MenuInflater = mode.menuInflater
         inflater.inflate(R.menu.areas_menu, menu)
@@ -188,6 +189,7 @@ class AreasAdapter(private val context: Context?, private val activity: Fragment
     // Called when the Context ActionBar disappears i.e. when the user leaves multi-select mode
     override fun onDestroyActionMode(mode: ActionMode?) {
         // finished multi selection
+        activity.supportActionBar?.show()
         multiSelect = false
         selectedItems.clear()
         notifyDataSetChanged()
