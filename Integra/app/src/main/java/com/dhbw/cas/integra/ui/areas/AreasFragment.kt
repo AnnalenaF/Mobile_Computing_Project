@@ -59,13 +59,18 @@ class AreasFragment : Fragment() {
             builder.apply {
                 setTitle(R.string.new_area)
                 setView(R.layout.dialog_new_area)
-                setPositiveButton(R.string.okay) { dialog, id ->
-                    createArea()
-                }
+                setPositiveButton(R.string.okay, null)
                 setNegativeButton(R.string.cancel, null)
             }
             dialog = builder.create()
             dialog.show()
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+                val correct = validateArea()
+                if (correct) {
+                    createArea()
+                    dialog.dismiss()
+                }
+            }
             val spinnerAdapter = AreaLabelSpinnerAdapter(view.context, labelArray)
             dialog.new_area_label_spinner.adapter = spinnerAdapter
         }
@@ -76,6 +81,17 @@ class AreasFragment : Fragment() {
         val text = dialog.new_area_text.text.toString()
         val label = dialog.new_area_label_spinner.selectedItem as Int
         areasViewModel.createArea(text, label)
+    }
+
+    private fun validateArea() : Boolean {
+        val text = dialog.new_area_text.getText().toString()
+        if(text.length==0) {
+            dialog.new_area_text.requestFocus()
+            dialog.new_area_text.setError(getString(R.string.area_text_empty_error))
+            return false
+        } else {
+            return true
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -24,4 +24,6 @@
     <string name="new_area">Neuer Lebensbereich</string>
     <string name="okay">OK</string>
     <string name="cancel">Abbrechen</string>
+
+    <string name="area_text_empty_error">Bitte Bezeichnung eintragen</string>
 </resources>
