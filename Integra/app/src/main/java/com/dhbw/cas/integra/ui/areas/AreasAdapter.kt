@@ -1,20 +1,17 @@
 package com.dhbw.cas.integra.ui.areas
 
-import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Color
 import android.text.InputType.TYPE_NULL
 import androidx.recyclerview.widget.RecyclerView
 import com.dhbw.cas.integra.R
 import kotlinx.android.synthetic.main.item_area.view.*
 import android.text.InputType.*
 import android.view.*
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.appcompat.view.ActionMode
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.LiveData
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_areas.view.*
 
@@ -159,7 +156,7 @@ class AreasAdapter(private val view: View,
 
     override fun getItemCount() = areas.size
 
-    fun setAreas(areas: MutableList<Area>) {
+    fun setAreas(areas: List<Area>) {
         this.areas = areas
         notifyDataSetChanged()
     }

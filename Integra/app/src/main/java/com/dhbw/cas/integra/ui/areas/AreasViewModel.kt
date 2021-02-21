@@ -1,18 +1,16 @@
 package com.dhbw.cas.integra.ui.areas
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.*
+import com.dhbw.cas.integra.AppDatabase
 import com.dhbw.cas.integra.R
+import kotlinx.coroutines.launch
 
-class AreasViewModel : ViewModel() {
+class AreasViewModel(application: Application) : AndroidViewModel(application) {
+    private var areaDao = AppDatabase.getDatabase(application).areaDao()
 
-    val areas : MutableList<Area> = mutableListOf(
-        Area(text = "Privat", label = R.drawable.shape_area_label_0),
-        Area(text = "Arbeit", label = R.drawable.shape_area_label_1))
+    val areas = areaDao.getAreas()
 
-    fun createArea(text: String, label: Int) {
-        val area = Area(text, label)
-        areas.add(area)
-    }
+    fun createArea(text: String, label: Int)
+        = viewModelScope.launch { areaDao.insert(Area(text, label)) }
 }
