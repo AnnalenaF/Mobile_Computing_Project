@@ -3,7 +3,6 @@ package com.dhbw.cas.integra.ui.areas
 import android.app.Application
 import androidx.lifecycle.*
 import com.dhbw.cas.integra.AppDatabase
-import com.dhbw.cas.integra.R
 import kotlinx.coroutines.launch
 
 class AreasViewModel(application: Application) : AndroidViewModel(application) {
@@ -17,4 +16,7 @@ class AreasViewModel(application: Application) : AndroidViewModel(application) {
     fun updateArea(area: Area) = viewModelScope.launch { areaDao.update(area) }
 
     fun deleteArea(area: Area) = viewModelScope.launch { areaDao.delete(area) }
+
+    fun getAreaByText(text: String) : List<Area> = areaDao.getAreaByText(text)
+    fun getAreaByLabel(label: Int) : List<Area> = areaDao.getAreaByLabel(label)
 }

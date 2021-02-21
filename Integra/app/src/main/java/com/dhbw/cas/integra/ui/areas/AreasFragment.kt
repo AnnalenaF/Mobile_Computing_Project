@@ -89,6 +89,10 @@ class AreasFragment : Fragment() {
             dialog.new_area_text.requestFocus()
             dialog.new_area_text.setError(getString(R.string.area_text_empty_error))
             return false
+        } else if (areasViewModel.getAreaByText(text).size > 0){
+            dialog.new_area_text.requestFocus()
+            dialog.new_area_text.setError(getString(R.string.area_text_not_unique_error))
+            return false
         } else {
             return true
         }

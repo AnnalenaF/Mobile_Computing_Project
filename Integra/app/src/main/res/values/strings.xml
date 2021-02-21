@@ -26,4 +26,6 @@
     <string name="cancel">Abbrechen</string>
 
     <string name="area_text_empty_error">Bitte Bezeichnung eintragen</string>
+    <string name="area_text_not_unique_error">Ein Lebensbereich mit diesem Namen existiert bereits</string>
+    <string name="area_label_not_unique_error">Ein Lebensbereich mit dieser Farbe exisiert bereits</string>
 </resources>
