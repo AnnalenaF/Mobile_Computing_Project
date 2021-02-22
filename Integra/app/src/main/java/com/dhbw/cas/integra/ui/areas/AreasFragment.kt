@@ -22,13 +22,7 @@ class AreasFragment : Fragment() {
     private lateinit var areasViewModel: AreasViewModel
     private lateinit var dialog: AlertDialog
     private lateinit var areasAdapter: AreasAdapter
-    var labelArray = arrayOf(
-        R.drawable.shape_area_label_0, R.drawable.shape_area_label_1,
-        R.drawable.shape_area_label_2, R.drawable.shape_area_label_3,
-        R.drawable.shape_area_label_4, R.drawable.shape_area_label_5,
-        R.drawable.shape_area_label_6, R.drawable.shape_area_label_7,
-        R.drawable.shape_area_label_8, R.drawable.shape_area_label_9
-    )
+    private lateinit var labelArray: Array<Int>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,7 +36,7 @@ class AreasFragment : Fragment() {
         // get recycler view containing area list and set adapter
         val recyclerView: RecyclerView = root.findViewById(R.id.areas_list)
         val main : AppCompatActivity = activity as AppCompatActivity
-        areasAdapter = AreasAdapter(root, areasViewModel, main, labelArray)
+        areasAdapter = AreasAdapter(root, areasViewModel, main)
         areasViewModel.areas.observe(main) { areas -> areasAdapter.setAreas(areas) }
         recyclerView.adapter = areasAdapter
 
@@ -76,8 +70,7 @@ class AreasFragment : Fragment() {
                         dialog.dismiss()
                     }
                 }
-                adjustLabelArray()
-                val spinnerAdapter = AreaLabelSpinnerAdapter(view.context, labelArray)
+                val spinnerAdapter = AreaLabelSpinnerAdapter(view.context, areasAdapter.getLabelArray())
                 dialog.new_area_label_spinner.adapter = spinnerAdapter
             }
         }
@@ -110,21 +103,6 @@ class AreasFragment : Fragment() {
         } else {
             return true
         }
-    }
-
-    private fun adjustLabelArray() {
-        val labelArrayList = arrayListOf(
-            R.drawable.shape_area_label_0, R.drawable.shape_area_label_1,
-            R.drawable.shape_area_label_2, R.drawable.shape_area_label_3,
-            R.drawable.shape_area_label_4, R.drawable.shape_area_label_5,
-            R.drawable.shape_area_label_6, R.drawable.shape_area_label_7,
-            R.drawable.shape_area_label_8, R.drawable.shape_area_label_9
-        )
-        val areas = areasAdapter.getAreas()
-        for (area in areas){
-            labelArrayList.remove(area.label)
-        }
-        labelArray = labelArrayList.toTypedArray()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

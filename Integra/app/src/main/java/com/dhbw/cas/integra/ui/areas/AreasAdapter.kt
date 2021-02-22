@@ -1,7 +1,8 @@
 package com.dhbw.cas.integra.ui.areas
 
 import android.content.Context
-import android.text.InputType.TYPE_NULL
+import android.database.sqlite.SQLiteConstraintException
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.dhbw.cas.integra.R
 import kotlinx.android.synthetic.main.item_area.view.*
@@ -10,20 +11,19 @@ import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.appcompat.view.ActionMode
-import androidx.core.content.ContextCompat
-import androidx.lifecycle.LiveData
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.dialog_new_area.*
 import kotlinx.android.synthetic.main.fragment_areas.view.*
 
 class AreasAdapter(private val view: View,
                    private val areasViewModel: AreasViewModel,
-                   private val activity: AppCompatActivity,
-                   private val labelArray: Array<Int>) :
+                   private val activity: AppCompatActivity) :
     RecyclerView.Adapter<AreasAdapter.AreasViewHolder>(), ActionMode.Callback {
+    private lateinit var context : Context
     private var areas = emptyList<Area>()
     private var multiSelect = false
     private val selectedItems = arrayListOf<Area>()
-    private lateinit var context : Context
+    private val labelArray = getLabelArray(true)
     inner class AreasViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val areaText = itemView.area_text
         val areaLabelSpinner = itemView.area_label_spinner
@@ -42,9 +42,9 @@ class AreasAdapter(private val view: View,
             areaEditButton.setOnClickListener { itemView ->
                 if (!editMode) { //edit button pressed
                     areaTextValue = areaText.text.toString()
-                    areaLabelSelected = areaLabelSpinner.selectedItemPosition
                     editMode = true
                     areaLabelSpinner.setEnabled(true)
+                    areaLabelSelected = areaLabelSpinner.selectedItemPosition
                     areaText.apply {
                         setInputType(TYPE_TEXT_FLAG_NO_SUGGESTIONS)
                         setClickable(true)
@@ -56,24 +56,41 @@ class AreasAdapter(private val view: View,
                     areaEditButton.setImageDrawable(getDrawable(itemView.context, R.drawable.ic_baseline_check_24))
                     areaCancelEditButton.visibility = View.VISIBLE
                 } else { //apply changes and leave edit mode
-                    editMode = false
-                    areaLabelSpinner.setEnabled(false)
-                    areaText.apply {
-                        setInputType(TYPE_NULL)
-                        setClickable(false)
-                        setCursorVisible(false)
-                        setFocusable(false)
-                        setFocusableInTouchMode(false)
-                        background = null
-                    }
-                    areaEditButton.setImageDrawable(getDrawable(itemView.context, R.drawable.ic_baseline_edit_24))
-                    areaCancelEditButton.visibility = View.GONE
-
                     val pos = adapterPosition
-                    this@AreasAdapter.areas[pos].text = areaText.text.toString()
-                    this@AreasAdapter.areas[pos].label = areaLabelSpinner.selectedItem as Int
-                    areasViewModel.updateArea(areas[pos])
-                    notifyDataSetChanged()
+                    val areaOld = areas[pos].copy()
+                    if (areas.find {(it.label == areaLabelSpinner.selectedItem as Int) && (it.id != areaOld.id)} != null){
+                        val snackbarError = Snackbar.make(view, R.string.area_label_not_unique_error, Snackbar.LENGTH_LONG)
+                        snackbarError.setTextColor(ContextCompat.getColor(context, R.color.red_error))
+                        snackbarError.show()
+                    } else if (areas.find {(it.text == areaText.text.toString()) && it.id != areaOld.id } != null){
+                        areaText.requestFocus()
+                        areaText.setError(context.getString(R.string.area_text_not_unique_error))
+                    } else if (areaText.text.toString().length == 0){
+                        areaText.requestFocus()
+                        areaText.setError(context.getString(R.string.area_text_empty_error))
+                    } else {
+                        editMode = false
+                        areaLabelSpinner.setEnabled(false)
+                        areaText.apply {
+                            setInputType(TYPE_NULL)
+                            setClickable(false)
+                            setCursorVisible(false)
+                            setFocusable(false)
+                            setFocusableInTouchMode(false)
+                            background = null
+                        }
+                        areaEditButton.setImageDrawable(
+                            getDrawable(
+                                itemView.context,
+                                R.drawable.ic_baseline_edit_24
+                            )
+                        )
+                        areaCancelEditButton.visibility = View.GONE
+                        this@AreasAdapter.areas[pos].text = areaText.text.toString()
+                        this@AreasAdapter.areas[pos].label = areaLabelSpinner.selectedItem as Int
+                        areasViewModel.updateArea(areas[pos])
+                        notifyDataSetChanged()
+                    }
                 }
             }
             areaCancelEditButton.setOnClickListener { itemView ->
@@ -230,6 +247,22 @@ class AreasAdapter(private val view: View,
     // Called to refresh an action mode's action menu (we won't be using this here)
     override fun onPrepareActionMode(mode: ActionMode?, menu: Menu?): Boolean {
         return true
+    }
+
+    fun getLabelArray(completeList: Boolean = false): ArrayList<Int> {
+        val labelArrayList = arrayListOf(
+            R.drawable.shape_area_label_0, R.drawable.shape_area_label_1,
+            R.drawable.shape_area_label_2, R.drawable.shape_area_label_3,
+            R.drawable.shape_area_label_4, R.drawable.shape_area_label_5,
+            R.drawable.shape_area_label_6, R.drawable.shape_area_label_7,
+            R.drawable.shape_area_label_8, R.drawable.shape_area_label_9
+        )
+        if (completeList == false) {
+            for (area in areas) {
+                labelArrayList.remove(area.label)
+            }
+        }
+        return labelArrayList
     }
 
 }

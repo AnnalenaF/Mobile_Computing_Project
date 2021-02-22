@@ -7,7 +7,7 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ArrayAdapter
 import android.widget.ImageView
 
-class AreaLabelSpinnerAdapter(context: Context, labels: Array<Int>) :
+class AreaLabelSpinnerAdapter(context: Context, labels: ArrayList<Int>) :
     ArrayAdapter<Int>(context, android.R.layout.simple_spinner_item, labels) {
 
     override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup) =

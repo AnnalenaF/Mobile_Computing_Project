@@ -13,7 +13,7 @@ import kotlinx.coroutines.withContext
 import java.util.concurrent.Executors
 
 
-@Database(entities = [Area::class], version = 1)
+@Database(entities = [Area::class], version = 2)
 abstract class AppDatabase() : RoomDatabase() {
     abstract fun areaDao(): AreaDao
 
@@ -28,6 +28,7 @@ abstract class AppDatabase() : RoomDatabase() {
                     AppDatabase::class.java,
                     "integra.db"
                 )
+                .fallbackToDestructiveMigration()
                 .addCallback(object : Callback() {
                     override fun onCreate(db: SupportSQLiteDatabase) {
                         // create initial default areas
