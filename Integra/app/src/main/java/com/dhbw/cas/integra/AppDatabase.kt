@@ -16,7 +16,7 @@ import com.dhbw.cas.integra.ui.catalogue.TaskDao
 import java.util.concurrent.Executors
 
 
-@Database(entities = [Area::class, Task::class], version = 3)
+@Database(entities = [Area::class, Task::class], version = 4)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun areaDao(): AreaDao
@@ -46,24 +46,13 @@ abstract class AppDatabase : RoomDatabase() {
         }
         val MIGRATION_2_3 = object : Migration(2, 3) {
             override fun migrate(db: SupportSQLiteDatabase) {
-                db.execSQL("DROP TABLE areas")
-                db.execSQL("CREATE TABLE IF NOT EXISTS `areas` (`text` TEXT NOT NULL, `label` INTEGER NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL)")
-                db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS `index_areas_text` ON `areas` (`text`)")
-                db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS `index_areas_label` ON `areas` (`label`)")
-                db.execSQL("CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)")
-                db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'e73c53d6857bceec841faa79e91dd708')")
-
-                db.insert("areas", CONFLICT_ABORT, ContentValues().apply {
-                    put("text", "Privat")
-                    put("label", R.drawable.shape_area_label_0)
-                })
-                db.insert("areas", CONFLICT_ABORT, ContentValues().apply {
-                    put("text", "Arbeit")
-                    put("label", R.drawable.shape_area_label_1)
-                })
-
                 db.execSQL("CREATE TABLE IF NOT EXISTS `tasks` (`text` TEXT NOT NULL, `priority` INTEGER NOT NULL, `area_id` INTEGER NOT NULL, `expectedDuration` INTEGER, `loggedDuration` INTEGER, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, FOREIGN KEY(`area_id`) REFERENCES `areas`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )")
-
+            }
+        }
+        val MIGRATION_3_4 = object : Migration(3, 4) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("DROP TABLE tasks")
+                db.execSQL("CREATE TABLE IF NOT EXISTS `tasks` (`title` TEXT NOT NULL, `description` TEXT NOT NULL, `priority` INTEGER NOT NULL, `area_id` INTEGER NOT NULL, `expectedDuration` INTEGER, `loggedDuration` INTEGER, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, FOREIGN KEY(`area_id`) REFERENCES `areas`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )")
             }
         }
 
@@ -87,7 +76,7 @@ abstract class AppDatabase : RoomDatabase() {
                                 }
                     }
                 })
-                .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
+                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4)
                 .build()
             }
             return instance!!

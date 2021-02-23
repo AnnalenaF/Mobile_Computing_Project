@@ -13,8 +13,11 @@ import java.sql.Timestamp
         childColumns = ["area_id"],
         onDelete = ForeignKey.CASCADE)]) // delete all tasks for an area if the area is deleted
 data class Task(
-        @ColumnInfo(name="text")
-        var text: String,
+        @ColumnInfo(name="title")
+        var title: String,
+
+        @ColumnInfo(name="description")
+        var description: String,
 
         @ColumnInfo(name="priority")
         var priority: Int,
