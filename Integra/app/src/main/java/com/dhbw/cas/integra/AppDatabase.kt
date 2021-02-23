@@ -7,12 +7,15 @@ import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.dhbw.cas.integra.ui.areas.Area
 import com.dhbw.cas.integra.ui.areas.AreaDao
+import com.dhbw.cas.integra.ui.catalogue.Task
+import com.dhbw.cas.integra.ui.catalogue.TaskDao
 import java.util.concurrent.Executors
 
 
-@Database(entities = [Area::class], version = 2)
+@Database(entities = [Area::class, Task::class], version = 3)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun areaDao(): AreaDao
+    abstract fun taskDao(): TaskDao
 
     companion object {
         @Volatile private var instance: AppDatabase? = null
@@ -30,11 +33,11 @@ abstract class AppDatabase : RoomDatabase() {
                     override fun onCreate(db: SupportSQLiteDatabase) {
                         // create initial default areas
                         Executors.newSingleThreadScheduledExecutor()
-                            .execute( {
+                            .execute {
                                 val areaDao = getDatabase(context).areaDao()
-                                areaDao.insertNow(Area(text="Privat", label = R.drawable.shape_area_label_0))
-                                areaDao.insertNow(Area(text="Arbeit", label = R.drawable.shape_area_label_1))
-                            })
+                                areaDao.insertNow(Area(text = "Privat", label = R.drawable.shape_area_label_0))
+                                areaDao.insertNow(Area(text = "Arbeit", label = R.drawable.shape_area_label_1))
+                            }
                     }
 
                     override fun onDestructiveMigration(db: SupportSQLiteDatabase) {
