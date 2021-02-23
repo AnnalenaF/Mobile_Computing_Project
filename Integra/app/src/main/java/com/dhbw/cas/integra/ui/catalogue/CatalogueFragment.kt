@@ -29,6 +29,8 @@ class CatalogueFragment : Fragment() {
     ): View? {
         catalogueViewModel =
                 ViewModelProvider(this).get(CatalogueViewModel::class.java)
+        val areasViewModel =
+                ViewModelProvider(this).get(AreasViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_catalogue, container, false)
 
         // get recycler view containing task list, set adapter and observe tasks
@@ -37,6 +39,7 @@ class CatalogueFragment : Fragment() {
         recyclerView.adapter = catalogueAdapter
         val main : AppCompatActivity = activity as AppCompatActivity
         catalogueViewModel.tasks.observe(main) { tasks -> catalogueAdapter.setTasks(tasks) }
+        areasViewModel.areas.observe(main) { areas -> catalogueAdapter.setAreas(areas) }
 
         // add divider to recycler view list
         val layoutManager : LinearLayoutManager = recyclerView.layoutManager as LinearLayoutManager
@@ -68,8 +71,6 @@ class CatalogueFragment : Fragment() {
                 }
             }
             // set adapter for areas spinner
-            val areasViewModel =
-                    ViewModelProvider(this).get(AreasViewModel::class.java)
             areasViewModel.getAreaTexts().observe(viewLifecycleOwner, { spinnerData ->
                 val spinnerAdapter = ArrayAdapter(main, android.R.layout.simple_spinner_item, spinnerData)
                 dialog.new_task_area_spinner.adapter = spinnerAdapter

@@ -12,6 +12,9 @@ interface AreaDao {
     @Query("SELECT text FROM areas")
     fun getAreaTexts(): LiveData<List<String>>
 
+    @Query("SELECT label FROM areas WHERE text = :text")
+    fun getLabelByText(text: String): Int
+
     @Insert(onConflict =OnConflictStrategy.ABORT )
     @Throws(SQLiteConstraintException::class)
     suspend fun insert(area: Area)

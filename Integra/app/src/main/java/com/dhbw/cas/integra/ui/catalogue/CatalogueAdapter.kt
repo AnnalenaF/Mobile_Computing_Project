@@ -5,10 +5,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.dhbw.cas.integra.R
+import com.dhbw.cas.integra.ui.areas.Area
+import com.dhbw.cas.integra.ui.areas.AreasViewModel
 import kotlinx.android.synthetic.main.item_task.view.*
 
 class CatalogueAdapter(): RecyclerView.Adapter<CatalogueAdapter.CatalogueViewHolder>() {
     private var tasks = emptyList<Task>()
+    private var areas = emptyList<Area>()
 
 
     inner class CatalogueViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -30,6 +33,10 @@ class CatalogueAdapter(): RecyclerView.Adapter<CatalogueAdapter.CatalogueViewHol
             holder.taskArea.text = area_text
             holder.taskPrio.setText(priority.toString())
             holder.taskDuration.setText(expectedDuration.toString())
+            val area = areas.find { it.text == area_text }
+            if (area != null) {
+                holder.taskArea.setBackgroundResource(area.label)
+            }
         }
     }
 
@@ -43,6 +50,11 @@ class CatalogueAdapter(): RecyclerView.Adapter<CatalogueAdapter.CatalogueViewHol
 
     fun setTasks(tasks: List<Task>) {
         this.tasks = tasks
+        notifyDataSetChanged()
+    }
+
+    fun setAreas(areas: List<Area>) {
+        this.areas = areas
         notifyDataSetChanged()
     }
 }
