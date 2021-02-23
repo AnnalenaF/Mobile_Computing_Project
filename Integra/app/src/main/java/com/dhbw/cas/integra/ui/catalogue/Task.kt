@@ -5,6 +5,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import com.dhbw.cas.integra.ui.areas.Area
+import java.sql.Time
 import java.sql.Timestamp
 
 @Entity(tableName="tasks", foreignKeys = [ForeignKey(entity = Area::class,
@@ -22,10 +23,10 @@ data class Task(
         var area_id: Long,
 
         @ColumnInfo(name="expectedDuration")
-        var expectedDuration: Timestamp,
+        var expectedDuration: Time?,
 
         @ColumnInfo(name="loggedDuration")
-        var loggedDuration: Timestamp = Timestamp(0),
+        var loggedDuration: Time? = Time(0),
 
         @ColumnInfo(name="id")
         @PrimaryKey(autoGenerate = true) val id: Long = 0
