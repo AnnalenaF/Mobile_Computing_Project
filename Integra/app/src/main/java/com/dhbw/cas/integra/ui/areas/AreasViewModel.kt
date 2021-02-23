@@ -16,4 +16,6 @@ class AreasViewModel(application: Application) : AndroidViewModel(application) {
     fun updateArea(area: Area) = viewModelScope.launch { areaDao.update(area) }
 
     fun deleteArea(area: Area) = viewModelScope.launch { areaDao.delete(area) }
+
+    fun getAreaTexts() = areaDao.getAreaTexts()
 }

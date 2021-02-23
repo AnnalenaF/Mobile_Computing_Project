@@ -30,4 +30,14 @@
     <string name="max_num_areas">Maximale Anzahl Lebensbereiche erreicht</string>
     <string name="button_create_task">Neue Aufgabe anlegen</string>
     <string name="empty_task_list">Noch keine Aufgaben angelegt</string>
+    <string name="new_task">Neue Aufgabe</string>
+    <string name="task_title_hint">Titel</string>
+    <string name="task_title_autofill_hint">Titel</string>
+    <string name="task_descr_hint">Beschreibung</string>
+    <string name="task_descr_autofill_hint">Beschreibung</string>
+    <string name="new_task_prio_label">Priorität:</string>
+    <string name="task_prio_autofill_hint">1, 2, 3, …</string>
+    <string name="new_task_area_label">Lebensbereich:</string>
+    <string name="new_task_duration_label">Dauer in min:</string>
+    <string name="task_dur_autofill_hint">z.B. 30, 60, 120, …</string>
 </resources>

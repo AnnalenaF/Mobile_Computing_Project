@@ -5,26 +5,31 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.dhbw.cas.integra.R
+import kotlinx.android.synthetic.main.item_task.view.*
 
 class CatalogueAdapter(): RecyclerView.Adapter<CatalogueAdapter.CatalogueViewHolder>() {
-    private var tasks: List<Task> = emptyList<Task>()
+    private var tasks = emptyList<Task>()
+
 
     inner class CatalogueViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
+        var taskTitle = itemView.task_title
+        var taskArea = itemView.task_area
+        var taskPrio = itemView.task_prio
+        var taskDuration = itemView.task_duration
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CatalogueViewHolder {
-        //context = parent.context
         val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_area, parent, false)
+                .inflate(R.layout.item_task, parent, false)
         return CatalogueViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: CatalogueViewHolder, position: Int) {
         with(tasks[position]) {
-            //TODO("Not yet implemented")
-            //holder.areaText.setText(text)
-            //holder.areaLabelSpinner.setSelection(labelArray.indexOf(label))
+            holder.taskTitle.text = title
+            holder.taskArea.text = area_text
+            holder.taskPrio.setText(priority.toString())
+            holder.taskDuration.setText(expectedDuration.toString())
         }
     }
 

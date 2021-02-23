@@ -32,7 +32,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layoutManager="LinearLayoutManager" />
 
-    <androidx.appcompat.widget.AppCompatTextView
+    <!--<androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/empty_text_view"
         style="@style/TextAppearance.MaterialComponents.Body1"
         android:layout_width="0dp"
@@ -43,7 +43,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="@string/empty_task_list" />
+        tools:text="@string/empty_task_list" />-->
 
         <!--android:textColor="@color/black"-->
 </androidx.constraintlayout.widget.ConstraintLayout>

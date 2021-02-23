@@ -6,8 +6,11 @@ import androidx.room.*
 
 @Dao
 interface AreaDao {
-    @Query("SELECT * FROM areas ORDER BY id ASC")
+    @Query("SELECT * FROM areas ORDER BY text ASC")
     fun getAreas(): LiveData<List<Area>>
+
+    @Query("SELECT text FROM areas")
+    fun getAreaTexts(): LiveData<List<String>>
 
     @Insert(onConflict =OnConflictStrategy.ABORT )
     @Throws(SQLiteConstraintException::class)

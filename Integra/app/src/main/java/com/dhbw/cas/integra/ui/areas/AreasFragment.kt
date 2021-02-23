@@ -7,6 +7,7 @@ import androidx.appcompat.app.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.*
+import com.dhbw.cas.integra.ui.catalogue.CatalogueViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.dialog_new_area.*
@@ -30,7 +31,10 @@ class AreasFragment : Fragment() {
         // get recycler view containing area list, set adapter and observe areas
         val recyclerView: RecyclerView = root.findViewById(R.id.areas_list)
         val main : AppCompatActivity = activity as AppCompatActivity
-        areasAdapter = AreasAdapter(root, areasViewModel, main)
+
+        val catalogueViewModel =
+                ViewModelProvider(this).get(CatalogueViewModel::class.java)
+        areasAdapter = AreasAdapter(root, areasViewModel, main, catalogueViewModel)
         recyclerView.adapter = areasAdapter
         areasViewModel.areas.observe(main) { areas -> areasAdapter.setAreas(areas) }
 
