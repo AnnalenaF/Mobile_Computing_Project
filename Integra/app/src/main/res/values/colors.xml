@@ -6,4 +6,15 @@
     <color name="grey_dark">#646464</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="area_0">#FFC62B</color>
+    <color name="area_1">#588EF2</color>
+    <color name="area_2">#FCB7DA</color>
+    <color name="area_3">#6B6EC1</color>
+    <color name="area_4">#12C773</color>
+    <color name="area_5">#FFF551</color>
+    <color name="area_6">#912742</color>
+    <color name="area_7">#696969</color>
+    <color name="area_8">#065535</color>
+    <color name="area_9">#0A234A</color>
+    <color name="red_error">#FF0000</color>
 </resources>

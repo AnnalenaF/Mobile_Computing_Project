@@ -9,5 +9,24 @@
 
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
-    <string name="menu_slideshow">Slideshow</string>
+    <string name="menu_areas">Lebensbereiche</string>
+
+    <string name="button_create_area">Neuen Lebensbereich anlegen</string>
+    <string name="button_edit_area">Lebensbereich bearbeiten</string>
+    <string name="button_cancel_edit_area">Bearbeiten Abbrechen</string>
+    <string name="area_text_hint">Lebensbereich</string>
+    <string name="area_text_autofill_hint">Lebensbereich</string>
+    <string name="menu_item_delete">Löschen</string>
+    <string name="message_area_deleted">%1$d Lebensbereich gelöscht</string>
+    <string name="message_areas_deleted">%1$d Lebensbereiche gelöscht</string>
+    <string name="message_area_no_deletion">Das Löschen aller Lebensbereiche ist nicht möglich</string>
+    <string name="action_undo">Rückgängig</string>
+    <string name="new_area">Neuer Lebensbereich</string>
+    <string name="okay">OK</string>
+    <string name="cancel">Abbrechen</string>
+
+    <string name="area_text_empty_error">Bitte Bezeichnung eintragen</string>
+    <string name="area_text_not_unique_error">Ein Lebensbereich mit diesem Namen existiert bereits</string>
+    <string name="area_label_not_unique_error">Ein Lebensbereich mit dieser Farbe exisiert bereits</string>
+    <string name="max_num_areas">Maximale Anzahl Lebensbereiche erreicht</string>
 </resources>
