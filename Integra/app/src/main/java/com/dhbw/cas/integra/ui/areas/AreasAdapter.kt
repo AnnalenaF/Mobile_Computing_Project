@@ -1,19 +1,18 @@
 package com.dhbw.cas.integra.ui.areas
 
-import android.content.Context
-import android.database.sqlite.SQLiteConstraintException
-import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.RecyclerView
 import com.dhbw.cas.integra.R
-import kotlinx.android.synthetic.main.item_area.view.*
-import android.text.InputType.*
-import android.view.*
+import android.content.Context
+import androidx.core.content.ContextCompat
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.appcompat.view.ActionMode
+import android.view.*
+import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.item_area.view.*
+import android.text.InputType.*
+import android.widget.EditText
+import android.widget.Spinner
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.dialog_new_area.*
-import kotlinx.android.synthetic.main.fragment_areas.view.*
 
 class AreasAdapter(private val view: View,
                    private val areasViewModel: AreasViewModel,
@@ -24,89 +23,106 @@ class AreasAdapter(private val view: View,
     private var multiSelect = false
     private val selectedItems = arrayListOf<Area>()
     private val labelArray = getLabelArray(true)
+
     inner class AreasViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val areaText = itemView.area_text
-        val areaLabelSpinner = itemView.area_label_spinner
-        val areaLabelSpinnerAdapter : AreaLabelSpinnerAdapter = AreaLabelSpinnerAdapter(
-            itemView.context, labelArray)
-        val areaEditButton = itemView.area_edit_button
-        val areaCancelEditButton = itemView.area_edit_cancel_button
-        var areaTextValue : CharSequence = ""
-        var areaLabelSelected : Int = 0
+        // get screen elements
+        val areaText: EditText = itemView.area_text
+        val areaLabelSpinner: Spinner = itemView.area_label_spinner
+        private val areaEditButton = itemView.area_edit_button
+        private val areaCancelEditButton = itemView.area_edit_cancel_button
+
+        // instantiate private variables
+        private var areaTextValue : CharSequence = ""
+        private var areaLabelSelected : Int = 0
+        private var editMode = false
+        // remember text background containing underline
+        private val areaTextBackground = areaText.background
+
         init {
-            var editMode = false
-            val areaTextBackground = areaText.background
+            //initially color label spinner is disabled and text does not show underline background
+            areaLabelSpinner.isEnabled = false
             areaText.background = null
-            areaLabelSpinner.setAdapter(areaLabelSpinnerAdapter)
-            areaLabelSpinner.setEnabled(false)
-            areaEditButton.setOnClickListener { itemView ->
+            // set adapter for label spinner with complete color label list
+            areaLabelSpinner.adapter = AreaLabelSpinnerAdapter( itemView.context, labelArray)
+
+            areaEditButton.setOnClickListener { itemViewEdit ->
                 if (!editMode) { //edit button pressed
+
+                    switchDisplayEditMode(itemViewEdit.context)
+
+                    //remember current values to return to when cancel editing
                     areaTextValue = areaText.text.toString()
-                    editMode = true
-                    areaLabelSpinner.setEnabled(true)
                     areaLabelSelected = areaLabelSpinner.selectedItemPosition
-                    areaText.apply {
-                        setInputType(TYPE_TEXT_FLAG_NO_SUGGESTIONS)
-                        setClickable(true)
-                        setCursorVisible(true)
-                        setFocusable(true)
-                        setFocusableInTouchMode(true)
-                        background = areaTextBackground
-                    }
-                    areaEditButton.setImageDrawable(getDrawable(itemView.context, R.drawable.ic_baseline_check_24))
-                    areaCancelEditButton.visibility = View.VISIBLE
-                } else { //apply changes and leave edit mode
+
+                } else { //changes shall be applied
                     val pos = adapterPosition
-                    val areaOld = areas[pos].copy()
-                    if (areas.find {(it.label == areaLabelSpinner.selectedItem as Int) && (it.id != areaOld.id)} != null){
-                        val snackbarError = Snackbar.make(view, R.string.area_label_not_unique_error, Snackbar.LENGTH_LONG)
-                        snackbarError.setTextColor(ContextCompat.getColor(context, R.color.red_error))
-                        snackbarError.show()
-                    } else if (areas.find {(it.text == areaText.text.toString()) && it.id != areaOld.id } != null){
-                        areaText.requestFocus()
-                        areaText.setError(context.getString(R.string.area_text_not_unique_error))
-                    } else if (areaText.text.toString().length == 0){
-                        areaText.requestFocus()
-                        areaText.setError(context.getString(R.string.area_text_empty_error))
-                    } else {
-                        editMode = false
-                        areaLabelSpinner.setEnabled(false)
-                        areaText.apply {
-                            setInputType(TYPE_NULL)
-                            setClickable(false)
-                            setCursorVisible(false)
-                            setFocusable(false)
-                            setFocusableInTouchMode(false)
-                            background = null
+                    val areaToBeChanged = areas[pos]
+                    when {
+                        //check area text is not empty and display error directly on text field
+                        areaText.text.toString().isEmpty() -> {
+                            areaText.requestFocus()
+                            areaText.error = context.getString(R.string.area_text_empty_error)
                         }
-                        areaEditButton.setImageDrawable(
-                            getDrawable(
-                                itemView.context,
-                                R.drawable.ic_baseline_edit_24
-                            )
-                        )
-                        areaCancelEditButton.visibility = View.GONE
-                        this@AreasAdapter.areas[pos].text = areaText.text.toString()
-                        this@AreasAdapter.areas[pos].label = areaLabelSpinner.selectedItem as Int
-                        areasViewModel.updateArea(areas[pos])
-                        notifyDataSetChanged()
+                        //check area text is not already used by other area and display error directly on text field
+                        areas.find {(it.text == areaText.text.toString()) && it.id != areaToBeChanged.id } != null -> {
+                            areaText.requestFocus()
+                            areaText.error = context.getString(R.string.area_text_not_unique_error)
+                        }
+                        //check area label is not already used by other area and display error using snackbar
+                        areas.find {(it.label == areaLabelSpinner.selectedItem as Int) && (it.id != areaToBeChanged.id)} != null -> {
+                            val snackbarError = Snackbar.make(view, R.string.area_label_not_unique_error, Snackbar.LENGTH_LONG)
+                            snackbarError.setTextColor(ContextCompat.getColor(context, R.color.red_error))
+                            snackbarError.show()
+                        }
+                        else -> { //no error found --> apply changes and leave edit mode
+                            switchDisplayEditMode(itemViewEdit.context)
+
+                            //save changes
+                            areaToBeChanged.text = areaText.text.toString()
+                            areaToBeChanged.label = areaLabelSpinner.selectedItem as Int
+                            areasViewModel.updateArea(areas[pos])
+                            notifyDataSetChanged()
+                        }
                     }
                 }
             }
-            areaCancelEditButton.setOnClickListener { itemView ->
-                editMode = false
-                areaLabelSpinner.setEnabled(false)
+
+            areaCancelEditButton.setOnClickListener { itemViewCanc ->
+                //set text and label to old values and leave edit mode
                 areaLabelSpinner.setSelection(areaLabelSelected)
+                areaText.setText(areaTextValue)
+                switchDisplayEditMode(itemViewCanc.context)
+            }
+        }
+
+        private fun switchDisplayEditMode(context: Context) {
+            if (!editMode) { //switch to Edit mode
+                editMode = true
+                areaLabelSpinner.isEnabled = true
                 areaText.apply {
-                    setText(areaTextValue)
-                    setInputType(TYPE_NULL)
-                    setClickable(false)
-                    setCursorVisible(false)
-                    setFocusable(false)
-                    setFocusableInTouchMode(false)
+                    inputType = TYPE_TEXT_FLAG_NO_SUGGESTIONS
+                    isClickable = true
+                    isCursorVisible = true
+                    isFocusable = true
+                    isFocusableInTouchMode = true
+                    background = areaTextBackground
+                }
+                //change icon on button and display cancel button
+                areaEditButton.setImageDrawable(getDrawable(context, R.drawable.ic_baseline_check_24))
+                areaCancelEditButton.visibility = View.VISIBLE
+            } else { // switch to display mode
+                editMode = false
+                areaLabelSpinner.isEnabled = false
+                areaText.apply {
+                    inputType = TYPE_NULL
+                    isClickable = false
+                    isCursorVisible = false
+                    isFocusable = false
+                    isFocusableInTouchMode = false
                     background = null
                 }
-                areaEditButton.setImageDrawable(getDrawable(itemView.context, R.drawable.ic_baseline_edit_24))
+                //change icon on button and hide cancel button
+                areaEditButton.setImageDrawable(getDrawable(context, R.drawable.ic_baseline_edit_24))
                 areaCancelEditButton.visibility = View.GONE
             }
         }
@@ -125,26 +141,22 @@ class AreasAdapter(private val view: View,
             viewHolder.areaLabelSpinner.setSelection(labelArray.indexOf(label))
         }
 
-        // Get the current area
         val currentArea = areas[position]
         // for every item, check to see if it exists in the selected items array
         if (selectedItems.contains(currentArea)) {
             // if the item is selected, let the user know by adding a dark layer above it
             viewHolder.itemView.alpha = 0.3f
-        } else {
-            // else, keep it as it is
+        } else { // else, keep it as it is
             viewHolder.itemView.alpha = 1.0f
         }
 
-        // set handler to define what happens when an item is long pressed
+        // start multi selection when long pressing an area and display context menu for deletion
         viewHolder.itemView.setOnLongClickListener {
-            // if multiSelect is false, set it to true and select the item
             if (!multiSelect) {
-                // We have started multi selection, so set the flag to true
                 multiSelect = true
-                // Add it to the list containing all the selected images
+                // add area to list of selected items
                 selectItem(viewHolder, currentArea)
-                // As soon as the user starts multi-select process, show the contextual menu
+                // show context menu
                 val appCompatActivity : AppCompatActivity = activity
                 appCompatActivity.startSupportActionMode(this)
                 true
@@ -152,28 +164,75 @@ class AreasAdapter(private val view: View,
                 false
         }
 
-        // handler to define what happens when an item is tapped
+        // if area is clicked in multi selection add it to list of selected items
         viewHolder.itemView.setOnClickListener {
-            // if the user is in multi-select mode, add it to the multi select list
             if (multiSelect)
                 selectItem(viewHolder, currentArea)
         }
     }
 
-    // helper function that adds/removes an item to the list depending on the app's state
-    private fun selectItem(viewHolder: AreasViewHolder, area: Area) {
-        // If the "selectedItems" list contains the item, remove it and set it's state to normal
-        if (selectedItems.contains(area)) {
-            selectedItems.remove(area)
-            viewHolder.itemView.alpha = 1.0f
-        } else {
-            // Else, add it to the list and add a darker shade over the item, letting the user know that it was selected
-            selectedItems.add(area)
-            viewHolder.itemView.alpha = 0.3f
+    override fun getItemCount() = areas.size
+
+    // area deletion
+    override fun onActionItemClicked(
+        mode: ActionMode?,
+        item: MenuItem?
+    ): Boolean {
+        if (item?.itemId == R.id.action_area_delete) {
+            if (areas.size - selectedItems.size == 0) { // prevent deleting all areas
+                val snackbarError = Snackbar.make(view, R.string.message_area_no_deletion, Snackbar.LENGTH_LONG)
+                snackbarError.setTextColor(ContextCompat.getColor(context, R.color.red_error))
+                snackbarError.show()
+            } else { // delete selected area(s)
+                val areasDel = mutableListOf<Area>()
+                for (selItem in selectedItems) {
+                    areasDel.add(selItem)
+                    areasViewModel.deleteArea(selItem)
+                }
+
+                // show success message containing number of deleted areas
+                val message : String = if (selectedItems.size == 1) {
+                    context.getString(R.string.message_area_deleted, 1)
+                } else {
+                    context.getString(R.string.message_areas_deleted, selectedItems.size)
+                }
+                val snackbarSuccess = Snackbar.make(view, message, Snackbar.LENGTH_LONG)
+                // enable undo action on success message snackbar
+                snackbarSuccess.setAction(R.string.action_undo) {
+                    for (areaDel in areasDel) {
+                        areasViewModel.createArea(text = areaDel.text, label = areaDel.label)
+                    }
+                }
+                snackbarSuccess.show()
+                mode?.finish()
+            }
         }
+        return true
     }
 
-    override fun getItemCount() = areas.size
+    override fun onCreateActionMode(
+        mode: ActionMode,
+        menu: Menu?
+    ): Boolean {
+        // hide main action bar and inflate context menu for deletion
+        activity.supportActionBar?.hide()
+        val inflater: MenuInflater = mode.menuInflater
+        inflater.inflate(R.menu.areas_menu, menu)
+        return true
+    }
+
+    override fun onDestroyActionMode(mode: ActionMode?) {
+        // show main action bar again when context menu for deletion is closed
+        activity.supportActionBar?.show()
+        // end multi selection mode and clear list of selected areas
+        multiSelect = false
+        selectedItems.clear()
+        notifyDataSetChanged()
+    }
+
+    override fun onPrepareActionMode(mode: ActionMode?, menu: Menu?): Boolean {
+        return true
+    }
 
     fun setAreas(areas: List<Area>) {
         this.areas = areas
@@ -184,71 +243,6 @@ class AreasAdapter(private val view: View,
         return this.areas
     }
 
-    // Called when a menu item was clicked
-    override fun onActionItemClicked(
-        mode: ActionMode?,
-        item: MenuItem?
-    ): Boolean {
-        if (item?.itemId == R.id.action_area_delete) {
-            // Delete button is clicked, handle the deletion and finish the multi select process
-            if (areas.size - selectedItems.size == 0) {
-                val snackbarError = Snackbar.make(view, R.string.message_area_no_deletion, Snackbar.LENGTH_LONG)
-                snackbarError.setTextColor(ContextCompat.getColor(context, R.color.red_error))
-                snackbarError.show()
-            } else {
-                val areasDel = mutableListOf<Area>()
-                //val areasMutable : MutableList<Area> = areas as MutableList<Area>
-                for (selItem in selectedItems) {
-                    areasDel.add(selItem)
-                    areasViewModel.deleteArea(selItem)
-                }
-                //setAreas(areasMutable)
-
-                val message : String
-                if (selectedItems.size == 1) {
-                    message = context.getString(R.string.message_area_deleted, 1)
-                } else {
-                    message = context.getString(R.string.message_areas_deleted, selectedItems.size)
-                }
-                val snackbarSuccess = Snackbar.make(view, message, Snackbar.LENGTH_LONG)
-                snackbarSuccess.setAction(R.string.action_undo, {
-                    for (areaDel in areasDel) {
-                        areasViewModel.createArea(text = areaDel.text, label = areaDel.label)
-                    }
-                })
-                snackbarSuccess.show()
-                mode?.finish()
-            }
-        }
-        return true
-    }
-
-    // Called when the menu is created i.e. when the user starts multi-select mode (inflate your menu xml here)
-    override fun onCreateActionMode(
-        mode: ActionMode,
-        menu: Menu?
-    ): Boolean {
-        activity.supportActionBar?.hide()
-        // Inflate the menu resource providing context menu items
-        val inflater: MenuInflater = mode.menuInflater
-        inflater.inflate(R.menu.areas_menu, menu)
-        return true
-    }
-
-    // Called when the Context ActionBar disappears i.e. when the user leaves multi-select mode
-    override fun onDestroyActionMode(mode: ActionMode?) {
-        // finished multi selection
-        activity.supportActionBar?.show()
-        multiSelect = false
-        selectedItems.clear()
-        notifyDataSetChanged()
-    }
-
-    // Called to refresh an action mode's action menu (we won't be using this here)
-    override fun onPrepareActionMode(mode: ActionMode?, menu: Menu?): Boolean {
-        return true
-    }
-
     fun getLabelArray(completeList: Boolean = false): ArrayList<Int> {
         val labelArrayList = arrayListOf(
             R.drawable.shape_area_label_0, R.drawable.shape_area_label_1,
@@ -257,12 +251,22 @@ class AreasAdapter(private val view: View,
             R.drawable.shape_area_label_6, R.drawable.shape_area_label_7,
             R.drawable.shape_area_label_8, R.drawable.shape_area_label_9
         )
-        if (completeList == false) {
+        if (!completeList) {
             for (area in areas) {
                 labelArrayList.remove(area.label)
             }
         }
         return labelArrayList
+    }
+
+    private fun selectItem(viewHolder: AreasViewHolder, area: Area) {
+        if (selectedItems.contains(area)) {
+            selectedItems.remove(area)
+            viewHolder.itemView.alpha = 1.0f
+        } else {
+            selectedItems.add(area)
+            viewHolder.itemView.alpha = 0.3f
+        }
     }
 
 }

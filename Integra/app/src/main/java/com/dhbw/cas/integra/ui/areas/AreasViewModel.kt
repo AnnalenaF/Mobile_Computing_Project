@@ -1,7 +1,6 @@
 package com.dhbw.cas.integra.ui.areas
 
 import android.app.Application
-import android.content.Context
 import androidx.lifecycle.*
 import com.dhbw.cas.integra.AppDatabase
 import kotlinx.coroutines.launch
