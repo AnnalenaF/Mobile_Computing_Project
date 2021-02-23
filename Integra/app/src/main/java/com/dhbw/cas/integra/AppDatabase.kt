@@ -39,6 +39,13 @@ abstract class AppDatabase() : RoomDatabase() {
                                 areaDao.insertNow(Area(text="Arbeit", label = R.drawable.shape_area_label_1))
                             })
                     }
+
+                    override fun onDestructiveMigration(db: SupportSQLiteDatabase) {
+                        super.onDestructiveMigration(db)
+                        val areaDao = getDatabase(context).areaDao()
+                        areaDao.insertNow(Area(text="Privat", label = R.drawable.shape_area_label_0))
+                        areaDao.insertNow(Area(text="Arbeit", label = R.drawable.shape_area_label_1))
+                    }
                 })
                 .build()
             }
