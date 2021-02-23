@@ -24,9 +24,10 @@
     <string name="new_area">Neuer Lebensbereich</string>
     <string name="okay">OK</string>
     <string name="cancel">Abbrechen</string>
-
     <string name="area_text_empty_error">Bitte Bezeichnung eintragen</string>
     <string name="area_text_not_unique_error">Ein Lebensbereich mit diesem Namen existiert bereits</string>
     <string name="area_label_not_unique_error">Ein Lebensbereich mit dieser Farbe exisiert bereits</string>
     <string name="max_num_areas">Maximale Anzahl Lebensbereiche erreicht</string>
+    <string name="button_create_task">Neue Aufgabe anlegen</string>
+    <string name="empty_task_list">Noch keine Aufgaben angelegt</string>
 </resources>

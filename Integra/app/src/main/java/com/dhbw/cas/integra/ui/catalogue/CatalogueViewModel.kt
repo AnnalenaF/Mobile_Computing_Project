@@ -1,16 +1,16 @@
 package com.dhbw.cas.integra.ui.catalogue
 
 import android.app.Application
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.dhbw.cas.integra.AppDatabase
 import kotlinx.coroutines.launch
 import java.sql.Time
 
-class CatalogueViewModel(application: Application) : ViewModel() {
+class CatalogueViewModel(application: Application) : AndroidViewModel(application) {
     private var taskDao = AppDatabase.getDatabase(application).taskDao()
 
-    val areas = taskDao.getTasks()
+    val tasks = taskDao.getTasks()
 
     fun createTask(text: String, priority: Int, area_id: Long, expectedDuration: Time)
             = viewModelScope.launch { taskDao.insert(Task(text, priority, area_id, expectedDuration)) }
