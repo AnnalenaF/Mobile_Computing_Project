@@ -46,4 +46,7 @@
     <string name="message_tasks_deleted">%1$d Aufgaben gelöscht</string>
     <string name="task">Aufgabe</string>
     <string name="task_descr_label">Beschreibung:</string>
+    <string name="menu_item_edit">Bearbeiten</string>
+    <string name="menu_item_save">Speichern</string>
+    <string name="menu_item_cancel">Abbrechen</string>
 </resources>
