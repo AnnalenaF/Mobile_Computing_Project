@@ -6,6 +6,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import androidx.core.view.isInvisible
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.dhbw.cas.integra.R
 import com.dhbw.cas.integra.ui.areas.Area
@@ -38,6 +39,7 @@ class CatalogueAdapter( private val view: View,
     }
 
     override fun onBindViewHolder(holder: CatalogueViewHolder, position: Int) {
+        var currentArea : Area? = null
         with(tasks[position]) {
             holder.taskTitle.text = title
             holder.taskArea.text = area_text
@@ -48,9 +50,9 @@ class CatalogueAdapter( private val view: View,
                 holder.taskPrio.isInvisible = true
             }
             holder.taskDuration.text = expectedDuration.toString()
-            val area = areas.find { it.text == area_text }
-            if (area != null) {
-                holder.taskArea.setBackgroundResource(area.label)
+            currentArea = areas.find { it.text == area_text }
+            if (currentArea != null) {
+                holder.taskArea.setBackgroundResource(currentArea!!.label)
             }
         }
 
@@ -81,6 +83,12 @@ class CatalogueAdapter( private val view: View,
         holder.itemView.setOnClickListener {
             if (multiSelect)
                 selectItem(holder, currentTask)
+            else {
+                val action = CatalogueFragmentDirections.actionNavCatalogueToNavTask(
+                    currentTask.id, currentTask.title, currentTask.description, currentTask.priority,
+                    currentTask.expectedDuration, currentTask.area_text, currentArea!!.label)
+                view.findNavController().navigate(action)
+            }
         }
     }
 

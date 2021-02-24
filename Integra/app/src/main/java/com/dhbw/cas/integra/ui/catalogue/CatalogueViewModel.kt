@@ -4,9 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.dhbw.cas.integra.AppDatabase
-import com.dhbw.cas.integra.ui.areas.Area
 import kotlinx.coroutines.launch
-import java.sql.Time
 
 class CatalogueViewModel(application: Application) : AndroidViewModel(application) {
     private var taskDao = AppDatabase.getDatabase(application).taskDao()
