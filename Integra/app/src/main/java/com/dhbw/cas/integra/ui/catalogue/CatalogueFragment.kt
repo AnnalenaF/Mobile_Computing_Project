@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dhbw.cas.integra.R
 import com.dhbw.cas.integra.ui.areas.AreasViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.android.synthetic.main.dialog_new_area.*
 import kotlinx.android.synthetic.main.dialog_new_task.*
 
 class CatalogueFragment : Fragment() {
@@ -81,15 +82,35 @@ class CatalogueFragment : Fragment() {
     }
 
     private fun validateTask(): Boolean{
-        return true
+        val title = dialog.new_task_title.text.toString()
+        val duration = dialog.new_task_duration.text.toString()
+        return when {
+            title.isEmpty() -> {
+                dialog.new_task_title.requestFocus()
+                dialog.new_task_title.error = getString(R.string.task_title_empty_error)
+                false
+            }
+            duration.isEmpty() -> {
+                dialog.new_task_duration.requestFocus()
+                dialog.new_task_duration.error = getString(R.string.task_duration_empty_error)
+                false
+            }
+            else -> {
+                true
+            }
+        }
     }
 
     private fun createTask(){
         val title = dialog.new_task_title.text.toString()
         val descr = dialog.new_task_descr.text.toString()
-        val prio = dialog.new_task_prio.text.toString().toInt()
+        val prio = dialog.new_task_prio.text.toString()
+        var prioInt = 0
+        if (prio.isNotEmpty()) {
+            prioInt = prio.toInt()
+        }
         val duration = dialog.new_task_duration.text.toString().toInt()
         val area = dialog.new_task_area_spinner.selectedItem as String
-        catalogueViewModel.createTask(title, descr, prio, area, duration)
+        catalogueViewModel.createTask(title, descr, prioInt, area, duration)
     }
 }

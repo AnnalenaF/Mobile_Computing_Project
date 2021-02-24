@@ -40,4 +40,6 @@
     <string name="new_task_area_label">Lebensbereich:</string>
     <string name="new_task_duration_label">Dauer in min:</string>
     <string name="task_dur_autofill_hint">z.B. 30, 60, 120, …</string>
+    <string name="task_title_empty_error">Bitte Titel eintragen</string>
+    <string name="task_duration_empty_error">Bitte geschätzte Dauer eintragen</string>
 </resources>

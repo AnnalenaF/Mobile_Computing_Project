@@ -3,6 +3,7 @@ package com.dhbw.cas.integra.ui.catalogue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isInvisible
 import androidx.recyclerview.widget.RecyclerView
 import com.dhbw.cas.integra.R
 import com.dhbw.cas.integra.ui.areas.Area
@@ -18,6 +19,7 @@ class CatalogueAdapter(): RecyclerView.Adapter<CatalogueAdapter.CatalogueViewHol
         var taskTitle = itemView.task_title
         var taskArea = itemView.task_area
         var taskPrio = itemView.task_prio
+        var taskPrioLabel = itemView.task_prio_label
         var taskDuration = itemView.task_duration
     }
 
@@ -31,7 +33,12 @@ class CatalogueAdapter(): RecyclerView.Adapter<CatalogueAdapter.CatalogueViewHol
         with(tasks[position]) {
             holder.taskTitle.text = title
             holder.taskArea.text = area_text
-            holder.taskPrio.setText(priority.toString())
+            if (priority != 0) {
+                holder.taskPrio.setText(priority.toString())
+            } else {
+                holder.taskPrioLabel.isInvisible = true
+                holder.taskPrio.isInvisible = true
+            }
             holder.taskDuration.setText(expectedDuration.toString())
             val area = areas.find { it.text == area_text }
             if (area != null) {
