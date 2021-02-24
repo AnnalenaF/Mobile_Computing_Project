@@ -33,12 +33,12 @@ class CatalogueFragment : Fragment() {
         val areasViewModel =
                 ViewModelProvider(this).get(AreasViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_catalogue, container, false)
+        val main : AppCompatActivity = activity as AppCompatActivity
 
         // get recycler view containing task list, set adapter and observe tasks
         val recyclerView: RecyclerView = root.findViewById(R.id.task_list)
-        val catalogueAdapter = CatalogueAdapter()
+        val catalogueAdapter = CatalogueAdapter(root, main, catalogueViewModel)
         recyclerView.adapter = catalogueAdapter
-        val main : AppCompatActivity = activity as AppCompatActivity
         catalogueViewModel.tasks.observe(main) { tasks -> catalogueAdapter.setTasks(tasks) }
         areasViewModel.areas.observe(main) { areas -> catalogueAdapter.setAreas(areas) }
 
@@ -112,5 +112,11 @@ class CatalogueFragment : Fragment() {
         val duration = dialog.new_task_duration.text.toString().toInt()
         val area = dialog.new_task_area_spinner.selectedItem as String
         catalogueViewModel.createTask(title, descr, prioInt, area, duration)
+    }
+
+    // enable fragment to display options menu
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
     }
 }

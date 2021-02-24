@@ -42,4 +42,6 @@
     <string name="task_dur_autofill_hint">z.B. 30, 60, 120, …</string>
     <string name="task_title_empty_error">Bitte Titel eintragen</string>
     <string name="task_duration_empty_error">Bitte geschätzte Dauer eintragen</string>
+    <string name="message_task_deleted">%1$d Aufgabe gelöscht</string>
+    <string name="message_tasks_deleted">%1$d Aufgaben gelöscht</string>
 </resources>

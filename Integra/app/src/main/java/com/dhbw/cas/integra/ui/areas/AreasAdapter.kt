@@ -12,13 +12,11 @@ import kotlinx.android.synthetic.main.item_area.view.*
 import android.text.InputType.*
 import android.widget.EditText
 import android.widget.Spinner
-import com.dhbw.cas.integra.ui.catalogue.CatalogueViewModel
 import com.google.android.material.snackbar.Snackbar
 
 class AreasAdapter(private val view: View,
                    private val areasViewModel: AreasViewModel,
-                   private val activity: AppCompatActivity,
-                   private val catalogueViewModel: CatalogueViewModel) :
+                   private val activity: AppCompatActivity) :
     RecyclerView.Adapter<AreasAdapter.AreasViewHolder>(), ActionMode.Callback {
     private lateinit var context : Context
     private var areas = emptyList<Area>()
@@ -180,7 +178,7 @@ class AreasAdapter(private val view: View,
         mode: ActionMode?,
         item: MenuItem?
     ): Boolean {
-        if (item?.itemId == R.id.action_area_delete) {
+        if (item?.itemId == R.id.action_multi_delete) {
             if (areas.size - selectedItems.size == 0) { // prevent deleting all areas
                 val snackbarError = Snackbar.make(view, R.string.message_area_no_deletion, Snackbar.LENGTH_LONG)
                 snackbarError.setTextColor(ContextCompat.getColor(context, R.color.red_error))
@@ -219,7 +217,7 @@ class AreasAdapter(private val view: View,
         // hide main action bar and inflate context menu for deletion
         activity.supportActionBar?.hide()
         val inflater: MenuInflater = mode.menuInflater
-        inflater.inflate(R.menu.areas_menu, menu)
+        inflater.inflate(R.menu.multiselect_menu, menu)
         return true
     }
 

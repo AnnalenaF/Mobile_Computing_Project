@@ -32,9 +32,7 @@ class AreasFragment : Fragment() {
         val recyclerView: RecyclerView = root.findViewById(R.id.areas_list)
         val main : AppCompatActivity = activity as AppCompatActivity
 
-        val catalogueViewModel =
-                ViewModelProvider(this).get(CatalogueViewModel::class.java)
-        areasAdapter = AreasAdapter(root, areasViewModel, main, catalogueViewModel)
+        areasAdapter = AreasAdapter(root, areasViewModel, main)
         recyclerView.adapter = areasAdapter
         areasViewModel.areas.observe(main) { areas -> areasAdapter.setAreas(areas) }
 
