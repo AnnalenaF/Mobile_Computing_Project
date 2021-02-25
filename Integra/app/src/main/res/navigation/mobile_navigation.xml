@@ -12,14 +12,50 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/nav_gallery"
-        android:name="com.dhbw.cas.integra.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
+        android:id="@+id/nav_catalogue"
+        android:name="com.dhbw.cas.integra.ui.catalogue.CatalogueFragment"
+        android:label="@string/menu_catalogue"
+        tools:layout="@layout/fragment_catalogue">
+        <action
+            android:id="@+id/action_nav_catalogue_to_nav_task"
+            app:destination="@id/nav_task">
+        </action>
+    </fragment>
 
     <fragment
         android:id="@+id/nav_areas"
         android:name="com.dhbw.cas.integra.ui.areas.AreasFragment"
         android:label="@string/menu_areas"
         tools:layout="@layout/fragment_areas" />
+
+    <fragment
+        android:id="@+id/nav_task"
+        android:name="com.dhbw.cas.integra.ui.catalogue.task.TaskFragment"
+        android:label="@string/task">
+
+        <argument
+            android:name="id"
+            app:argType="long" />
+        <argument
+            android:name="title"
+            app:argType="string" />
+        <argument
+            android:name="description"
+            app:argType="string" />
+        <argument
+            android:name="priority"
+            app:argType="integer" />
+        <argument
+            android:name="expectedDuration"
+            app:argType="integer" />
+        <argument
+            android:name="loggedDuration"
+            app:argType="integer" />
+        <argument
+            android:name="area_text"
+            app:argType="string" />
+        <argument
+            android:name="area_label"
+            app:argType="integer" />
+    </fragment>
 </navigation>

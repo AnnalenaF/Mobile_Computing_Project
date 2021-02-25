@@ -8,7 +8,7 @@
     <string name="action_settings">Settings</string>
 
     <string name="menu_home">Home</string>
-    <string name="menu_gallery">Gallery</string>
+    <string name="menu_catalogue">Aufgabenkatalog</string>
     <string name="menu_areas">Lebensbereiche</string>
 
     <string name="button_create_area">Neuen Lebensbereich anlegen</string>
@@ -24,9 +24,30 @@
     <string name="new_area">Neuer Lebensbereich</string>
     <string name="okay">OK</string>
     <string name="cancel">Abbrechen</string>
-
     <string name="area_text_empty_error">Bitte Bezeichnung eintragen</string>
     <string name="area_text_not_unique_error">Ein Lebensbereich mit diesem Namen existiert bereits</string>
     <string name="area_label_not_unique_error">Ein Lebensbereich mit dieser Farbe exisiert bereits</string>
     <string name="max_num_areas">Maximale Anzahl Lebensbereiche erreicht</string>
+    <string name="button_create_task">Neue Aufgabe anlegen</string>
+    <string name="empty_task_list">Noch keine Aufgaben angelegt</string>
+    <string name="new_task">Neue Aufgabe</string>
+    <string name="task_title_hint">Titel</string>
+    <string name="task_title_autofill_hint">Titel</string>
+    <string name="task_descr_hint">Beschreibung</string>
+    <string name="task_descr_autofill_hint">Beschreibung</string>
+    <string name="new_task_prio_label">Priorität:</string>
+    <string name="task_prio_autofill_hint">1, 2, 3, …</string>
+    <string name="new_task_area_label">Lebensbereich:</string>
+    <string name="new_task_duration_label">Dauer in min:</string>
+    <string name="task_dur_autofill_hint">z.B. 30, 60, 120, …</string>
+    <string name="task_title_empty_error">Bitte Titel eintragen</string>
+    <string name="task_duration_empty_error">Bitte geschätzte Dauer eintragen</string>
+    <string name="message_task_deleted">%1$d Aufgabe gelöscht</string>
+    <string name="message_tasks_deleted">%1$d Aufgaben gelöscht</string>
+    <string name="task">Aufgabe</string>
+    <string name="task_descr_label">Beschreibung:</string>
+    <string name="menu_item_edit">Bearbeiten</string>
+    <string name="menu_item_save">Speichern</string>
+    <string name="menu_item_cancel">Abbrechen</string>
+    <string name="placeholder_no_task">Du hast aktuell keine Aufgaben :)</string>
 </resources>

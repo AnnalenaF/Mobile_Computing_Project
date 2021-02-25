@@ -12,6 +12,7 @@ import kotlinx.android.synthetic.main.item_area.view.*
 import android.text.InputType.*
 import android.widget.EditText
 import android.widget.Spinner
+import com.dhbw.cas.integra.data.Area
 import com.google.android.material.snackbar.Snackbar
 
 class AreasAdapter(private val view: View,
@@ -64,12 +65,12 @@ class AreasAdapter(private val view: View,
                             areaText.error = context.getString(R.string.area_text_empty_error)
                         }
                         //check area text is not already used by other area and display error directly on text field
-                        areas.find {(it.text == areaText.text.toString()) && it.id != areaToBeChanged.id } != null -> {
+                        areas.find {(it.text == areaText.text.toString()) && it.text != areaToBeChanged.text } != null -> {
                             areaText.requestFocus()
                             areaText.error = context.getString(R.string.area_text_not_unique_error)
                         }
                         //check area label is not already used by other area and display error using snackbar
-                        areas.find {(it.label == areaLabelSpinner.selectedItem as Int) && (it.id != areaToBeChanged.id)} != null -> {
+                        areas.find {(it.label == areaLabelSpinner.selectedItem as Int) && (it.text != areaToBeChanged.text)} != null -> {
                             val snackbarError = Snackbar.make(view, R.string.area_label_not_unique_error, Snackbar.LENGTH_LONG)
                             snackbarError.setTextColor(ContextCompat.getColor(context, R.color.red_error))
                             snackbarError.show()
@@ -178,7 +179,7 @@ class AreasAdapter(private val view: View,
         mode: ActionMode?,
         item: MenuItem?
     ): Boolean {
-        if (item?.itemId == R.id.action_area_delete) {
+        if (item?.itemId == R.id.action_multi_delete) {
             if (areas.size - selectedItems.size == 0) { // prevent deleting all areas
                 val snackbarError = Snackbar.make(view, R.string.message_area_no_deletion, Snackbar.LENGTH_LONG)
                 snackbarError.setTextColor(ContextCompat.getColor(context, R.color.red_error))
@@ -217,7 +218,7 @@ class AreasAdapter(private val view: View,
         // hide main action bar and inflate context menu for deletion
         activity.supportActionBar?.hide()
         val inflater: MenuInflater = mode.menuInflater
-        inflater.inflate(R.menu.areas_menu, menu)
+        inflater.inflate(R.menu.multiselect_menu, menu)
         return true
     }
 
