@@ -1,4 +1,4 @@
-package com.dhbw.cas.integra.ui.areas
+package com.dhbw.cas.integra.data
 
 import android.database.sqlite.SQLiteConstraintException
 import androidx.lifecycle.LiveData

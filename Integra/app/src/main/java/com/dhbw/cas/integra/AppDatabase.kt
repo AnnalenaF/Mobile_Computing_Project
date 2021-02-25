@@ -6,13 +6,12 @@ import android.database.sqlite.SQLiteDatabase.CONFLICT_ABORT
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.dhbw.cas.integra.ui.areas.Area
-import com.dhbw.cas.integra.ui.areas.AreaDao
-import com.dhbw.cas.integra.ui.catalogue.Task
-import com.dhbw.cas.integra.ui.catalogue.TaskDao
+import com.dhbw.cas.integra.data.Area
+import com.dhbw.cas.integra.data.AreaDao
+import com.dhbw.cas.integra.data.Task
+import com.dhbw.cas.integra.data.TaskDao
 import java.util.concurrent.Executors
 
 
@@ -94,10 +93,14 @@ abstract class AppDatabase : RoomDatabase() {
                         Executors.newSingleThreadScheduledExecutor()
                                 .execute {
                                     val areaDao = getDatabase(context).areaDao()
-                                    areaDao.insertNow(Area(text = "Privat",
-                                            label = R.drawable.shape_area_label_0))
-                                    areaDao.insertNow(Area(text = "Arbeit",
-                                            label = R.drawable.shape_area_label_1))
+                                    areaDao.insertNow(
+                                        Area(text = "Privat",
+                                            label = R.drawable.shape_area_label_0)
+                                    )
+                                    areaDao.insertNow(
+                                        Area(text = "Arbeit",
+                                            label = R.drawable.shape_area_label_1)
+                                    )
                                 }
                     }
                 })

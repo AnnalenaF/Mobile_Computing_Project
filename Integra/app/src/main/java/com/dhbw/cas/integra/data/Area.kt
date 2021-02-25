@@ -1,4 +1,4 @@
-package com.dhbw.cas.integra.ui.areas
+package com.dhbw.cas.integra.data
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

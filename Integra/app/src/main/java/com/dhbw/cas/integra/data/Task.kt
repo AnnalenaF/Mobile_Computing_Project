@@ -1,12 +1,9 @@
-package com.dhbw.cas.integra.ui.catalogue
+package com.dhbw.cas.integra.data
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import com.dhbw.cas.integra.ui.areas.Area
-import java.sql.Time
-import java.sql.Timestamp
 
 @Entity(tableName="tasks", foreignKeys = [ForeignKey(entity = Area::class,
         parentColumns = ["text"],

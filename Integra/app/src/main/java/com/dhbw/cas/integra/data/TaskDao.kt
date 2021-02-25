@@ -1,7 +1,8 @@
-package com.dhbw.cas.integra.ui.catalogue
+package com.dhbw.cas.integra.data
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.dhbw.cas.integra.data.Task
 
 @Dao
 interface TaskDao {
