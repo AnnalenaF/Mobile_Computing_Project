@@ -18,6 +18,7 @@ class CatalogueAdapter( private val view: View,
                         private val activity: AppCompatActivity,
                         private val catalogueViewModel: CatalogueViewModel):
         RecyclerView.Adapter<CatalogueAdapter.CatalogueViewHolder>(), ActionMode.Callback {
+
     private lateinit var context : Context
     private var tasks = emptyList<Task>()
     private var areas = emptyList<Area>()
@@ -58,7 +59,6 @@ class CatalogueAdapter( private val view: View,
         }
 
         val currentTask = tasks[position]
-        // for every item, check to see if it exists in the selected items array
         if (selectedItems.contains(currentTask)) {
             // if the item is selected, let the user know by adding a dark layer above it
             holder.itemView.alpha = 0.3f
@@ -66,11 +66,11 @@ class CatalogueAdapter( private val view: View,
             holder.itemView.alpha = 1.0f
         }
 
-        // start multi selection when long pressing an area and display context menu for deletion
+        // start multi selection when long pressing a task and display context menu for deletion
         holder.itemView.setOnLongClickListener {
             if (!multiSelect) {
                 multiSelect = true
-                // add area to list of selected items
+                // add task to list of selected items
                 selectItem(holder, currentTask)
                 // show context menu
                 val appCompatActivity : AppCompatActivity = activity
@@ -80,7 +80,7 @@ class CatalogueAdapter( private val view: View,
                 false
         }
 
-        // if area is clicked in multi selection add it to list of selected items
+        // if task is clicked in multi selection add it to list of selected items
         holder.itemView.setOnClickListener {
             if (multiSelect)
                 selectItem(holder, currentTask)

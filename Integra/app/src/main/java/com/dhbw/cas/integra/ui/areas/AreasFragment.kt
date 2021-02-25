@@ -7,7 +7,6 @@ import androidx.appcompat.app.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.*
-import com.dhbw.cas.integra.ui.catalogue.CatalogueViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.dialog_new_area.*

@@ -27,14 +27,17 @@ class CatalogueFragment : Fragment() {
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
+        // get View Models
         catalogueViewModel =
                 ViewModelProvider(this).get(CatalogueViewModel::class.java)
         val areasViewModel =
                 ViewModelProvider(this).get(AreasViewModel::class.java)
+
+        // get view and activity
         val root = inflater.inflate(R.layout.fragment_catalogue, container, false)
         val main : AppCompatActivity = activity as AppCompatActivity
 
-        // get recycler view containing task list, set adapter and observe tasks
+        // get recycler view containing task list, set adapter and its data by observing
         val recyclerView: RecyclerView = root.findViewById(R.id.task_list)
         val catalogueAdapter = CatalogueAdapter(root, main, catalogueViewModel)
         recyclerView.adapter = catalogueAdapter
@@ -52,7 +55,7 @@ class CatalogueFragment : Fragment() {
         // add Listener to Add Button
         val fab: FloatingActionButton = root.findViewById(R.id.action_add_task)
         fab.setOnClickListener { view ->
-            //create and open dialog to create area
+            //create and open dialog to create task
             val builder = AlertDialog.Builder(view.context)
             builder.apply {
                 setTitle(R.string.new_task)
@@ -62,7 +65,7 @@ class CatalogueFragment : Fragment() {
             }
             dialog = builder.create()
             dialog.show()
-            //check and create area when dialog is left via "OK"
+            //check and create task when dialog is left via "OK"
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
                 val correct = validateTask()
                 if (correct) {
@@ -80,6 +83,7 @@ class CatalogueFragment : Fragment() {
         return root
     }
 
+    // validate that title and duration are not empty
     private fun validateTask(): Boolean{
         val title = dialog.new_task_title.text.toString()
         val duration = dialog.new_task_duration.text.toString()

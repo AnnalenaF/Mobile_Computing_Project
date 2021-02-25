@@ -19,6 +19,4 @@ class AreasViewModel(application: Application) : AndroidViewModel(application) {
     fun deleteArea(area: Area) = viewModelScope.launch { areaDao.delete(area) }
 
     fun getAreaTexts() = areaDao.getAreaTexts()
-
-    fun getLabelByText(text: String) = areaDao.getLabelByText(text)
 }

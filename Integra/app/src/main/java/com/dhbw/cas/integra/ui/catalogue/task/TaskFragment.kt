@@ -34,6 +34,7 @@ class TaskFragment : Fragment() {
     private lateinit var description : EditText
     private lateinit var args: TaskFragmentArgs
     private lateinit var areasList: List<Area>
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -145,11 +146,12 @@ class TaskFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.action_edit -> {
+            R.id.action_edit -> { // switch to Edit Mode
                 switchEditMode()
                 true
             }
             R.id.action_save -> {
+                // validate task and save it in case of valid task and switch to Display Mode
                 val correct = validateTask()
                 if (correct){
                     val catalogueViewModel =
@@ -174,7 +176,7 @@ class TaskFragment : Fragment() {
                 }
                 true
             }
-            R.id.action_cancel -> {
+            R.id.action_cancel -> { // switch back to Display mode without saving changes
                 setValuesFromArgs()
                 switchEditMode()
                 true
@@ -243,6 +245,8 @@ class TaskFragment : Fragment() {
         }
 
     }
+
+    // check error state of mandatory fields
     private fun validateTask(): Boolean{
         return when {
             title.error != null  -> {
