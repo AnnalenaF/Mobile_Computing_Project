@@ -7,7 +7,7 @@ data class SprintWithTasks(
     @Embedded val sprint: Sprint,
     @Relation(
         parentColumn = "id",
-        entityColumn = "sprintid"
+        entityColumn = "sprintId"
     )
     val tasks: List<Task>
 )

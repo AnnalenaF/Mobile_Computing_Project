@@ -16,6 +16,7 @@ import java.util.concurrent.Executors
 abstract class AppDatabase : RoomDatabase() {
     abstract fun areaDao(): AreaDao
     abstract fun taskDao(): TaskDao
+    abstract fun sprintDao(): SprintDao
 
     companion object {
         @Volatile private var instance: AppDatabase? = null

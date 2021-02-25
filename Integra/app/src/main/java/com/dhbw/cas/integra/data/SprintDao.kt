@@ -8,6 +8,7 @@ interface SprintDao {
     @Query("SELECT * FROM sprints ORDER BY id ASC")
     fun getSprints(): LiveData<List<Sprint>>
 
+    @Transaction
     @Query("SELECT * FROM sprints WHERE isActive = 1")
     fun getActiveSprintWithTasks(): LiveData<SprintWithTasks>
 
