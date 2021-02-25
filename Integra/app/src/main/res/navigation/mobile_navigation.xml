@@ -49,6 +49,9 @@
             android:name="expectedDuration"
             app:argType="integer" />
         <argument
+            android:name="loggedDuration"
+            app:argType="integer" />
+        <argument
             android:name="area_text"
             app:argType="string" />
         <argument

@@ -2,7 +2,9 @@ package com.dhbw.cas.integra.ui.catalogue.task
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.text.Editable
 import android.text.InputType
+import android.text.TextWatcher
 import android.view.*
 import android.widget.ArrayAdapter
 import android.widget.EditText
@@ -12,7 +14,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import com.dhbw.cas.integra.R
+import com.dhbw.cas.integra.ui.areas.Area
 import com.dhbw.cas.integra.ui.areas.AreasViewModel
+import com.dhbw.cas.integra.ui.catalogue.CatalogueViewModel
+import com.dhbw.cas.integra.ui.catalogue.Task
 import com.google.android.material.textview.MaterialTextView
 
 
@@ -28,6 +33,7 @@ class TaskFragment : Fragment() {
     private lateinit var expectedDuration : EditText
     private lateinit var description : EditText
     private lateinit var args: TaskFragmentArgs
+    private lateinit var areasList: List<Area>
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -48,7 +54,6 @@ class TaskFragment : Fragment() {
         description = view.findViewById(R.id.task_descr)
         val argsLocal: TaskFragmentArgs by navArgs()
         args = argsLocal
-        title.setText(args.title)
         // set adapter for areas spinner
         areasViewModel.getAreaTexts().observe(viewLifecycleOwner, { spinnerData ->
             val spinnerAdapter = ArrayAdapter(
@@ -58,14 +63,11 @@ class TaskFragment : Fragment() {
             )
             areaSpinner.adapter = spinnerAdapter
         })
-        // get area of current task and set it as selected
-        /*val numOfAreas = areaSpinner.adapter.count
-        for (i in 0 until numOfAreas){
-            val area = areaSpinner.adapter.getItem(i) as Area
-            if (area.text == args.areaText){
-                areaSpinner.setSelection(i)
-            }
-        }*/
+
+        // observe areas
+        areasViewModel.areas.observe(viewLifecycleOwner, { areas ->
+            areasList = areas
+        })
         setValuesFromArgs()
 
         // disable editing
@@ -77,6 +79,10 @@ class TaskFragment : Fragment() {
         switchEditModeForText(priority)
         switchEditModeForText(expectedDuration)
         switchEditModeForText(description, true)
+
+        //set validation listener for title and duration
+        title.addTextChangedListener(TextWatcherEditText(title, getString(R.string.task_title_empty_error)))
+        expectedDuration.addTextChangedListener(TextWatcherEditText(expectedDuration, getString(R.string.task_duration_empty_error)))
     }
 
     private fun switchEditModeForText(editText: EditText, multiline: Boolean = false) {
@@ -88,6 +94,7 @@ class TaskFragment : Fragment() {
                 isFocusable = false
                 isFocusableInTouchMode = false
                 background = null
+                error = null
             }
         } else {
             editText.apply {
@@ -143,9 +150,26 @@ class TaskFragment : Fragment() {
                 true
             }
             R.id.action_save -> {
-                // TODO validate
-                // TODO save
-                switchEditMode()
+                val correct = validateTask()
+                if (correct){
+                    val catalogueViewModel =
+                        ViewModelProvider(this).get(CatalogueViewModel::class.java)
+                    var prio = 0
+                    if (priority.text.toString().isNotEmpty()){
+                        prio = priority.text.toString().toInt()
+                    }
+                    catalogueViewModel.updateTask(Task(title.text.toString(),
+                                                       description.text.toString(),
+                                                       prio,
+                                                       areaSpinner.selectedItem as String,
+                                                       expectedDuration.text.toString().toInt(),
+                                                       args.loggedDuration,
+                                                       args.id))
+                    switchEditMode()
+                    areaDisplay.text = areaSpinner.selectedItem as String
+                    val selectedArea = areasList.find { it.text == areaDisplay.text }
+                    areaDisplay.setBackgroundResource(selectedArea!!.label)
+                }
                 true
             }
             R.id.action_cancel -> {
@@ -176,15 +200,58 @@ class TaskFragment : Fragment() {
             switchEditModeForText(priority)
             switchEditModeForText(expectedDuration)
             switchEditModeForText(description, true)
+
+            // get area of current task and set it as selected
+            val numOfAreas = areasList.size
+            for (i in 0 until numOfAreas){
+                val areaText = areaSpinner.adapter.getItem(i) as String
+                if (areaText == areaDisplay.text.toString()){
+                    areaSpinner.setSelection(i)
+                }
+            }
         }
         requireActivity().invalidateOptionsMenu()
     }
 
     private fun setValuesFromArgs() {
-        areaDisplay.setText(args.areaText)
+        title.setText(args.title)
+        areaDisplay.text = args.areaText
         areaDisplay.setBackgroundResource(args.areaLabel)
         priority.setText(args.priority.toString())
         expectedDuration.setText(args.expectedDuration.toString())
         description.setText(args.description)
+    }
+
+    private inner class TextWatcherEditText(
+        private val editText: EditText, private val errMessage: String): TextWatcher {
+
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            // do nothing
+        }
+
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            // do nothing
+        }
+
+        override fun afterTextChanged(s: Editable?) {
+            if (s.toString().isEmpty()) {
+                editText.requestFocus()
+                editText.error = errMessage
+            }
+        }
+
+    }
+    private fun validateTask(): Boolean{
+        return when {
+            title.error != null  -> {
+                false
+            }
+            expectedDuration.error != null -> {
+                false
+            }
+            else -> {
+                true
+            }
+        }
     }
 }

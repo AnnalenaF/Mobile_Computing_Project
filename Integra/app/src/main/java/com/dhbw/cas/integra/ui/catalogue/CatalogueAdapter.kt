@@ -86,7 +86,7 @@ class CatalogueAdapter( private val view: View,
             else {
                 val action = CatalogueFragmentDirections.actionNavCatalogueToNavTask(
                     currentTask.id, currentTask.title, currentTask.description, currentTask.priority,
-                    currentTask.expectedDuration, currentTask.area_text, currentArea!!.label)
+                    currentTask.expectedDuration, currentTask.loggedDuration, currentTask.area_text, currentArea!!.label)
                 view.findNavController().navigate(action)
             }
         }
