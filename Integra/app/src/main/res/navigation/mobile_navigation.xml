@@ -28,7 +28,10 @@
         android:id="@+id/nav_new_sprint_tasks"
         android:name="com.dhbw.cas.integra.ui.home.NewSprintTasksFragment"
         android:label="@string/menu_new_sprint_tasks"
-        tools:layout="@layout/fragment_new_sprint_tasks" >
+        tools:layout="@layout/fragment_new_sprint_tasks">
+        <argument
+            android:name="areas"
+            app:argType="com.dhbw.cas.integra.data.Areas" />
     </fragment>
 
     <fragment

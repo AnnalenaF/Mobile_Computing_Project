@@ -3,10 +3,15 @@ package com.dhbw.cas.integra.ui.home
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import com.dhbw.cas.integra.R
+import com.dhbw.cas.integra.data.Areas
+import com.dhbw.cas.integra.ui.areas.AreasViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.savvi.rangedatepicker.CalendarPickerView
 import kotlinx.android.synthetic.main.fragment_new_sprint.*
@@ -15,13 +20,22 @@ import java.util.*
 class NewSprintFragment: Fragment() {
     private lateinit var root: View
     private lateinit var today: Date
+    private lateinit var homeViewModel: HomeViewModel
+    private lateinit var areasCapacityAdapter: AreasCapacityAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        homeViewModel =
+            ViewModelProvider(this).get(HomeViewModel::class.java)
         root = inflater.inflate(R.layout.fragment_new_sprint, container, false)
+        val recyclerView: RecyclerView = root.findViewById(R.id.new_sprint_areas)
+        areasCapacityAdapter = AreasCapacityAdapter()
+        recyclerView.adapter = areasCapacityAdapter
+        homeViewModel.areas.observe(viewLifecycleOwner, { areas -> areasCapacityAdapter.setAreas(areas) })
+
 
         // instantiate calender to pick sprint duration
         val calendar = Calendar.getInstance()
@@ -75,7 +89,10 @@ class NewSprintFragment: Fragment() {
                         .setTextColor(ContextCompat.getColor(root.context, R.color.red_error))
                         .show()
                 } else {
-                    val action = NewSprintFragmentDirections.actionNavNewSprintToNavNewSprintTasks()
+                    val areasNew = areasCapacityAdapter.getAreas()
+                    val areas = Areas()
+                    areas.addAll(areasNew)
+                    val action = NewSprintFragmentDirections.actionNavNewSprintToNavNewSprintTasks(areas)
                     root.findNavController().navigate(action)
                 }
                 true
