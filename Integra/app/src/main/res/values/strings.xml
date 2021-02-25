@@ -55,4 +55,6 @@
     <string name="menu_new_sprint_tasks">Neuer Sprint - Aufgaben</string>
     <string name="menu_item_continue">Weiter</string>
     <string name="menu_item_start_sprint">Sprint starten!</string>
+    <string name="sprint_start_error">Bitte starte deinen Sprint heute</string>
+    <string name="sprint_length_error">Bitte plane einen Sprint von mindestens %1$d Tagen</string>
 </resources>
