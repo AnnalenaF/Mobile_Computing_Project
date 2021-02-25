@@ -7,7 +7,7 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
-    <string name="menu_home">Home</string>
+    <string name="menu_sprint">Aktueller Sprint</string>
     <string name="menu_catalogue">Aufgabenkatalog</string>
     <string name="menu_areas">Lebensbereiche</string>
 
