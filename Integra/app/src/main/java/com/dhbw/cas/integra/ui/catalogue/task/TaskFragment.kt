@@ -14,10 +14,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import com.dhbw.cas.integra.R
-import com.dhbw.cas.integra.ui.areas.Area
+import com.dhbw.cas.integra.data.Area
 import com.dhbw.cas.integra.ui.areas.AreasViewModel
 import com.dhbw.cas.integra.ui.catalogue.CatalogueViewModel
-import com.dhbw.cas.integra.ui.catalogue.Task
+import com.dhbw.cas.integra.data.Task
 import com.google.android.material.textview.MaterialTextView
 
 
@@ -158,13 +158,15 @@ class TaskFragment : Fragment() {
                     if (priority.text.toString().isNotEmpty()){
                         prio = priority.text.toString().toInt()
                     }
-                    catalogueViewModel.updateTask(Task(title.text.toString(),
+                    catalogueViewModel.updateTask(
+                        Task(title.text.toString(),
                                                        description.text.toString(),
                                                        prio,
                                                        areaSpinner.selectedItem as String,
                                                        expectedDuration.text.toString().toInt(),
                                                        args.loggedDuration,
-                                                       args.id))
+                                                       args.id)
+                    )
                     switchEditMode()
                     areaDisplay.text = areaSpinner.selectedItem as String
                     val selectedArea = areasList.find { it.text == areaDisplay.text }

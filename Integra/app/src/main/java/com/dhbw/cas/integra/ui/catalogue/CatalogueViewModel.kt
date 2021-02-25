@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.dhbw.cas.integra.AppDatabase
+import com.dhbw.cas.integra.data.Task
 import kotlinx.coroutines.launch
 
 class CatalogueViewModel(application: Application) : AndroidViewModel(application) {

@@ -3,6 +3,7 @@ package com.dhbw.cas.integra.ui.areas
 import android.app.Application
 import androidx.lifecycle.*
 import com.dhbw.cas.integra.AppDatabase
+import com.dhbw.cas.integra.data.Area
 import kotlinx.coroutines.launch
 
 class AreasViewModel(application: Application) : AndroidViewModel(application) {

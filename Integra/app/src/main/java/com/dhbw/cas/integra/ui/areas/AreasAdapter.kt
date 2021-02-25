@@ -12,6 +12,7 @@ import kotlinx.android.synthetic.main.item_area.view.*
 import android.text.InputType.*
 import android.widget.EditText
 import android.widget.Spinner
+import com.dhbw.cas.integra.data.Area
 import com.google.android.material.snackbar.Snackbar
 
 class AreasAdapter(private val view: View,

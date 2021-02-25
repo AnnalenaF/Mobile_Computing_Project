@@ -9,7 +9,8 @@ import androidx.core.view.isInvisible
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.dhbw.cas.integra.R
-import com.dhbw.cas.integra.ui.areas.Area
+import com.dhbw.cas.integra.data.Task
+import com.dhbw.cas.integra.data.Area
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.item_task.view.*
 
