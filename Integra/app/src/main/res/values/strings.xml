@@ -50,4 +50,9 @@
     <string name="menu_item_save">Speichern</string>
     <string name="menu_item_cancel">Abbrechen</string>
     <string name="placeholder_no_task">Du hast aktuell keine Aufgaben :)</string>
+    <string name="button_plan_sprint">Neuen Sprint planen</string>
+    <string name="menu_new_sprint_overview">Neuer Sprint - Übersicht</string>
+    <string name="menu_new_sprint_tasks">Neuer Sprint - Aufgaben</string>
+    <string name="menu_item_continue">Weiter</string>
+    <string name="menu_item_start_sprint">Sprint starten!</string>
 </resources>

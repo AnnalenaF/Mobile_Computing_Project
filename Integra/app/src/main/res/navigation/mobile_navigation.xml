@@ -8,8 +8,28 @@
     <fragment
         android:id="@+id/nav_home"
         android:name="com.dhbw.cas.integra.ui.home.HomeFragment"
-        android:label="@string/menu_sprint"
-        tools:layout="@layout/fragment_home" />
+        android:label="@string/menu_sprint" >
+        <action
+            android:id="@+id/action_nav_home_to_nav_new_sprint"
+            app:destination="@id/nav_new_sprint" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_new_sprint"
+        android:name="com.dhbw.cas.integra.ui.home.NewSprintFragment"
+        android:label="@string/menu_new_sprint_overview"
+        tools:layout="@layout/fragment_new_sprint" >
+        <action
+            android:id="@+id/action_nav_new_sprint_to_nav_new_sprint_tasks"
+            app:destination="@id/nav_new_sprint_tasks" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_new_sprint_tasks"
+        android:name="com.dhbw.cas.integra.ui.home.NewSprintTasksFragment"
+        android:label="@string/menu_new_sprint_tasks"
+        tools:layout="@layout/fragment_new_sprint_tasks" >
+    </fragment>
 
     <fragment
         android:id="@+id/nav_catalogue"
