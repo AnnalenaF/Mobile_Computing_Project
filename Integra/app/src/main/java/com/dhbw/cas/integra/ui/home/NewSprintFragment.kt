@@ -92,7 +92,8 @@ class NewSprintFragment: Fragment() {
                     val areasNew = areasCapacityAdapter.getAreas()
                     val areas = Areas()
                     areas.addAll(areasNew)
-                    val action = NewSprintFragmentDirections.actionNavNewSprintToNavNewSprintTasks(areas)
+                    val action = NewSprintFragmentDirections.actionNavNewSprintToNavNewSprintTasks(
+                        areas, selectedDates[0].time, selectedDates[selectedDates.size-1].time)
                     root.findNavController().navigate(action)
                 }
                 true

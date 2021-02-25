@@ -32,6 +32,12 @@
         <argument
             android:name="areas"
             app:argType="com.dhbw.cas.integra.data.Areas" />
+        <argument
+            android:name="startDate"
+            app:argType="long" />
+        <argument
+            android:name="endDate"
+            app:argType="long" />
     </fragment>
 
     <fragment
