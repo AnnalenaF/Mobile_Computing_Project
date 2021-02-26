@@ -24,6 +24,8 @@ import com.dhbw.cas.integra.ui.catalogue.CatalogueViewModel
 class NewSprintTasksFragment : Fragment(), SortTasksDialogFragment.SortDialogListener {
     private lateinit var root: View
     private lateinit var taskListAdapter: TaskListAdapter
+    private lateinit var areasViewModel: AreasViewModel
+    private lateinit var homeViewModel: HomeViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,8 +36,10 @@ class NewSprintTasksFragment : Fragment(), SortTasksDialogFragment.SortDialogLis
         val main = activity as AppCompatActivity
         val catalogueViewModel =
             ViewModelProvider(this).get(CatalogueViewModel::class.java)
-        val areasViewModel =
+        areasViewModel =
             ViewModelProvider(this).get(AreasViewModel::class.java)
+        homeViewModel =
+            ViewModelProvider(this).get(HomeViewModel::class.java)
 
         // get recycler view containing task list, set adapter and its data by observing
         val recyclerViewTasks: RecyclerView = root.findViewById(R.id.task_list_new_sprint)
@@ -109,6 +113,19 @@ class NewSprintTasksFragment : Fragment(), SortTasksDialogFragment.SortDialogLis
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_start -> { // save sprint and display current sprint
+                // reset capacities of areas
+                val args: NewSprintTasksFragmentArgs by navArgs()
+                for (area in args.areas) {
+                    area.totalCapacity = 0
+                    area.remainingCapacity = 0
+                    areasViewModel.updateArea(area)
+                }
+                // save sprint
+                homeViewModel.createSprintWithTasks(
+                    args.startDate,
+                    args.endDate,
+                    taskListAdapter.selectedTasks
+                )
                 // restart activity
                 val intent = Intent(root.context, MainActivity::class.java)
                 intent.addFlags(

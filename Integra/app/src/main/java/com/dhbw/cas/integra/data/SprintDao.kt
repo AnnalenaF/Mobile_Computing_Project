@@ -9,11 +9,15 @@ interface SprintDao {
     fun getSprints(): LiveData<List<Sprint>>
 
     @Transaction
-    @Query("SELECT * FROM sprints WHERE isActive = 1")
-    fun getActiveSprintWithTasks(): LiveData<SprintWithTasks>
+    @Query("SELECT * FROM sprints WHERE isActive = 1 LIMIT 1")
+    fun getActiveSprintWithTasks(): SprintWithTasks
+
+    @Transaction
+    @Query("SELECT * FROM sprints WHERE isActive = 1 LIMIT 1")
+    fun getLiveActiveSprintWithTasks(): LiveData<SprintWithTasks>
 
     @Insert
-    suspend fun insert(sprint: Sprint)
+    suspend fun insert(sprint: Sprint): Long
 
     @Delete
     suspend fun delete(sprint: Sprint)

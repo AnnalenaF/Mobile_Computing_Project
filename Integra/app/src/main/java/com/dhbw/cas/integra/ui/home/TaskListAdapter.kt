@@ -24,7 +24,7 @@ class TaskListAdapter(private var areasViewModel: AreasViewModel) :
     private var tasks = emptyList<Task>()
     private var areas = emptyList<Area>()
     private var tasksFilterList = ArrayList<Task>()
-    private var selectedTasks = ArrayList<Task>()
+    var selectedTasks = ArrayList<Task>()
 
     inner class TaskListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var taskTitle: TextView = itemView.task_title

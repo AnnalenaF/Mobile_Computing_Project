@@ -16,6 +16,7 @@ class HomeFragment : Fragment() {
     private lateinit var homeViewModel: HomeViewModel
     private lateinit var root: View
     private var activeSprint: Any? = Any()
+    private var activeSprintLive: Any? = Any()
     private var sprintActive: Boolean = false
 
     override fun onCreateView(
@@ -25,19 +26,22 @@ class HomeFragment : Fragment() {
     ): View {
         homeViewModel =
                 ViewModelProvider(this).get(HomeViewModel::class.java)
-        homeViewModel.activeSprint.observe(viewLifecycleOwner, {
-            activeSprint = it
+        activeSprint = homeViewModel.activeSprint
+        sprintActive = activeSprint is SprintWithTasks
+        homeViewModel.activeSprintLive.observe(viewLifecycleOwner, {
+            activeSprintLive = it
         })
 
-        root = if (activeSprint is SprintWithTasks){
-            inflater.inflate(R.layout.fragment_sprint, container, false)
+        if (sprintActive){
+            root = inflater.inflate(R.layout.fragment_sprint, container, false)
         } else {
-            inflater.inflate(R.layout.fragment_no_active_sprint, container, false)
-        }
-        val buttonPlanSprint = root.findViewById<Button>(R.id.button_plan_sprint)
-        buttonPlanSprint.setOnClickListener {
-            val action = HomeFragmentDirections.actionNavHomeToNavNewSprint()
-            root.findNavController().navigate(action)
+            root = inflater.inflate(R.layout.fragment_no_active_sprint, container, false)
+
+            val buttonPlanSprint = root.findViewById<Button>(R.id.button_plan_sprint)
+            buttonPlanSprint.setOnClickListener {
+                val action = HomeFragmentDirections.actionNavHomeToNavNewSprint()
+                root.findNavController().navigate(action)
+            }
         }
 
         return root
