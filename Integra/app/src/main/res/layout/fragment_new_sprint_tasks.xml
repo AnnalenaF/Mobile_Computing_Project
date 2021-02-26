@@ -46,23 +46,11 @@
         android:layout_width="48dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/divider"
-        android:layout_alignTop="@id/task_search"
-        android:layout_alignBottom="@id/task_search"
-        android:layout_toStartOf="@id/button_filter_tasks"
-        android:contentDescription="@string/button_sort_tasks"
-        android:src="@drawable/ic_baseline_sort_24"
-        android:background="@color/white" />
-
-    <ImageButton
-        android:id="@+id/button_filter_tasks"
-        android:layout_width="48dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/divider"
         android:layout_alignParentEnd="true"
         android:layout_alignTop="@id/task_search"
         android:layout_alignBottom="@id/task_search"
-        android:contentDescription="@string/button_filter_tasks"
-        android:src="@drawable/ic_baseline_filter_list_24"
+        android:contentDescription="@string/button_sort_tasks"
+        android:src="@drawable/ic_baseline_sort_24"
         android:background="@color/white" />
 
     <androidx.recyclerview.widget.RecyclerView

@@ -67,7 +67,6 @@ class NewSprintTasksFragment : Fragment(), SortTasksDialogFragment.SortDialogLis
         }
 
         val sortButton = root.findViewById<ImageButton>(R.id.button_sort_tasks)
-        val filterButton = root.findViewById<ImageButton>(R.id.button_filter_tasks)
 
         sortButton.setOnClickListener {
             val dialogFrag = SortTasksDialogFragment()
