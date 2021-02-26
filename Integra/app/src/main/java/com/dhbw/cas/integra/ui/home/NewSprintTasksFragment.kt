@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.*
 import android.widget.ImageButton
 import android.widget.RadioGroup
+import android.widget.SearchView
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -65,6 +66,18 @@ class NewSprintTasksFragment : Fragment(), SortTasksDialogFragment.SortDialogLis
             dialogFrag.setTargetFragment(this, 1)
             dialogFrag.show(parentFragmentManager, "SortTasksDialogFragment")
         }
+
+        // set query listener for task search
+        val searchView = root.findViewById<SearchView>(R.id.task_search)
+        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+            override fun onQueryTextChange(newText: String?): Boolean {
+                taskListAdapter.filter.filter(newText)
+                return false
+            }
+        })
 
         return root
     }

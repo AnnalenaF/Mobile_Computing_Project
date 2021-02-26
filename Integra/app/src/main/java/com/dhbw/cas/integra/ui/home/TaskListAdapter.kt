@@ -4,6 +4,8 @@ import android.content.Context
 import android.view.*
 import android.view.LayoutInflater
 import android.widget.CheckBox
+import android.widget.Filter
+import android.widget.Filterable
 import android.widget.TextView
 import androidx.core.view.isInvisible
 import androidx.recyclerview.widget.RecyclerView
@@ -11,13 +13,16 @@ import com.dhbw.cas.integra.R
 import com.dhbw.cas.integra.data.Area
 import com.dhbw.cas.integra.data.Task
 import kotlinx.android.synthetic.main.item_task_assign.view.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 class TaskListAdapter :
-    RecyclerView.Adapter<TaskListAdapter.TaskListViewHolder>() {
+    RecyclerView.Adapter<TaskListAdapter.TaskListViewHolder>(), Filterable {
 
     private lateinit var context: Context
     private var tasks = emptyList<Task>()
     private var areas = emptyList<Area>()
+    private var tasksFilterList = ArrayList<Task>()
 
     inner class TaskListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var taskTitle: TextView = itemView.task_title
@@ -37,7 +42,7 @@ class TaskListAdapter :
     }
 
     override fun onBindViewHolder(holder: TaskListViewHolder, position: Int) {
-        with(tasks[position]) {
+        with(tasksFilterList[position]) {
             holder.taskTitle.text = title
             holder.taskArea.text = area_text
             holder.taskDuration.text = expectedDuration.toString()
@@ -57,7 +62,7 @@ class TaskListAdapter :
     }
 
     override fun getItemCount(): Int {
-        return tasks.size
+        return tasksFilterList.size
     }
 
     fun setTasks(tasks: List<Task>, sortCriterion: Int = 0, sortDirection: Int = 0) {
@@ -93,6 +98,7 @@ class TaskListAdapter :
             }
         }
         this.tasks = tasksArrayList
+        tasksFilterList = tasksArrayList
         notifyDataSetChanged()
     }
 
@@ -103,5 +109,39 @@ class TaskListAdapter :
     fun setAreas(areas: List<Area>) {
         this.areas = areas
         notifyDataSetChanged()
+    }
+
+    override fun getFilter(): Filter {
+        return object : Filter() {
+            override fun performFiltering(constraint: CharSequence?): FilterResults {
+                val tasksArrayList: ArrayList<Task> = tasks as ArrayList<Task>
+                val charSearch = constraint.toString()
+                if (charSearch.isEmpty()) {
+                    tasksFilterList = tasksArrayList
+                } else {
+                    val resultList = ArrayList<Task>()
+                    for (row in tasks) {
+                        if (row.title.toLowerCase(Locale.ROOT)
+                                .contains(charSearch.toLowerCase(Locale.ROOT))
+                            or row.area_text.toLowerCase(Locale.ROOT)
+                                .contains(charSearch.toLowerCase(Locale.ROOT))
+                        ) {
+                            resultList.add(row)
+                        }
+                    }
+                    tasksFilterList = resultList
+                }
+                val filterResults = FilterResults()
+                filterResults.values = tasksFilterList
+                return filterResults
+            }
+
+            @Suppress("UNCHECKED_CAST")
+            override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
+                tasksFilterList = results?.values as ArrayList<Task>
+                notifyDataSetChanged()
+            }
+
+        }
     }
 }
