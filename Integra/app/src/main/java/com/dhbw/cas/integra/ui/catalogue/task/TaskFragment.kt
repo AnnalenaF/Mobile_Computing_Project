@@ -9,6 +9,7 @@ import android.view.*
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Spinner
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -23,6 +24,7 @@ import com.google.android.material.textview.MaterialTextView
 
 class TaskFragment : Fragment() {
     private lateinit var areasViewModel: AreasViewModel
+    private lateinit var catalogueViewModel: CatalogueViewModel
     private lateinit var backgroundEdit: Drawable
     private var editMode: Boolean = false
     private lateinit var title: EditText
@@ -43,6 +45,9 @@ class TaskFragment : Fragment() {
         val root = inflater.inflate(R.layout.fragment_task, container, false)
         areasViewModel =
             ViewModelProvider(this).get(AreasViewModel::class.java)
+        val main : AppCompatActivity = activity as AppCompatActivity
+        catalogueViewModel =
+            ViewModelProvider(main).get(CatalogueViewModel::class.java)
         return root
     }
 
@@ -154,20 +159,18 @@ class TaskFragment : Fragment() {
                 // validate task and save it in case of valid task and switch to Display Mode
                 val correct = validateTask()
                 if (correct){
-                    val catalogueViewModel =
-                        ViewModelProvider(this).get(CatalogueViewModel::class.java)
                     var prio = 0
                     if (priority.text.toString().isNotEmpty()){
                         prio = priority.text.toString().toInt()
                     }
-                    catalogueViewModel.updateTask(
-                        Task(title.text.toString(),
-                                                       description.text.toString(),
-                                                       prio,
-                                                       areaSpinner.selectedItem as String,
-                                                       expectedDuration.text.toString().toInt(),
-                                                       args.loggedDuration,
-                                                       args.id)
+                    catalogueViewModel.updateTask(Task(title.text.toString(),
+                                                        description.text.toString(),
+                                                        prio,
+                                                        areaSpinner.selectedItem as String,
+                                                        expectedDuration.text.toString().toInt(),
+                                                        args.task.loggedDuration,
+                                                        args.task.sprintId,
+                                                        args.task.id)
                     )
                     switchEditMode()
                     areaDisplay.text = areaSpinner.selectedItem as String
@@ -218,12 +221,12 @@ class TaskFragment : Fragment() {
     }
 
     private fun setValuesFromArgs() {
-        title.setText(args.title)
-        areaDisplay.text = args.areaText
+        title.setText(args.task.title)
+        areaDisplay.text = args.task.area_text
         areaDisplay.setBackgroundResource(args.areaLabel)
-        priority.setText(args.priority.toString())
-        expectedDuration.setText(args.expectedDuration.toString())
-        description.setText(args.description)
+        priority.setText(args.task.priority.toString())
+        expectedDuration.setText(args.task.expectedDuration.toString())
+        description.setText(args.task.description)
     }
 
     private inner class TextWatcherEditText(

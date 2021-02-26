@@ -1,9 +1,11 @@
 package com.dhbw.cas.integra.data
 
+import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import kotlinx.android.parcel.Parcelize
 
 @Entity(tableName="tasks", foreignKeys = [
                 ForeignKey(entity = Area::class,
@@ -16,6 +18,7 @@ import androidx.room.PrimaryKey
                            childColumns = ["sprintId"],
                            // do not delete tasks if sprint is deleted
                            onDelete = ForeignKey.NO_ACTION)])
+@Parcelize
 data class Task(
         @ColumnInfo(name="title")
         var title: String,
@@ -40,4 +43,4 @@ data class Task(
 
         @ColumnInfo(name="id")
         @PrimaryKey(autoGenerate = true) val id: Long = 0
-)
+): Parcelable

@@ -15,7 +15,7 @@ class CatalogueViewModel(application: Application) : AndroidViewModel(applicatio
     fun createTask(title: String, description: String, priority: Int, area_text: String,
                    expectedDuration: Int)
             = viewModelScope.launch { taskDao.insert(Task(title, description, priority, area_text,
-                                                          expectedDuration)) }
+                                                          expectedDuration, 0, null)) }
 
     fun updateTask(task: Task) = viewModelScope.launch { taskDao.update(task) }
 

@@ -63,26 +63,8 @@
         android:label="@string/task">
 
         <argument
-            android:name="id"
-            app:argType="long" />
-        <argument
-            android:name="title"
-            app:argType="string" />
-        <argument
-            android:name="description"
-            app:argType="string" />
-        <argument
-            android:name="priority"
-            app:argType="integer" />
-        <argument
-            android:name="expectedDuration"
-            app:argType="integer" />
-        <argument
-            android:name="loggedDuration"
-            app:argType="integer" />
-        <argument
-            android:name="area_text"
-            app:argType="string" />
+            android:name="task"
+            app:argType="com.dhbw.cas.integra.data.Task" />
         <argument
             android:name="area_label"
             app:argType="integer" />

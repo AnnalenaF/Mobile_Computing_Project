@@ -4,9 +4,7 @@ import android.os.Parcelable
 import androidx.room.*
 import kotlinx.android.parcel.Parcelize
 
-@Entity(tableName="areas", indices=[Index(value = ["label"], unique = true)],
-        foreignKeys = [ForeignKey(entity = Sprint::class, parentColumns = ["id"],
-        childColumns = ["sprintId"])])
+@Entity(tableName="areas", indices=[Index(value = ["label"], unique = true)])
 @Parcelize
 data class Area(
     @PrimaryKey
@@ -15,9 +13,6 @@ data class Area(
 
     @ColumnInfo(name="label")
     var label: Int,
-
-    @ColumnInfo(name="sprintId")
-    var sprintId: Long? = 0,
 
     @ColumnInfo(name="totalCapacity")
     var totalCapacity: Int? = 0,
