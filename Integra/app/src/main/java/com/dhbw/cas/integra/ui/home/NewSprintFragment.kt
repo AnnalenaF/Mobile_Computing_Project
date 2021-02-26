@@ -1,9 +1,7 @@
 package com.dhbw.cas.integra.ui.home
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.*
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -20,7 +18,7 @@ import java.util.*
 class NewSprintFragment: Fragment() {
     private lateinit var root: View
     private lateinit var today: Date
-    private lateinit var homeViewModel: HomeViewModel
+    private lateinit var areasViewModel: AreasViewModel
     private lateinit var areasCapacityAdapter: AreasCapacityAdapter
 
     override fun onCreateView(
@@ -28,13 +26,13 @@ class NewSprintFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        homeViewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
+        areasViewModel =
+            ViewModelProvider(this).get(AreasViewModel::class.java)
         root = inflater.inflate(R.layout.fragment_new_sprint, container, false)
         val recyclerView: RecyclerView = root.findViewById(R.id.new_sprint_areas)
         areasCapacityAdapter = AreasCapacityAdapter()
         recyclerView.adapter = areasCapacityAdapter
-        homeViewModel.areas.observe(viewLifecycleOwner, { areas -> areasCapacityAdapter.setAreas(areas) })
+        areasViewModel.areas.observe(viewLifecycleOwner, { areas -> areasCapacityAdapter.setAreas(areas) })
 
 
         // instantiate calender to pick sprint duration
@@ -79,22 +77,33 @@ class NewSprintFragment: Fragment() {
         return when (item.itemId) {
             R.id.action_continue -> { // continue to task assignment
                 val selectedDates = calendar_sprint_duration.selectedDates
-                if (selectedDates[0] != today){
-                    Snackbar.make(root, R.string.sprint_start_error, Snackbar.LENGTH_LONG)
-                        .setTextColor(ContextCompat.getColor(root.context, R.color.red_error))
-                        .show()
-                } else if (selectedDates.size < 5){
-                    Snackbar.make(root, getString(R.string.sprint_length_error, 5),
-                                  Snackbar.LENGTH_LONG)
-                        .setTextColor(ContextCompat.getColor(root.context, R.color.red_error))
-                        .show()
-                } else {
-                    val areasNew = areasCapacityAdapter.getAreas()
-                    val areas = Areas()
-                    areas.addAll(areasNew)
-                    val action = NewSprintFragmentDirections.actionNavNewSprintToNavNewSprintTasks(
-                        areas, selectedDates[0].time, selectedDates[selectedDates.size-1].time)
-                    root.findNavController().navigate(action)
+                when {
+                    selectedDates[0] != today -> {
+                        Snackbar.make(root, R.string.sprint_start_error, Snackbar.LENGTH_LONG)
+                            .setTextColor(ContextCompat.getColor(root.context, R.color.red_error))
+                            .show()
+                    }
+                    selectedDates.size < 5 -> {
+                        Snackbar.make(root, getString(R.string.sprint_length_error, 5),
+                            Snackbar.LENGTH_LONG)
+                            .setTextColor(ContextCompat.getColor(root.context, R.color.red_error))
+                            .show()
+                    }
+                    else -> {
+                        val areasNew = areasCapacityAdapter.getAreas()
+                        for (area in areasNew){
+                            area.totalCapacity = area.totalCapacity!! * 60
+                            area.remainingCapacity = area.remainingCapacity!! * 60
+                        }
+                        val areas = Areas()
+                        areas.addAll(areasNew)
+                        for (area in areas){
+                            areasViewModel.updateArea(area)
+                        }
+                        val action = NewSprintFragmentDirections.actionNavNewSprintToNavNewSprintTasks(
+                            areas, selectedDates[0].time, selectedDates[selectedDates.size-1].time)
+                        root.findNavController().navigate(action)
+                    }
                 }
                 true
             }

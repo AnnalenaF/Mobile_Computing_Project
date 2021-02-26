@@ -12,17 +12,19 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dhbw.cas.integra.R
 import com.dhbw.cas.integra.data.Area
 import com.dhbw.cas.integra.data.Task
+import com.dhbw.cas.integra.ui.areas.AreasViewModel
 import kotlinx.android.synthetic.main.item_task_assign.view.*
 import java.util.*
 import kotlin.collections.ArrayList
 
-class TaskListAdapter :
+class TaskListAdapter(private var areasViewModel: AreasViewModel) :
     RecyclerView.Adapter<TaskListAdapter.TaskListViewHolder>(), Filterable {
 
     private lateinit var context: Context
     private var tasks = emptyList<Task>()
     private var areas = emptyList<Area>()
     private var tasksFilterList = ArrayList<Task>()
+    private var selectedTasks = ArrayList<Task>()
 
     inner class TaskListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var taskTitle: TextView = itemView.task_title
@@ -31,6 +33,23 @@ class TaskListAdapter :
         var taskPrioLabel: TextView = itemView.task_prio_label
         var taskDuration: TextView = itemView.task_duration
         var taskCheckbox: CheckBox = itemView.task_checkbox
+
+        init {
+            taskCheckbox.setOnClickListener {
+                val currentTask = tasksFilterList[adapterPosition]
+                val currentArea = areas.find { it.text == currentTask.area_text }
+                if (taskCheckbox.isChecked){
+                    selectedTasks.add(currentTask)
+                    currentArea!!.remainingCapacity =
+                        currentArea.remainingCapacity!! - currentTask.expectedDuration
+                } else {
+                    selectedTasks.remove(currentTask)
+                    currentArea!!.remainingCapacity =
+                        currentArea.remainingCapacity!! + currentTask.expectedDuration
+                }
+                areasViewModel.updateArea(currentArea)
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskListViewHolder {

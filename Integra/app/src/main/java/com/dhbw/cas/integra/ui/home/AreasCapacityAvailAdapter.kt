@@ -3,27 +3,12 @@ package com.dhbw.cas.integra.ui.home
 import com.dhbw.cas.integra.R
 import android.content.Context
 import android.text.Editable
-import androidx.core.content.ContextCompat
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.content.res.AppCompatResources.getDrawable
-import androidx.appcompat.view.ActionMode
 import android.view.*
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.item_area.view.*
-import android.text.InputType.*
 import android.text.TextWatcher
-import android.widget.EditText
-import android.widget.Spinner
 import android.widget.TextView
-import androidx.core.widget.addTextChangedListener
 import com.dhbw.cas.integra.data.Area
-import com.dhbw.cas.integra.ui.areas.AreasViewModel
-import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.textview.MaterialTextView
-import kotlinx.android.synthetic.main.item_area.view.area_text
 import kotlinx.android.synthetic.main.item_area_capa_avail.view.*
-import kotlinx.android.synthetic.main.item_area_capacity.view.*
-import org.w3c.dom.Text
 
 class AreasCapacityAvailAdapter() :
     RecyclerView.Adapter<AreasCapacityAvailAdapter.AreasCapacityAvailViewHolder>() {
@@ -35,6 +20,29 @@ class AreasCapacityAvailAdapter() :
         val areaCapaLeft: TextView = itemView.area_capa
 
         init {
+            areaCapaLeft.addTextChangedListener(TextWatcherTextView(areaCapaLeft))
+        }
+
+        private inner class TextWatcherTextView(
+            private val textView: TextView
+        ) : TextWatcher {
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                // do nothing
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                // do nothing
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                if (s.toString().toInt() <= 0) {
+                    textView.requestFocus()
+                    textView.error = context.getString(R.string.capacity_negative)
+                } else {
+                    textView.error = null
+                }
+            }
 
         }
     }
@@ -48,7 +56,7 @@ class AreasCapacityAvailAdapter() :
 
     override fun onBindViewHolder(viewHolder: AreasCapacityAvailViewHolder, position: Int) {
         with(areas[position]) {
-            val remainingCapacityInMinutes = remainingCapacity!! * 60
+            val remainingCapacityInMinutes = remainingCapacity!!
             viewHolder.areaCapaLeft.text = remainingCapacityInMinutes.toString()
             viewHolder.areaCapaLeft.setBackgroundResource(label)
         }
@@ -60,9 +68,4 @@ class AreasCapacityAvailAdapter() :
         this.areas = areas
         notifyDataSetChanged()
     }
-
-    fun getAreas(): List<Area> {
-        return this.areas
-    }
-
 }

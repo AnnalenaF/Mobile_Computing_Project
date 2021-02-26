@@ -3,43 +3,31 @@ package com.dhbw.cas.integra.ui.home
 import com.dhbw.cas.integra.R
 import android.content.Context
 import android.text.Editable
-import androidx.core.content.ContextCompat
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.content.res.AppCompatResources.getDrawable
-import androidx.appcompat.view.ActionMode
 import android.view.*
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.item_area.view.*
-import android.text.InputType.*
 import android.text.TextWatcher
 import android.widget.EditText
-import android.widget.Spinner
 import android.widget.TextView
-import androidx.core.widget.addTextChangedListener
 import com.dhbw.cas.integra.data.Area
-import com.dhbw.cas.integra.ui.areas.AreasViewModel
-import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.textview.MaterialTextView
-import kotlinx.android.synthetic.main.item_area.view.area_text
 import kotlinx.android.synthetic.main.item_area_capacity.view.*
-import org.w3c.dom.Text
 
 class AreasCapacityAdapter() :
     RecyclerView.Adapter<AreasCapacityAdapter.AreasCapacityViewHolder>() {
-    private lateinit var context : Context
+    private lateinit var context: Context
     private var areas = emptyList<Area>()
 
     inner class AreasCapacityViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         // get screen elements
         val areaText: TextView = itemView.new_sprint_area_text
-        val areaCapacity: EditText = itemView.area_capacity
+        private val areaCapacity: EditText = itemView.area_capacity
 
         init {
             areaCapacity.addTextChangedListener(TextWatcherEditText(areaCapacity))
         }
 
         private inner class TextWatcherEditText(
-            private val editText: EditText): TextWatcher {
+            private val editText: EditText
+        ) : TextWatcher {
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 // do nothing

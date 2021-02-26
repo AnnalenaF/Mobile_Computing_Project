@@ -70,5 +70,6 @@
     <string name="radio_sort_title">Titel</string>
     <string name="radio_sort_asc">Aufsteigend</string>
     <string name="radio_sort_desc">Absteigend</string>
+    <string name="capacity_negative">Lebensbereich überplant</string>
 
 </resources>
