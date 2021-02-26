@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!--title-->
+    <TextView
+        android:id="@+id/task_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:textAppearance="?attr/textAppearanceHeadline6" />
+
+    <!--area-->
+    <TextView
+        android:id="@+id/task_area"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:layout_toEndOf="@id/task_title" />
+
+
+    <!--duration-->
+    <TextView
+        android:id="@+id/task_duration_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/task_title"
+        android:layout_alignParentStart="true"
+        android:layout_margin="8dp"
+        android:labelFor="@+id/task_duration"
+        android:text="@string/new_task_duration_label" />
+
+    <TextView
+        android:id="@+id/task_duration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/task_duration_label"
+        android:layout_alignBottom="@id/task_duration_label"
+        android:layout_margin="8dp"
+        android:layout_toEndOf="@id/task_duration_label" />
+
+    <!--priority-->
+    <TextView
+        android:id="@+id/task_prio_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/task_duration_label"
+        android:layout_alignBottom="@id/task_duration_label"
+        android:layout_margin="8dp"
+        android:layout_toEndOf="@id/task_duration"
+        android:labelFor="@+id/task_prio"
+        android:text="@string/new_task_prio_label" />
+
+    <TextView
+        android:id="@+id/task_prio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/task_duration_label"
+        android:layout_alignBottom="@id/task_duration_label"
+        android:layout_margin="8dp"
+        android:layout_toEndOf="@id/task_prio_label" />
+
+    <CheckBox
+        android:id="@+id/task_checkbox"
+        android:layout_width="48dp"
+        android:layout_height="match_parent"
+        android:layout_alignTop="@id/task_title"
+        android:layout_alignBottom="@id/task_duration"
+        android:layout_alignParentEnd="true"
+        android:gravity="center" />
+</RelativeLayout>

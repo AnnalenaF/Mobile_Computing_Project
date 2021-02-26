@@ -61,4 +61,7 @@
     <string name="heading_areas_capacity">Zeitkapazität je Lebensbereich in h:</string>
     <string name="area_capa_autofill_hint">1, 3, 6, 12, …</string>
     <string name="area_capa_hint">Kapa</string>
+    <string name="label_available_capacities">Verfügbare Kapazitäten:</string>
+    <string name="button_filter_tasks">Filtern</string>
+    <string name="button_sort_tasks">Sortierreihenfolge</string>
 </resources>
