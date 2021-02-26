@@ -71,5 +71,6 @@
     <string name="radio_sort_asc">Aufsteigend</string>
     <string name="radio_sort_desc">Absteigend</string>
     <string name="capacity_negative">Lebensbereich überplant</string>
+    <string name="sprint_no_tasks">Bitte für Deinem Sprint Aufgaben hinzu</string>
 
 </resources>

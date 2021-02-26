@@ -7,6 +7,7 @@ import android.widget.ImageButton
 import android.widget.RadioGroup
 import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -19,6 +20,7 @@ import com.dhbw.cas.integra.MainActivity
 import com.dhbw.cas.integra.R
 import com.dhbw.cas.integra.ui.areas.AreasViewModel
 import com.dhbw.cas.integra.ui.catalogue.CatalogueViewModel
+import com.google.android.material.snackbar.Snackbar
 
 
 class NewSprintTasksFragment : Fragment(), SortTasksDialogFragment.SortDialogListener {
@@ -113,26 +115,33 @@ class NewSprintTasksFragment : Fragment(), SortTasksDialogFragment.SortDialogLis
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_start -> { // save sprint and display current sprint
-                // reset capacities of areas
-                val args: NewSprintTasksFragmentArgs by navArgs()
-                for (area in args.areas) {
-                    area.totalCapacity = 0
-                    area.remainingCapacity = 0
-                    areasViewModel.updateArea(area)
+                // check tasks assigned to sprint
+                if (taskListAdapter.selectedTasks.size == 0){
+                    val snackbarError = Snackbar.make(root, R.string.sprint_no_tasks, Snackbar.LENGTH_LONG )
+                    snackbarError.setTextColor(ContextCompat.getColor(root.context, R.color.red_error))
+                    snackbarError.show()
+                } else {
+                    // reset capacities of areas
+                    val args: NewSprintTasksFragmentArgs by navArgs()
+                    for (area in args.areas) {
+                        area.totalCapacity = 0
+                        area.remainingCapacity = 0
+                        areasViewModel.updateArea(area)
+                    }
+                    // save sprint
+                    homeViewModel.createSprintWithTasks(
+                        args.startDate,
+                        args.endDate,
+                        taskListAdapter.selectedTasks
+                    )
+                    // restart activity
+                    val intent = Intent(root.context, MainActivity::class.java)
+                    intent.addFlags(
+                        Intent.FLAG_ACTIVITY_CLEAR_TOP
+                                or Intent.FLAG_ACTIVITY_NEW_TASK
+                    )
+                    startActivity(intent)
                 }
-                // save sprint
-                homeViewModel.createSprintWithTasks(
-                    args.startDate,
-                    args.endDate,
-                    taskListAdapter.selectedTasks
-                )
-                // restart activity
-                val intent = Intent(root.context, MainActivity::class.java)
-                intent.addFlags(
-                    Intent.FLAG_ACTIVITY_CLEAR_TOP
-                            or Intent.FLAG_ACTIVITY_NEW_TASK
-                )
-                startActivity(intent)
                 true
             }
             else -> super.onOptionsItemSelected(item)
