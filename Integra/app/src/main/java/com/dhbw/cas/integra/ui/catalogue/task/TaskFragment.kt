@@ -170,6 +170,7 @@ class TaskFragment : Fragment() {
                                                         expectedDuration.text.toString().toInt(),
                                                         args.task.loggedDuration,
                                                         args.task.sprintId,
+                                                        args.task.state,
                                                         args.task.id)
                     )
                     switchEditMode()

@@ -23,7 +23,6 @@ class HomeFragment : Fragment() {
     private lateinit var root: View
     private lateinit var tabLayout: TabLayout
     private var activeSprint: Any? = Any()
-    private var activeSprintLive: Any? = Any()
     private var sprintActive: Boolean = false
 
     override fun onCreateView(
@@ -35,9 +34,6 @@ class HomeFragment : Fragment() {
             ViewModelProvider(this).get(HomeViewModel::class.java)
         activeSprint = homeViewModel.activeSprint
         sprintActive = activeSprint is SprintWithTasks
-        homeViewModel.activeSprintLive.observe(viewLifecycleOwner, {
-            activeSprintLive = it
-        })
 
         if (sprintActive) {
             root = inflater.inflate(R.layout.fragment_sprint, container, false)
@@ -91,6 +87,6 @@ class HomeFragment : Fragment() {
     // instantiate tab fragment
     private inner class TabsViewPagerAdapter(fa: FragmentActivity) : FragmentStateAdapter(fa) {
         override fun getItemCount(): Int = tabLayout.tabCount
-        override fun createFragment(position: Int): Fragment = TabPageFragment()
+        override fun createFragment(position: Int): Fragment = TabPageFragment(position)
     }
 }

@@ -41,6 +41,9 @@ data class Task(
         @ColumnInfo(name="sprintId")
         var sprintId: Long? = 0,
 
+        @ColumnInfo(name="state")
+        var state: Int = 0,
+
         @ColumnInfo(name="id")
         @PrimaryKey(autoGenerate = true) val id: Long = 0
 ): Parcelable

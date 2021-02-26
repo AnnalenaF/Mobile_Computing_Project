@@ -12,7 +12,7 @@ import com.dhbw.cas.integra.data.*
 import java.util.concurrent.Executors
 
 
-@Database(entities = [Area::class, Task::class, Sprint::class], version = 10)
+@Database(entities = [Area::class, Task::class, Sprint::class], version = 11)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun areaDao(): AreaDao
     abstract fun taskDao(): TaskDao
@@ -102,6 +102,12 @@ abstract class AppDatabase : RoomDatabase() {
                 db.execSQL("CREATE TABLE IF NOT EXISTS `tasks` (`title` TEXT NOT NULL, `description` TEXT NOT NULL, `priority` INTEGER NOT NULL, `area_text` TEXT NOT NULL, `expectedDuration` INTEGER NOT NULL, `loggedDuration` INTEGER NOT NULL, `sprintId` INTEGER NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, FOREIGN KEY(`area_text`) REFERENCES `areas`(`text`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`sprintId`) REFERENCES `sprints`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )")
             }
         }
+        private val MIGRATION_10_11 = object : Migration(10, 11){
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("DROP TABLE tasks")
+                db.execSQL("CREATE TABLE IF NOT EXISTS `tasks` (`title` TEXT NOT NULL, `description` TEXT NOT NULL, `priority` INTEGER NOT NULL, `area_text` TEXT NOT NULL, `expectedDuration` INTEGER NOT NULL, `loggedDuration` INTEGER NOT NULL, `sprintId` INTEGER, `state` INTEGER NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, FOREIGN KEY(`area_text`) REFERENCES `areas`(`text`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`sprintId`) REFERENCES `sprints`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )")
+            }
+        }
 
         @Synchronized
         fun getDatabase(context: Context): AppDatabase {
@@ -135,7 +141,7 @@ abstract class AppDatabase : RoomDatabase() {
                 })
                 .addMigrations(
                     MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5,
-                    MIGRATION_5_6
+                    MIGRATION_5_6, MIGRATION_10_11
                 )
                 .allowMainThreadQueries()
                 .build()
