@@ -50,7 +50,7 @@ class CatalogueAdapter(
             with(tasks[adapterPosition]) {
                 taskTitle.text = title
                 taskArea.text = area_text
-                if (priority != 0) {
+                if (priority != 99) {
                     taskPrio.text = priority.toString()
                 } else {
                     taskPrioLabel.isInvisible = true
@@ -91,13 +91,7 @@ class CatalogueAdapter(
                     selectItem(this, currentTask)
                 else {
                     val action = CatalogueFragmentDirections.actionNavCatalogueToNavTask(
-                        currentTask.id,
-                        currentTask.title,
-                        currentTask.description,
-                        currentTask.priority,
-                        currentTask.expectedDuration,
-                        currentTask.loggedDuration,
-                        currentTask.area_text,
+                        currentTask,
                         currentArea!!.label
                     )
                     view.findNavController().navigate(action)

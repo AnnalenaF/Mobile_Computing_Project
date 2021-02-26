@@ -8,8 +8,37 @@
     <fragment
         android:id="@+id/nav_home"
         android:name="com.dhbw.cas.integra.ui.home.HomeFragment"
-        android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" />
+        android:label="@string/menu_sprint" >
+        <action
+            android:id="@+id/action_nav_home_to_nav_new_sprint"
+            app:destination="@id/nav_new_sprint" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_new_sprint"
+        android:name="com.dhbw.cas.integra.ui.home.NewSprintFragment"
+        android:label="@string/menu_new_sprint_overview"
+        tools:layout="@layout/fragment_new_sprint" >
+        <action
+            android:id="@+id/action_nav_new_sprint_to_nav_new_sprint_tasks"
+            app:destination="@id/nav_new_sprint_tasks" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_new_sprint_tasks"
+        android:name="com.dhbw.cas.integra.ui.home.NewSprintTasksFragment"
+        android:label="@string/menu_new_sprint_tasks"
+        tools:layout="@layout/fragment_new_sprint_tasks">
+        <argument
+            android:name="areas"
+            app:argType="com.dhbw.cas.integra.data.Areas" />
+        <argument
+            android:name="startDate"
+            app:argType="long" />
+        <argument
+            android:name="endDate"
+            app:argType="long" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_catalogue"
@@ -34,26 +63,8 @@
         android:label="@string/task">
 
         <argument
-            android:name="id"
-            app:argType="long" />
-        <argument
-            android:name="title"
-            app:argType="string" />
-        <argument
-            android:name="description"
-            app:argType="string" />
-        <argument
-            android:name="priority"
-            app:argType="integer" />
-        <argument
-            android:name="expectedDuration"
-            app:argType="integer" />
-        <argument
-            android:name="loggedDuration"
-            app:argType="integer" />
-        <argument
-            android:name="area_text"
-            app:argType="string" />
+            android:name="task"
+            app:argType="com.dhbw.cas.integra.data.Task" />
         <argument
             android:name="area_label"
             app:argType="integer" />

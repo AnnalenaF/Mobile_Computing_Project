@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="8dp">
+
+    <TextView
+        android:id="@+id/label_available_capacities"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/label_available_capacities"
+        android:textAppearance="?attr/textAppearanceHeadline6"
+        android:padding="8dp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/available_capacities"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layoutManager="LinearLayoutManager"
+        android:orientation="horizontal"
+        android:layout_below="@id/label_available_capacities"/>
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        android:background="?android:attr/listDivider"
+        android:layout_below="@id/available_capacities"
+        android:layout_alignParentStart="true"
+        android:layout_alignEnd="@id/label_available_capacities"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"/>
+
+    <SearchView
+        android:id="@+id/task_search"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/divider"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@id/button_sort_tasks"/>
+
+    <ImageButton
+        android:id="@+id/button_sort_tasks"
+        android:layout_width="48dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/divider"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@id/task_search"
+        android:layout_alignBottom="@id/task_search"
+        android:contentDescription="@string/button_sort_tasks"
+        android:src="@drawable/ic_baseline_sort_24"
+        android:background="@color/white" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/task_list_new_sprint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layoutManager="LinearLayoutManager"
+        android:layout_below="@id/task_search"
+        android:layout_marginTop="8dp"/>
+
+
+</RelativeLayout>
