@@ -2,24 +2,28 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <!--title-->
     <TextView
         android:id="@+id/task_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:textAppearance="?attr/textAppearanceHeadline6" />
+        android:textAppearance="?attr/textAppearanceHeadline6"
+        android:maxLines="2"
+        android:maxWidth="230dp"
+        android:ellipsize="end"/>
 
     <!--area-->
     <TextView
         android:id="@+id/task_area"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:layout_toEndOf="@id/task_title" />
-
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="4dp"
+        android:layout_toStartOf="@id/task_checkbox"
+        android:gravity="end"/>
 
     <!--duration-->
     <TextView
@@ -28,9 +32,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/task_title"
         android:layout_alignParentStart="true"
-        android:layout_margin="8dp"
         android:labelFor="@+id/task_duration"
-        android:text="@string/new_task_duration_label" />
+        android:text="@string/new_task_duration_label"
+        android:layout_marginEnd="4dp"/>
 
     <TextView
         android:id="@+id/task_duration"
@@ -38,8 +42,9 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@id/task_duration_label"
         android:layout_alignBottom="@id/task_duration_label"
-        android:layout_margin="8dp"
-        android:layout_toEndOf="@id/task_duration_label" />
+        android:layout_toEndOf="@id/task_duration_label"
+        android:layout_below="@id/task_area"
+        android:layout_marginEnd="8dp"/>
 
     <!--priority-->
     <TextView
@@ -48,10 +53,11 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@id/task_duration_label"
         android:layout_alignBottom="@id/task_duration_label"
-        android:layout_margin="8dp"
         android:layout_toEndOf="@id/task_duration"
         android:labelFor="@+id/task_prio"
-        android:text="@string/new_task_prio_label" />
+        android:text="@string/new_task_prio_label"
+        android:layout_below="@id/task_area"
+        android:layout_marginEnd="4dp" />
 
     <TextView
         android:id="@+id/task_prio"
@@ -59,15 +65,15 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@id/task_duration_label"
         android:layout_alignBottom="@id/task_duration_label"
-        android:layout_margin="8dp"
-        android:layout_toEndOf="@id/task_prio_label" />
+        android:layout_toEndOf="@id/task_prio_label"
+        android:layout_below="@id/task_area" />
 
     <CheckBox
         android:id="@+id/task_checkbox"
         android:layout_width="48dp"
         android:layout_height="match_parent"
         android:layout_alignTop="@id/task_title"
-        android:layout_alignBottom="@id/task_duration"
+        android:layout_alignBottom="@id/task_prio"
         android:layout_alignParentEnd="true"
         android:gravity="center" />
 </RelativeLayout>

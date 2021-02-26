@@ -56,6 +56,7 @@ class AreasCapacityAdapter() :
                 } else {
                     val currArea = areas.find { it.text == areaText.text.toString().dropLast(1) }
                     currArea!!.totalCapacity = editText.text.toString().toInt()
+                    currArea.remainingCapacity = editText.text.toString().toInt()
                 }
             }
 

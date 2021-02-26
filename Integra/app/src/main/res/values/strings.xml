@@ -64,4 +64,11 @@
     <string name="label_available_capacities">Verfügbare Kapazitäten:</string>
     <string name="button_filter_tasks">Filtern</string>
     <string name="button_sort_tasks">Sortierreihenfolge</string>
+
+    <string name="radio_sort_prio">Prioriät und Titel</string>
+    <string name="radio_sort_duration">Dauer und Titel</string>
+    <string name="radio_sort_title">Titel</string>
+    <string name="radio_sort_asc">Aufsteigend</string>
+    <string name="radio_sort_desc">Absteigend</string>
+
 </resources>

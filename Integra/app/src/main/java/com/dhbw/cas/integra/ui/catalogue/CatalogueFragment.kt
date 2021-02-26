@@ -108,7 +108,7 @@ class CatalogueFragment : Fragment() {
         val title = dialog.new_task_title.text.toString()
         val descr = dialog.new_task_descr.text.toString()
         val prio = dialog.new_task_prio.text.toString()
-        var prioInt = 0
+        var prioInt = 99
         if (prio.isNotEmpty()) {
             prioInt = prio.toInt()
         }

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <RadioGroup
+        android:id="@+id/radiogroup_sort_by"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.5"
+        android:layout_marginStart="16dp">
+        <RadioButton
+            android:id="@+id/radio_sort_prio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/radio_sort_prio"
+            android:checked="true"/>
+        <RadioButton
+            android:id="@+id/radio_sort_duration"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/radio_sort_duration"/>
+        <RadioButton
+            android:id="@+id/radio_sort_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/radio_sort_title"/>
+    </RadioGroup>
+
+    <RadioGroup
+        android:id="@+id/radiogroup_sort_how"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.5">
+        <RadioButton
+            android:id="@+id/radio_sort_asc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/radio_sort_asc"
+            android:checked="true"/>
+        <RadioButton
+            android:id="@+id/radio_sort_desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/radio_sort_desc"/>
+    </RadioGroup>
+</LinearLayout>

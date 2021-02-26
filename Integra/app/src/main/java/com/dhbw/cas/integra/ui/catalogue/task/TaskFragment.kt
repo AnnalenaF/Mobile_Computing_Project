@@ -159,7 +159,7 @@ class TaskFragment : Fragment() {
                 // validate task and save it in case of valid task and switch to Display Mode
                 val correct = validateTask()
                 if (correct){
-                    var prio = 0
+                    var prio = 99
                     if (priority.text.toString().isNotEmpty()){
                         prio = priority.text.toString().toInt()
                     }

@@ -50,7 +50,7 @@ class CatalogueAdapter(
             with(tasks[adapterPosition]) {
                 taskTitle.text = title
                 taskArea.text = area_text
-                if (priority != 0) {
+                if (priority != 99) {
                     taskPrio.text = priority.toString()
                 } else {
                     taskPrioLabel.isInvisible = true
