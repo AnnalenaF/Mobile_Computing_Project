@@ -73,4 +73,9 @@
     <string name="capacity_negative">Lebensbereich überplant</string>
     <string name="sprint_no_tasks">Bitte für Deinem Sprint Aufgaben hinzu</string>
 
+    <string name="tab_open">Offen</string>
+    <string name="tab_in_process">Im Gange</string>
+    <string name="tab_done">Fertig</string>
+    <string name="tab_blocked">Blockiert</string>
+
 </resources>
