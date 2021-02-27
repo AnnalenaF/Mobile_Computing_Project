@@ -36,7 +36,7 @@ class AreasCapacityAvailAdapter() :
             }
 
             override fun afterTextChanged(s: Editable?) {
-                if (s.toString().toInt() <= 0) {
+                if (s.toString().toInt() < 0) {
                     textView.requestFocus()
                     textView.error = context.getString(R.string.capacity_negative)
                 } else {
