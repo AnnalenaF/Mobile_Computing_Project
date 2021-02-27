@@ -16,7 +16,6 @@ import androidx.viewpager2.widget.ViewPager2
 import com.dhbw.cas.integra.MainActivity
 import com.dhbw.cas.integra.R
 import com.dhbw.cas.integra.data.Sprint
-import com.dhbw.cas.integra.data.SprintWithTasks
 import com.google.android.material.checkbox.MaterialCheckBox
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
@@ -27,7 +26,7 @@ import java.util.concurrent.TimeUnit
 
 class HomeFragment : Fragment(), FinishSprintDialogFragment.FinishSprintDialogListener {
 
-    private lateinit var homeViewModel: HomeViewModel
+    private lateinit var sprintViewModel: SprintViewModel
     private lateinit var root: View
     private lateinit var menuItemFinishSprint: MenuItem
     private lateinit var tabLayout: TabLayout
@@ -40,9 +39,9 @@ class HomeFragment : Fragment(), FinishSprintDialogFragment.FinishSprintDialogLi
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        homeViewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
-        activeSprint = homeViewModel.activeSprint
+        sprintViewModel =
+            ViewModelProvider(this).get(SprintViewModel::class.java)
+        activeSprint = sprintViewModel.activeSprint
         sprintActive = activeSprint is Sprint
 
         if (sprintActive) {
@@ -154,11 +153,7 @@ class HomeFragment : Fragment(), FinishSprintDialogFragment.FinishSprintDialogLi
                 dialogFrag.setTargetFragment(this, 1)
                 dialogFrag.show(parentFragmentManager, "FinishSprintDialogFragment")
                 true
-            }
-            item.itemId == R.id.action_settings -> {
-                true // todo settings
-            }
-            else -> super.onOptionsItemSelected(item)
+            } else -> super.onOptionsItemSelected(item)
         }
     }
 
@@ -176,23 +171,23 @@ class HomeFragment : Fragment(), FinishSprintDialogFragment.FinishSprintDialogLi
 
         // delete tasks by selected states
         if (delOpen) {
-            homeViewModel.deleteSprintTasksByState(activeSprint.id, 0)
+            sprintViewModel.deleteSprintTasksByState(activeSprint.id, 0)
         }
         if (delProgress) {
-            homeViewModel.deleteSprintTasksByState(activeSprint.id, 1)
+            sprintViewModel.deleteSprintTasksByState(activeSprint.id, 1)
         }
         if (delDone) {
-            homeViewModel.deleteSprintTasksByState(activeSprint.id, 2)
+            sprintViewModel.deleteSprintTasksByState(activeSprint.id, 2)
         }
         if (delBlocked) {
-            homeViewModel.deleteSprintTasksByState(activeSprint.id, 3)
+            sprintViewModel.deleteSprintTasksByState(activeSprint.id, 3)
         }
 
         // reset state of tasks
-        homeViewModel.resetTaskStates()
+        sprintViewModel.resetTaskStates()
 
         // delete Sprint (possible adjustment: in case sprint persistent is required: just remove active tag)
-        homeViewModel.deleteSprint(activeSprint)
+        sprintViewModel.deleteSprint(activeSprint)
 
         // restart activity
         val intent = Intent(root.context, MainActivity::class.java)

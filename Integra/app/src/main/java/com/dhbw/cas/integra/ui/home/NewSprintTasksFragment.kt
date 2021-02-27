@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -27,7 +26,7 @@ class NewSprintTasksFragment : Fragment(), SortTasksDialogFragment.SortDialogLis
     private lateinit var root: View
     private lateinit var taskListAdapter: TaskListAdapter
     private lateinit var areasViewModel: AreasViewModel
-    private lateinit var homeViewModel: HomeViewModel
+    private lateinit var sprintViewModel: SprintViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,8 +39,8 @@ class NewSprintTasksFragment : Fragment(), SortTasksDialogFragment.SortDialogLis
             ViewModelProvider(this).get(CatalogueViewModel::class.java)
         areasViewModel =
             ViewModelProvider(this).get(AreasViewModel::class.java)
-        homeViewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
+        sprintViewModel =
+            ViewModelProvider(this).get(SprintViewModel::class.java)
 
         // get recycler view containing task list, set adapter and its data by observing
         val recyclerViewTasks: RecyclerView = root.findViewById(R.id.task_list_new_sprint)
@@ -129,7 +128,7 @@ class NewSprintTasksFragment : Fragment(), SortTasksDialogFragment.SortDialogLis
                         areasViewModel.updateArea(area)
                     }
                     // save sprint
-                    homeViewModel.createSprintWithTasks(
+                    sprintViewModel.createSprintWithTasks(
                         args.startDate,
                         args.endDate,
                         taskListAdapter.selectedTasks

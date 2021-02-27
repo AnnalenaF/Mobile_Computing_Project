@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory
+        app:key="notifications"
+        app:title="@string/preferences_notif"
+        app:icon="@drawable/ic_baseline_notifications_active_24"/>
+
+    <SwitchPreferenceCompat
+        app:key="@string/notifications_planning_pref_key"
+        app:title="@string/preference_notif_plan_title"
+        app:summary="@string/preference_notif_plan"
+        app:defaultValue="true"/>
+    <SwitchPreferenceCompat
+        app:key="@string/notifications_execution_pref_key"
+        app:title="@string/preference_notif_exec_title"
+        app:summary="@string/preference_notif_exec"
+        app:defaultValue="true"/>
+
+</PreferenceScreen>
