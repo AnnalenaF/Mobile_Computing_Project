@@ -12,6 +12,9 @@
         <action
             android:id="@+id/action_nav_home_to_nav_new_sprint"
             app:destination="@id/nav_new_sprint" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_task"
+            app:destination="@id/nav_task" />
     </fragment>
 
     <fragment

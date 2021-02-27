@@ -16,8 +16,8 @@ import kotlinx.android.parcel.Parcelize
                 ForeignKey(entity = Sprint::class,
                            parentColumns = ["id"],
                            childColumns = ["sprintId"],
-                           // do not delete tasks if sprint is deleted
-                           onDelete = ForeignKey.NO_ACTION)])
+                           // reset sprintId in case sprint is deleted
+                           onDelete = ForeignKey.SET_DEFAULT)])
 @Parcelize
 data class Task(
         @ColumnInfo(name="title")
@@ -40,6 +40,9 @@ data class Task(
 
         @ColumnInfo(name="sprintId")
         var sprintId: Long? = 0,
+
+        @ColumnInfo(name="state")
+        var state: Int = 0,
 
         @ColumnInfo(name="id")
         @PrimaryKey(autoGenerate = true) val id: Long = 0

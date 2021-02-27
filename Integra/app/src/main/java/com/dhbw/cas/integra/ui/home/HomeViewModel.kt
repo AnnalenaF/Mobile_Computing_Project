@@ -13,7 +13,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     private var areaDao = AppDatabase.getDatabase(application).areaDao()
     private var taskDao = AppDatabase.getDatabase(application).taskDao()
 
-    val activeSprint = sprintDao.getActiveSprintWithTasks()
+    val activeSprint = sprintDao.getActiveSprint()
     val activeSprintLive = sprintDao.getLiveActiveSprintWithTasks()
     val areas = areaDao.getAreas()
     fun createSprintWithTasks(startDate: Long, endDate: Long, tasks: List<Task>) =
@@ -25,4 +25,16 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
                 taskDao.update(task)
             }
         }
+
+    fun deleteSprint(sprint: Sprint) = viewModelScope.launch {
+        sprintDao.delete(sprint)
+    }
+
+    fun deleteSprintTasksByState(sprintId: Long, state: Int) = viewModelScope.launch {
+        taskDao.deleteByIdAndState(sprintId, state)
+    }
+
+    fun resetTaskStates() = viewModelScope.launch {
+        taskDao.resetStates()
+    }
 }
