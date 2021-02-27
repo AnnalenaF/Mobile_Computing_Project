@@ -4,6 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.widget.Button
+import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -17,6 +19,9 @@ import com.dhbw.cas.integra.data.SprintWithTasks
 import com.google.android.material.checkbox.MaterialCheckBox
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
+import java.text.SimpleDateFormat
+import java.util.*
+import java.util.concurrent.TimeUnit
 
 
 class HomeFragment : Fragment(), FinishSprintDialogFragment.FinishSprintDialogListener {
@@ -42,6 +47,42 @@ class HomeFragment : Fragment(), FinishSprintDialogFragment.FinishSprintDialogLi
         if (sprintActive) {
             root = inflater.inflate(R.layout.fragment_sprint, container, false)
 
+            // display current sprint date range
+            val sprintDuration = root.findViewById<TextView>(R.id.sprint_daterange)
+            val startDate = Date((activeSprint as SprintWithTasks).sprint.startDate)
+            val startDateString: String =
+                SimpleDateFormat("dd.MM.yy", Locale.getDefault()).format(startDate)
+            val endDate = Date((activeSprint as SprintWithTasks).sprint.endDate)
+            val endDateString: String =
+                SimpleDateFormat("dd.MM.yy", Locale.getDefault()).format(endDate)
+            val dateRange = "$startDateString - $endDateString"
+            sprintDuration.text = getString(R.string.sprint_daterange_label, dateRange)
+
+            // display current sprint time
+            val calendar = Calendar.getInstance()
+            // clear time information for comparability of dates
+            calendar.apply {
+                set(Calendar.HOUR_OF_DAY, 0)
+                set(Calendar.MINUTE, 0)
+                set(Calendar.SECOND, 0)
+                set(Calendar.MILLISECOND, 0)
+            }
+            val today: Date = calendar.time
+
+            // calculate days of sprint date range
+            var totalDays: Long = endDate.time - startDate.time
+            totalDays = TimeUnit.MILLISECONDS.toDays(totalDays) + 1
+            var passedDays: Long = today.time - startDate.time
+            passedDays = TimeUnit.MILLISECONDS.toDays(passedDays) + 1
+            // display days in textview
+            val sprintProgressLabel = root.findViewById<TextView>(R.id.sprint_progress_label)
+            sprintProgressLabel.text =
+                getString(R.string.sprint_progress_label, passedDays, totalDays)
+            // display days in progress bar
+            val sprintProgress = root.findViewById<ProgressBar>(R.id.sprint_progress)
+            sprintProgress.max = totalDays.toInt()
+            sprintProgress.progress = passedDays.toInt()
+
             // create tabs
             tabLayout = root.findViewById(R.id.tablayout_sprint)
             val viewPager = root.findViewById<ViewPager2>(R.id.viewpager_tabs)
@@ -51,11 +92,11 @@ class HomeFragment : Fragment(), FinishSprintDialogFragment.FinishSprintDialogLi
 
             val tabOpen: TabLayout.Tab = tabLayout.newTab()
             tabOpen.text = getString(R.string.tab_open)
-            tabLayout.addTab(tabOpen)
+            tabLayout.addTab(tabOpen, true)
 
             val tabProcess: TabLayout.Tab = tabLayout.newTab()
             tabProcess.text = getString(R.string.tab_in_process)
-            tabLayout.addTab(tabProcess, true)
+            tabLayout.addTab(tabProcess)
 
             val tabDone: TabLayout.Tab = tabLayout.newTab()
             tabDone.text = getString(R.string.tab_done)
@@ -127,7 +168,8 @@ class HomeFragment : Fragment(), FinishSprintDialogFragment.FinishSprintDialogLi
         val delOpen = view.findViewById<MaterialCheckBox>(R.id.checkbox_delete_open).isChecked
         val delProgress =
             dialog.dialog!!.findViewById<MaterialCheckBox>(R.id.checkbox_delete_in_process).isChecked
-        val delDone = dialog.dialog!!.findViewById<MaterialCheckBox>(R.id.checkbox_delete_done).isChecked
+        val delDone =
+            dialog.dialog!!.findViewById<MaterialCheckBox>(R.id.checkbox_delete_done).isChecked
         val delBlocked =
             dialog.dialog!!.findViewById<MaterialCheckBox>(R.id.checkbox_delete_blocked).isChecked
 

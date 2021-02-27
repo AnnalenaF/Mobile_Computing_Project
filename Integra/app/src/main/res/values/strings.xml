@@ -76,12 +76,12 @@
     <string name="tab_open">Offen</string>
     <string name="tab_in_process">Im Gange</string>
     <string name="tab_done">Fertig</string>
-    <string name="tab_blocked">Blockiert</string>
+    <string name="tab_blocked">Inaktiv</string>
     <string name="task_progress_label">Fortschritt:</string>
     <string name="action_set_open">Aufgabe ist offen</string>
     <string name="action_set_progress">Aufgabe ist im Gange</string>
     <string name="action_set_done">Aufgabe ist fertig</string>
-    <string name="action_set_blocked">Aufgabe ist blockiert</string>
+    <string name="action_set_blocked">Aufgabe ist inaktiv</string>
     <string name="action_log_work">Logge Zeit</string>
     <string name="button_task_menu_descr">Optionen für Aufgabe</string>
     <string name="logged_time_label">Zeit in min loggen:</string>
@@ -92,5 +92,7 @@
     <string name="checkbox_delete_in_process">Aufgaben im Gange</string>
     <string name="checkbox_delete_done">Fertige Aufgaben</string>
     <string name="checkbox_delete_blocked">Blockierte Aufgaben</string>
+    <string name="sprint_daterange_label">Zeitraum: %1$s</string>
+    <string name="sprint_progress_label">Tag %1$d/%2$d:</string>
 
 </resources>
