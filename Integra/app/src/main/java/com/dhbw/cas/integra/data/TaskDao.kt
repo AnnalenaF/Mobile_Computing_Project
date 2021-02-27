@@ -16,4 +16,10 @@ interface TaskDao {
 
     @Update
     suspend fun update(task: Task)
+
+    @Query ("DELETE FROM tasks WHERE sprintId = :sprintId AND state = :state")
+    suspend fun deleteByIdAndState(sprintId: Long, state: Int)
+
+    @Query ("UPDATE tasks SET state = 0")
+    suspend fun resetStates()
 }

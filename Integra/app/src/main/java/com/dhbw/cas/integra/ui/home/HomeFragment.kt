@@ -1,25 +1,31 @@
 package com.dhbw.cas.integra.ui.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.widget.Button
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
+import com.dhbw.cas.integra.MainActivity
 import com.dhbw.cas.integra.R
 import com.dhbw.cas.integra.data.SprintWithTasks
+import com.google.android.material.checkbox.MaterialCheckBox
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), FinishSprintDialogFragment.FinishSprintDialogListener {
 
     private lateinit var homeViewModel: HomeViewModel
     private lateinit var root: View
+    private lateinit var menuItemFinishSprint: MenuItem
     private lateinit var tabLayout: TabLayout
+    private lateinit var viewPagerAdapter: TabsViewPagerAdapter
     private var activeSprint: Any? = Any()
     private var sprintActive: Boolean = false
 
@@ -58,9 +64,9 @@ class HomeFragment : Fragment() {
             tabLayout.tabGravity = TabLayout.GRAVITY_FILL
 
             // create and assign adapter to tablayout and viewpager
-            val viewPagerAdapter = TabsViewPagerAdapter(requireActivity())
+            viewPagerAdapter = TabsViewPagerAdapter(requireActivity())
             viewPager.adapter = viewPagerAdapter
-            viewPager.currentItem = 1
+            viewPager.currentItem = 0
             tabLayout.addOnTabSelectedListener(object : OnTabSelectedListener {
                 override fun onTabSelected(tab: TabLayout.Tab) {
                     viewPager.currentItem = tab.position
@@ -93,11 +99,66 @@ class HomeFragment : Fragment() {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
     }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        if (sprintActive){
-            val menuItemFinishSprint: MenuItem
+        if (sprintActive) {
             menuItemFinishSprint = menu.add(R.string.finish_sprint)
         }
         super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when {
+            (sprintActive) && (item.itemId == menuItemFinishSprint.itemId) -> { // finish sprint
+                val dialogFrag = FinishSprintDialogFragment()
+                dialogFrag.setTargetFragment(this, 1)
+                dialogFrag.show(parentFragmentManager, "FinishSprintDialogFragment")
+                true
+            }
+            item.itemId == R.id.action_settings -> {
+                true // todo settings
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    // finish sprint
+    override fun onFinishDialogPositiveClick(dialog: DialogFragment, view: View) {
+        val delOpen = view.findViewById<MaterialCheckBox>(R.id.checkbox_delete_open).isChecked
+        val delProgress =
+            dialog.dialog!!.findViewById<MaterialCheckBox>(R.id.checkbox_delete_in_process).isChecked
+        val delDone = dialog.dialog!!.findViewById<MaterialCheckBox>(R.id.checkbox_delete_done).isChecked
+        val delBlocked =
+            dialog.dialog!!.findViewById<MaterialCheckBox>(R.id.checkbox_delete_blocked).isChecked
+
+        val activeSprintWithTasks = activeSprint as SprintWithTasks
+
+        // delete tasks by selected states
+        if (delOpen) {
+            homeViewModel.deleteSprintTasksByState(activeSprintWithTasks.sprint.id, 0)
+        }
+        if (delProgress) {
+            homeViewModel.deleteSprintTasksByState(activeSprintWithTasks.sprint.id, 1)
+        }
+        if (delDone) {
+            homeViewModel.deleteSprintTasksByState(activeSprintWithTasks.sprint.id, 2)
+        }
+        if (delBlocked) {
+            homeViewModel.deleteSprintTasksByState(activeSprintWithTasks.sprint.id, 3)
+        }
+
+        // reset state of tasks
+        homeViewModel.resetTaskStates()
+
+        // delete Sprint (possible adjustment: in case sprint persistent is required: just remove active tag)
+        homeViewModel.deleteSprint(activeSprintWithTasks.sprint)
+
+        // restart activity
+        val intent = Intent(root.context, MainActivity::class.java)
+        intent.addFlags(
+            Intent.FLAG_ACTIVITY_CLEAR_TOP
+                    or Intent.FLAG_ACTIVITY_NEW_TASK
+        )
+        startActivity(intent)
     }
 }

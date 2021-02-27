@@ -25,4 +25,16 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
                 taskDao.update(task)
             }
         }
+
+    fun deleteSprint(sprint: Sprint) = viewModelScope.launch {
+        sprintDao.delete(sprint)
+    }
+
+    fun deleteSprintTasksByState(sprintId: Long, state: Int) = viewModelScope.launch {
+        taskDao.deleteByIdAndState(sprintId, state)
+    }
+
+    fun resetTaskStates() = viewModelScope.launch {
+        taskDao.resetStates()
+    }
 }

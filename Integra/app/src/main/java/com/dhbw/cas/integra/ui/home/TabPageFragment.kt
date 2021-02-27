@@ -35,28 +35,31 @@ class TabPageFragment(private var tabPosition: Int) : Fragment(),
         taskListAdapter = TabTaskListAdapter(catalogueViewModel, this, parentFragmentManager)
         recyclerView.adapter = taskListAdapter
         homeViewModel.activeSprintLive.observe(viewLifecycleOwner, {
-            val tasks = ArrayList<Task>()
-            var desiredState = 0
-            when (tabPosition) {
-                0 -> { //blocked
-                    desiredState = 3
+            if (it != null) {
+
+                val tasks = ArrayList<Task>()
+                var desiredState = 0
+                when (tabPosition) {
+                    0 -> { //blocked
+                        desiredState = 3
+                    }
+                    1 -> { //open
+                        desiredState = 0 // default state is open
+                    }
+                    2 -> { //in progress
+                        desiredState = 1
+                    }
+                    3 -> { //done
+                        desiredState = 2
+                    }
                 }
-                1 -> { //open
-                    desiredState = 0 // default state is open
+                for (task in it.tasks) {
+                    if (task.state == desiredState) {
+                        tasks.add(task)
+                    }
                 }
-                2 -> { //in progress
-                    desiredState = 1
-                }
-                3 -> { //done
-                    desiredState = 2
-                }
+                taskListAdapter.setTasks(tasks)
             }
-            for (task in it.tasks) {
-                if (task.state == desiredState) {
-                    tasks.add(task)
-                }
-            }
-            taskListAdapter.setTasks(tasks)
         })
         homeViewModel.areas.observe(viewLifecycleOwner, {
             taskListAdapter.setAreas(it)
