@@ -11,7 +11,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.dhbw.cas.integra.R
 import com.dhbw.cas.integra.data.Task
 import com.dhbw.cas.integra.ui.catalogue.CatalogueViewModel
@@ -28,7 +27,7 @@ class TabPageFragment(private var tabPosition: Int) : Fragment(),
     ): View {
         val root = inflater.inflate(R.layout.fragment_current_sprint_tab, container, false)
         val homeViewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
+            ViewModelProvider(this).get(SprintViewModel::class.java)
         catalogueViewModel =
             ViewModelProvider(this).get(CatalogueViewModel::class.java)
 

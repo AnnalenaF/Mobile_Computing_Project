@@ -95,4 +95,10 @@
     <string name="sprint_daterange_label">Zeitraum: %1$s</string>
     <string name="sprint_progress_label">Tag %1$d/%2$d:</string>
 
+    <string name="notification_channel_name">Notification Channel Integra App</string>
+    <string name="notification_channel_description">This is the notification channel for Integra App.</string>
+    <string name="notification_title_plan">Lossprinten?</string>
+    <string name="notification_text_plan">Starte durch und plane Deinen nächsten Sprint</string>
+    <string name="notification_title_exec">Warst du  heute schon produktiv?</string>
+    <string name="notification_text_exec">Schaue doch mal in deinen Sprint</string>
 </resources>
