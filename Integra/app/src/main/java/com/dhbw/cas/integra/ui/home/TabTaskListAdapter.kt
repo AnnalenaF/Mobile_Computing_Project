@@ -6,6 +6,8 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.view.isInvisible
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dhbw.cas.integra.R
 import com.dhbw.cas.integra.data.Area
@@ -14,7 +16,9 @@ import com.dhbw.cas.integra.ui.catalogue.CatalogueViewModel
 import kotlinx.android.synthetic.main.item_task_tab.view.*
 
 
-class TabTaskListAdapter(private var catalogueViewModel: CatalogueViewModel) :
+class TabTaskListAdapter(private var catalogueViewModel: CatalogueViewModel,
+                         private var fragment: Fragment,
+                         private var fragmentManager: FragmentManager) :
     RecyclerView.Adapter<TabTaskListAdapter.TabTaskListViewHolder>() {
     private var tasks = emptyList<Task>()
     private var areas = emptyList<Area>()
@@ -56,7 +60,9 @@ class TabTaskListAdapter(private var catalogueViewModel: CatalogueViewModel) :
                             true
                         }
                         R.id.action_log_work -> {
-                            //todo
+                            val dialogFrag = LogWorkDialogFragment(tasks[adapterPosition])
+                            dialogFrag.setTargetFragment(fragment, 1)
+                            dialogFrag.show(fragmentManager, "LogWorkDialogFragment")
                             true
                         }
                         else -> false
@@ -84,7 +90,6 @@ class TabTaskListAdapter(private var catalogueViewModel: CatalogueViewModel) :
                 }
             }
         }
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TabTaskListViewHolder {
