@@ -8,17 +8,21 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.core.view.isInvisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.dhbw.cas.integra.R
 import com.dhbw.cas.integra.data.Area
 import com.dhbw.cas.integra.data.Task
+import com.dhbw.cas.integra.ui.catalogue.CatalogueFragmentDirections
 import com.dhbw.cas.integra.ui.catalogue.CatalogueViewModel
 import kotlinx.android.synthetic.main.item_task_tab.view.*
 
 
-class TabTaskListAdapter(private var catalogueViewModel: CatalogueViewModel,
-                         private var fragment: Fragment,
-                         private var fragmentManager: FragmentManager) :
+class TabTaskListAdapter(
+    private var catalogueViewModel: CatalogueViewModel,
+    private var fragment: Fragment,
+    private var fragmentManager: FragmentManager
+) :
     RecyclerView.Adapter<TabTaskListAdapter.TabTaskListViewHolder>() {
     private var tasks = emptyList<Task>()
     private var areas = emptyList<Area>()
@@ -30,6 +34,7 @@ class TabTaskListAdapter(private var catalogueViewModel: CatalogueViewModel,
         var taskPrioLabel: TextView = itemView.task_prio_label
         var taskDurationProgress: ProgressBar = itemView.duration_progress
         private var buttonTaskMenu: ImageButton = itemView.button_task_menu
+
         init {
             buttonTaskMenu.setOnClickListener {
                 val popup = PopupMenu(buttonTaskMenu.context, itemView)
@@ -72,7 +77,7 @@ class TabTaskListAdapter(private var catalogueViewModel: CatalogueViewModel,
                 popup.inflate(R.menu.sprint_task_menu)
                 popup.gravity = Gravity.END
                 popup.show()
-                when (tasks[adapterPosition].state){
+                when (tasks[adapterPosition].state) {
                     0 -> {
                         popup.menu.findItem(R.id.action_set_open).isVisible = false
                     }
@@ -88,6 +93,14 @@ class TabTaskListAdapter(private var catalogueViewModel: CatalogueViewModel,
                         popup.menu.findItem(R.id.action_log_work).isVisible = false
                     }
                 }
+            }
+            // if task is clicked display details
+            itemView.setOnClickListener {
+                val currentArea = areas.find { it.text == tasks[adapterPosition].area_text }
+                val action = HomeFragmentDirections.actionNavHomeToNavTask(
+                    tasks[adapterPosition], currentArea!!.label
+                )
+                fragment.requireView().findNavController().navigate(action)
             }
         }
     }
