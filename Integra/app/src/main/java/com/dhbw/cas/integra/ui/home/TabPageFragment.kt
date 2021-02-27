@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dhbw.cas.integra.R
 import com.dhbw.cas.integra.data.Task
+import com.dhbw.cas.integra.ui.catalogue.CatalogueViewModel
 
 class TabPageFragment(private var tabPosition: Int) : Fragment() {
     override fun onCreateView(
@@ -21,9 +22,11 @@ class TabPageFragment(private var tabPosition: Int) : Fragment() {
         val root = inflater.inflate(R.layout.fragment_current_sprint_tab, container, false)
         val homeViewModel =
             ViewModelProvider(this).get(HomeViewModel::class.java)
+        val catalogueViewModel =
+            ViewModelProvider(this).get(CatalogueViewModel::class.java)
 
         val recyclerView = root.findViewById<RecyclerView>(R.id.tab_task_list)
-        val taskListAdapter = TabTaskListAdapter()
+        val taskListAdapter = TabTaskListAdapter(catalogueViewModel)
         recyclerView.adapter = taskListAdapter
         homeViewModel.activeSprintLive.observe(viewLifecycleOwner, {
             val tasks = ArrayList<Task>()

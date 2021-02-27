@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_set_open"
+        android:orderInCategory="100"
+        android:title="@string/action_set_open"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_set_progress"
+        android:orderInCategory="200"
+        android:title="@string/action_set_progress"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_set_done"
+        android:orderInCategory="300"
+        android:title="@string/action_set_done"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_set_blocked"
+        android:orderInCategory="400"
+        android:title="@string/action_set_blocked"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_log_work"
+        android:orderInCategory="500"
+        android:title="@string/action_log_work"
+        app:showAsAction="never" />
+</menu>

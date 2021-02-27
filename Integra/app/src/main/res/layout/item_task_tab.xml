@@ -24,7 +24,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="4dp"
-        android:layout_toStartOf="@id/task_menu"
+        android:layout_toStartOf="@id/button_task_menu"
         android:gravity="end"/>
 
     <!--duration-->
@@ -71,11 +71,14 @@
         android:layout_below="@id/task_area" />
 
     <ImageButton
-        android:id="@+id/task_menu"
+        android:id="@+id/button_task_menu"
         android:layout_width="48dp"
         android:layout_height="match_parent"
         android:layout_alignTop="@id/task_title"
         android:layout_alignBottom="@id/task_prio"
         android:layout_alignParentEnd="true"
-        android:gravity="center"/>
+        android:gravity="center"
+        android:src="@drawable/ic_baseline_more_vert_24"
+        android:background="@color/white"
+        android:contentDescription="@string/button_task_menu_descr"/>
 </RelativeLayout>
