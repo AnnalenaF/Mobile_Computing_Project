@@ -93,7 +93,7 @@ class NewSprintFragment: Fragment() {
                         val areasNew = areasCapacityAdapter.getAreas()
                         for (area in areasNew){
                             area.totalCapacity = area.totalCapacity!! * 60
-                            area.remainingCapacity = area.remainingCapacity!! * 60
+                            area.remainingCapacity = area.totalCapacity
                         }
                         val areas = Areas()
                         areas.addAll(areasNew)

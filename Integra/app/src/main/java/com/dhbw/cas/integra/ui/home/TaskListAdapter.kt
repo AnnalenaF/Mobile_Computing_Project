@@ -77,6 +77,7 @@ class TaskListAdapter(private var areasViewModel: AreasViewModel) :
             if (currentArea != null) {
                 holder.taskArea.setBackgroundResource(currentArea.label)
             }
+            holder.taskCheckbox.isChecked = this in selectedTasks
         }
     }
 
