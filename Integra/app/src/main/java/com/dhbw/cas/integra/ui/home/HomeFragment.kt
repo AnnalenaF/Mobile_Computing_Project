@@ -153,11 +153,7 @@ class HomeFragment : Fragment(), FinishSprintDialogFragment.FinishSprintDialogLi
                 dialogFrag.setTargetFragment(this, 1)
                 dialogFrag.show(parentFragmentManager, "FinishSprintDialogFragment")
                 true
-            }
-            item.itemId == R.id.action_settings -> {
-                true // todo settings
-            }
-            else -> super.onOptionsItemSelected(item)
+            } else -> super.onOptionsItemSelected(item)
         }
     }
 

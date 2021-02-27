@@ -10,6 +10,7 @@ import android.content.IntentFilter
 import android.os.Build
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -18,6 +19,10 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
+import androidx.preference.PreferenceManager
+import com.dhbw.cas.integra.ui.home.HomeFragmentDirections
 import com.dhbw.cas.integra.ui.home.SprintViewModel
 import com.google.android.material.navigation.NavigationView
 import java.util.*
@@ -26,6 +31,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private val sprintViewModel: SprintViewModel by viewModels()
+    private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,7 +39,7 @@ class MainActivity : AppCompatActivity() {
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
-        val navController = findNavController(R.id.nav_host_fragment)
+        navController = findNavController(R.id.nav_host_fragment)
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
@@ -84,6 +90,18 @@ class MainActivity : AppCompatActivity() {
             "PLAN"
         }
 
+        // check whether notifications are active in settings
+        val preferences = PreferenceManager.getDefaultSharedPreferences(this)
+        val notifPlanActive =
+            preferences.getBoolean(getString(R.string.notifications_planning_pref_key), true)
+        val notifExecActive =
+            preferences.getBoolean(getString(R.string.notifications_execution_pref_key), true)
+
+        if (notificationType == "PLAN" && !notifPlanActive)
+            return
+        else if (notificationType == "EXECUTE" && !notifExecActive)
+            return
+
         // Set alarm start time from now
         val calendar: Calendar = Calendar.getInstance().apply {
             timeInMillis = System.currentTimeMillis()
@@ -98,9 +116,17 @@ class MainActivity : AppCompatActivity() {
         //create intent
         val intent = Intent("ALARM_ACTION")
         intent.putExtra("ACTION_NOTIFICATION", notificationType)
-        val pendingIntent: PendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT)
+        val pendingIntent: PendingIntent =
+            PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT)
         // set alaram with specified time and intent
         alarmMgr.cancel(pendingIntent) // cancel existing alarms
         alarmMgr.set(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return if (item.itemId == R.id.action_settings) {
+            navController.navigate(R.id.nav_settings)
+            true
+        } else super.onOptionsItemSelected(item)
     }
 }

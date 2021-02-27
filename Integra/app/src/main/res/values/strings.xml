@@ -5,7 +5,7 @@
     <string name="nav_header_title">Android Studio</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">Einstellungen</string>
 
     <string name="menu_sprint">Aktueller Sprint</string>
     <string name="menu_catalogue">Aufgabenkatalog</string>
@@ -101,4 +101,11 @@
     <string name="notification_text_plan">Starte durch und plane Deinen nächsten Sprint</string>
     <string name="notification_title_exec">Warst du  heute schon produktiv?</string>
     <string name="notification_text_exec">Schaue doch mal in deinen Sprint</string>
+    <string name="preference_notif_plan_title">Sprintplanung</string>
+    <string name="preference_notif_exec_title">Aktiver Sprint</string>
+    <string name="preference_notif_plan">Erinnere mich an die Sprintplanung, wenn länger kein Sprint aktiv ist</string>
+    <string name="preference_notif_exec">Erinnere mich an den aktiven Sprint, wenn ich länger nicht aktiv bin</string>
+    <string name="preferences_notif">Benachrichtigungen</string>
+    <string name="notifications_planning_pref_key">NOTIF_PLAN</string>
+    <string name="notifications_execution_pref_key">NOTIF_EXEC</string>
 </resources>
