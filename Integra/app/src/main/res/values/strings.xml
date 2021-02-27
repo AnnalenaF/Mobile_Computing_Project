@@ -86,5 +86,6 @@
     <string name="button_task_menu_descr">Optionen für Aufgabe</string>
     <string name="logged_time_label">Zeit in min loggen:</string>
     <string name="logged_time_autoFillHints">15, 30, 60, -60, …</string>
+    <string name="finish_sprint">Sprint Beenden</string>
 
 </resources>

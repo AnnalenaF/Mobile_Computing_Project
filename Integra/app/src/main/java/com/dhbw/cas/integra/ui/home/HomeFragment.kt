@@ -1,9 +1,7 @@
 package com.dhbw.cas.integra.ui.home
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -62,6 +60,7 @@ class HomeFragment : Fragment() {
             // create and assign adapter to tablayout and viewpager
             val viewPagerAdapter = TabsViewPagerAdapter(requireActivity())
             viewPager.adapter = viewPagerAdapter
+            viewPager.currentItem = 1
             tabLayout.addOnTabSelectedListener(object : OnTabSelectedListener {
                 override fun onTabSelected(tab: TabLayout.Tab) {
                     viewPager.currentItem = tab.position
@@ -88,5 +87,17 @@ class HomeFragment : Fragment() {
     private inner class TabsViewPagerAdapter(fa: FragmentActivity) : FragmentStateAdapter(fa) {
         override fun getItemCount(): Int = tabLayout.tabCount
         override fun createFragment(position: Int): Fragment = TabPageFragment(position)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        if (sprintActive){
+            val menuItemFinishSprint: MenuItem
+            menuItemFinishSprint = menu.add(R.string.finish_sprint)
+        }
+        super.onCreateOptionsMenu(menu, inflater)
     }
 }
