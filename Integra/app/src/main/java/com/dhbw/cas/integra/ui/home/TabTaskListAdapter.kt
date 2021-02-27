@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dhbw.cas.integra.R
 import com.dhbw.cas.integra.data.Area
 import com.dhbw.cas.integra.data.Task
-import com.dhbw.cas.integra.ui.catalogue.CatalogueFragmentDirections
 import com.dhbw.cas.integra.ui.catalogue.CatalogueViewModel
 import kotlinx.android.synthetic.main.item_task_tab.view.*
 

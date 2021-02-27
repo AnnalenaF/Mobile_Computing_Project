@@ -15,6 +15,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.dhbw.cas.integra.MainActivity
 import com.dhbw.cas.integra.R
+import com.dhbw.cas.integra.data.Sprint
 import com.dhbw.cas.integra.data.SprintWithTasks
 import com.google.android.material.checkbox.MaterialCheckBox
 import com.google.android.material.tabs.TabLayout
@@ -42,17 +43,17 @@ class HomeFragment : Fragment(), FinishSprintDialogFragment.FinishSprintDialogLi
         homeViewModel =
             ViewModelProvider(this).get(HomeViewModel::class.java)
         activeSprint = homeViewModel.activeSprint
-        sprintActive = activeSprint is SprintWithTasks
+        sprintActive = activeSprint is Sprint
 
         if (sprintActive) {
             root = inflater.inflate(R.layout.fragment_sprint, container, false)
 
             // display current sprint date range
             val sprintDuration = root.findViewById<TextView>(R.id.sprint_daterange)
-            val startDate = Date((activeSprint as SprintWithTasks).sprint.startDate)
+            val startDate = Date((activeSprint as Sprint).startDate)
             val startDateString: String =
                 SimpleDateFormat("dd.MM.yy", Locale.getDefault()).format(startDate)
-            val endDate = Date((activeSprint as SprintWithTasks).sprint.endDate)
+            val endDate = Date((activeSprint as Sprint).endDate)
             val endDateString: String =
                 SimpleDateFormat("dd.MM.yy", Locale.getDefault()).format(endDate)
             val dateRange = "$startDateString - $endDateString"
@@ -83,9 +84,20 @@ class HomeFragment : Fragment(), FinishSprintDialogFragment.FinishSprintDialogLi
             sprintProgress.max = totalDays.toInt()
             sprintProgress.progress = passedDays.toInt()
 
-            // create tabs
+            // create and assign adapter to tablayout and viewpager
             tabLayout = root.findViewById(R.id.tablayout_sprint)
             val viewPager = root.findViewById<ViewPager2>(R.id.viewpager_tabs)
+            viewPagerAdapter = TabsViewPagerAdapter(requireActivity())
+            viewPager.adapter = viewPagerAdapter
+            tabLayout.addOnTabSelectedListener(object : OnTabSelectedListener {
+                override fun onTabSelected(tab: TabLayout.Tab) {
+                    viewPager.currentItem = tab.position
+                }
+
+                override fun onTabUnselected(tab: TabLayout.Tab) {}
+                override fun onTabReselected(tab: TabLayout.Tab) {}
+            })
+            // create tabs
             val tabBlocked: TabLayout.Tab = tabLayout.newTab()
             tabBlocked.text = getString(R.string.tab_blocked)
             tabLayout.addTab(tabBlocked)
@@ -103,19 +115,6 @@ class HomeFragment : Fragment(), FinishSprintDialogFragment.FinishSprintDialogLi
             tabLayout.addTab(tabDone)
 
             tabLayout.tabGravity = TabLayout.GRAVITY_FILL
-
-            // create and assign adapter to tablayout and viewpager
-            viewPagerAdapter = TabsViewPagerAdapter(requireActivity())
-            viewPager.adapter = viewPagerAdapter
-            viewPager.currentItem = 0
-            tabLayout.addOnTabSelectedListener(object : OnTabSelectedListener {
-                override fun onTabSelected(tab: TabLayout.Tab) {
-                    viewPager.currentItem = tab.position
-                }
-
-                override fun onTabUnselected(tab: TabLayout.Tab) {}
-                override fun onTabReselected(tab: TabLayout.Tab) {}
-            })
 
         } else {
             root = inflater.inflate(R.layout.fragment_no_active_sprint, container, false)
@@ -173,27 +172,27 @@ class HomeFragment : Fragment(), FinishSprintDialogFragment.FinishSprintDialogLi
         val delBlocked =
             dialog.dialog!!.findViewById<MaterialCheckBox>(R.id.checkbox_delete_blocked).isChecked
 
-        val activeSprintWithTasks = activeSprint as SprintWithTasks
+        val activeSprint = activeSprint as Sprint
 
         // delete tasks by selected states
         if (delOpen) {
-            homeViewModel.deleteSprintTasksByState(activeSprintWithTasks.sprint.id, 0)
+            homeViewModel.deleteSprintTasksByState(activeSprint.id, 0)
         }
         if (delProgress) {
-            homeViewModel.deleteSprintTasksByState(activeSprintWithTasks.sprint.id, 1)
+            homeViewModel.deleteSprintTasksByState(activeSprint.id, 1)
         }
         if (delDone) {
-            homeViewModel.deleteSprintTasksByState(activeSprintWithTasks.sprint.id, 2)
+            homeViewModel.deleteSprintTasksByState(activeSprint.id, 2)
         }
         if (delBlocked) {
-            homeViewModel.deleteSprintTasksByState(activeSprintWithTasks.sprint.id, 3)
+            homeViewModel.deleteSprintTasksByState(activeSprint.id, 3)
         }
 
         // reset state of tasks
         homeViewModel.resetTaskStates()
 
         // delete Sprint (possible adjustment: in case sprint persistent is required: just remove active tag)
-        homeViewModel.deleteSprint(activeSprintWithTasks.sprint)
+        homeViewModel.deleteSprint(activeSprint)
 
         // restart activity
         val intent = Intent(root.context, MainActivity::class.java)

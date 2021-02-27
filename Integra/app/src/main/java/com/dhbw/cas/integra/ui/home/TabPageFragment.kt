@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.dhbw.cas.integra.R
 import com.dhbw.cas.integra.data.Task
 import com.dhbw.cas.integra.ui.catalogue.CatalogueViewModel

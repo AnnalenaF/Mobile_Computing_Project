@@ -10,7 +10,7 @@ interface SprintDao {
 
     @Transaction
     @Query("SELECT * FROM sprints WHERE isActive = 1 LIMIT 1")
-    fun getActiveSprintWithTasks(): SprintWithTasks
+    fun getActiveSprint(): Sprint
 
     @Transaction
     @Query("SELECT * FROM sprints WHERE isActive = 1 LIMIT 1")
