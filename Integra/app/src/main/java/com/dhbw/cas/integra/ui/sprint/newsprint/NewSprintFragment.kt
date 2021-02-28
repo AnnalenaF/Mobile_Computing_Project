@@ -1,4 +1,4 @@
-package com.dhbw.cas.integra.ui.home
+package com.dhbw.cas.integra.ui.sprint.newsprint
 
 import android.os.Bundle
 import android.view.*
@@ -103,8 +103,12 @@ class NewSprintFragment: Fragment() {
                         for (area in areas){
                             areasViewModel.updateArea(area)
                         }
-                        val action = NewSprintFragmentDirections.actionNavNewSprintToNavNewSprintTasks(
-                            areas, selectedDates[0].time, selectedDates[selectedDates.size-1].time)
+                        val action =
+                            NewSprintFragmentDirections.actionNavNewSprintToNavNewSprintTasks(
+                                areas,
+                                selectedDates[0].time,
+                                selectedDates[selectedDates.size - 1].time
+                            )
                         binding.root.findNavController().navigate(action)
                     }
                 }

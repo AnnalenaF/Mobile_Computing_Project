@@ -1,4 +1,4 @@
-package com.dhbw.cas.integra.ui.home
+package com.dhbw.cas.integra.ui.sprint
 
 import android.content.Intent
 import android.os.Bundle
@@ -22,7 +22,7 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 
 
-class HomeFragment : Fragment(), FinishSprintDialogFragment.FinishSprintDialogListener {
+class SprintFragment : Fragment(), FinishSprintDialogFragment.FinishSprintDialogListener {
 
     private lateinit var sprintViewModel: SprintViewModel
     private lateinit var menuItemFinishSprint: MenuItem
@@ -124,7 +124,7 @@ class HomeFragment : Fragment(), FinishSprintDialogFragment.FinishSprintDialogLi
 
             val buttonPlanSprint = bindingNoSprint.buttonPlanSprint
             buttonPlanSprint.setOnClickListener {
-                val action = HomeFragmentDirections.actionNavHomeToNavNewSprint()
+                val action = SprintFragmentDirections.actionNavHomeToNavNewSprint()
                 view.findNavController().navigate(action)
             }
         }

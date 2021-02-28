@@ -1,4 +1,4 @@
-package com.dhbw.cas.integra.ui.home
+package com.dhbw.cas.integra.ui.sprint.newsprint
 
 import com.dhbw.cas.integra.R
 import android.content.Context

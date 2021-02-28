@@ -1,4 +1,4 @@
-package com.dhbw.cas.integra.ui.home
+package com.dhbw.cas.integra.ui.sprint.newsprint.tasks
 
 import android.content.Intent
 import android.os.Bundle
@@ -19,6 +19,7 @@ import com.dhbw.cas.integra.R
 import com.dhbw.cas.integra.databinding.FragmentNewSprintTasksBinding
 import com.dhbw.cas.integra.ui.areas.AreasViewModel
 import com.dhbw.cas.integra.ui.catalogue.CatalogueViewModel
+import com.dhbw.cas.integra.ui.sprint.*
 import com.google.android.material.snackbar.Snackbar
 
 

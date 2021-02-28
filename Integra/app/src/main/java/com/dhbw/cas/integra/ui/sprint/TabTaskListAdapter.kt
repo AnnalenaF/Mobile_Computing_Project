@@ -1,4 +1,4 @@
-package com.dhbw.cas.integra.ui.home
+package com.dhbw.cas.integra.ui.sprint
 
 import android.view.*
 import android.widget.ImageButton
@@ -96,7 +96,7 @@ class TabTaskListAdapter(
             // if task is clicked display details
             itemView.setOnClickListener {
                 val currentArea = areas.find { it.text == tasks[adapterPosition].area_text }
-                val action = HomeFragmentDirections.actionNavHomeToNavTask(
+                val action = SprintFragmentDirections.actionNavHomeToNavTask(
                     tasks[adapterPosition], currentArea!!.label
                 )
                 fragment.requireView().findNavController().navigate(action)

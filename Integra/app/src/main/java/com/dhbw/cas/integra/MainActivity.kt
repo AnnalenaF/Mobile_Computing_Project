@@ -22,7 +22,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.navigation.NavController
 import androidx.preference.PreferenceManager
 import com.dhbw.cas.integra.databinding.ActivityMainBinding
-import com.dhbw.cas.integra.ui.home.SprintViewModel
+import com.dhbw.cas.integra.ui.sprint.SprintViewModel
 import com.google.android.material.navigation.NavigationView
 import java.util.*
 

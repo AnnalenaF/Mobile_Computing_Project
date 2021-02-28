@@ -1,4 +1,4 @@
-package com.dhbw.cas.integra.ui.home
+package com.dhbw.cas.integra.ui.sprint
 
 import android.app.Application
 import androidx.lifecycle.*
