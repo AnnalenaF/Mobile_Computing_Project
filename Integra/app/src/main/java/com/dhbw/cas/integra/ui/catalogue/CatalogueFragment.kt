@@ -1,12 +1,13 @@
 package com.dhbw.cas.integra.ui.catalogue
 
+import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -18,28 +19,27 @@ import com.dhbw.cas.integra.ui.areas.AreasViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.dialog_new_task.*
 
-class CatalogueFragment : Fragment() {
+class CatalogueFragment : Fragment(), CreateTaskDialogFragment.CreateTaskDialogListener {
 
     private lateinit var catalogueViewModel: CatalogueViewModel
-    private lateinit var dialog: AlertDialog
     private var _binding: FragmentCatalogueBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
         // get View Models
         catalogueViewModel =
-                ViewModelProvider(this).get(CatalogueViewModel::class.java)
+            ViewModelProvider(this).get(CatalogueViewModel::class.java)
         val areasViewModel =
-                ViewModelProvider(this).get(AreasViewModel::class.java)
+            ViewModelProvider(this).get(AreasViewModel::class.java)
 
         // get view binding and activity
         _binding = FragmentCatalogueBinding.inflate(inflater, container, false)
         val view = binding.root
-        val main : AppCompatActivity = activity as AppCompatActivity
+        val main: AppCompatActivity = activity as AppCompatActivity
 
         // get recycler view containing task list, set adapter and its data by observing
         val recyclerView: RecyclerView = binding.taskList
@@ -49,38 +49,30 @@ class CatalogueFragment : Fragment() {
         areasViewModel.areas.observe(main) { areas -> catalogueAdapter.setAreas(areas) }
 
         // add divider to recycler view list
-        val layoutManager : LinearLayoutManager = recyclerView.layoutManager as LinearLayoutManager
+        val layoutManager: LinearLayoutManager = recyclerView.layoutManager as LinearLayoutManager
         val dividerItemDecoration = DividerItemDecoration(
-                recyclerView.context,
-                layoutManager.orientation
+            recyclerView.context,
+            layoutManager.orientation
         )
         recyclerView.addItemDecoration(dividerItemDecoration)
 
         // add Listener to Add Button
         val fab: FloatingActionButton = binding.actionAddTask
-        fab.setOnClickListener { buttonView ->
+        fab.setOnClickListener {
             //create and open dialog to create task
-            val builder = AlertDialog.Builder(buttonView.context)
-            builder.apply {
-                setTitle(R.string.new_task)
-                setView(R.layout.dialog_new_task)
-                setPositiveButton(R.string.okay, null)
-                setNegativeButton(R.string.cancel, null)
-            }
-            dialog = builder.create()
-            dialog.show()
-            //check and create task when dialog is left via "OK"
-            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
-                val correct = validateTask()
-                if (correct) {
-                    createTask()
-                    dialog.dismiss()
-                }
-            }
+            val dialogFrag = CreateTaskDialogFragment()
+            dialogFrag.setTargetFragment(this, 1)
+            dialogFrag.show(parentFragmentManager, "CreateTaskDialogFragment")
+
             // set adapter for areas spinner
             areasViewModel.getAreaTexts().observe(viewLifecycleOwner, { spinnerData ->
-                val spinnerAdapter = ArrayAdapter(main, android.R.layout.simple_spinner_item, spinnerData)
-                dialog.new_task_area_spinner.adapter = spinnerAdapter
+                val spinnerAdapter =
+                    ArrayAdapter(
+                        activity as AppCompatActivity,
+                        android.R.layout.simple_spinner_item,
+                        spinnerData
+                    )
+                dialogFrag.setSpinnerAdapter(spinnerAdapter)
             })
         }
 
@@ -88,7 +80,7 @@ class CatalogueFragment : Fragment() {
     }
 
     // validate that title and duration are not empty
-    private fun validateTask(): Boolean{
+    private fun validateTask(dialog: Dialog): Boolean {
         val title = dialog.new_task_title.text.toString()
         val duration = dialog.new_task_duration.text.toString()
         return when {
@@ -108,7 +100,7 @@ class CatalogueFragment : Fragment() {
         }
     }
 
-    private fun createTask(){
+    private fun createTask(dialog: Dialog) {
         val title = dialog.new_task_title.text.toString()
         val descr = dialog.new_task_descr.text.toString()
         val prio = dialog.new_task_prio.text.toString()
@@ -130,5 +122,14 @@ class CatalogueFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    //check and create task when dialog is left via "OK"
+    override fun onCreateDialogPositiveClick(dialog: DialogFragment, view: View) {
+        val correct = validateTask(dialog.dialog!!)
+        if (correct) {
+            createTask(dialog.dialog!!)
+            dialog.dismiss()
+        }
     }
 }

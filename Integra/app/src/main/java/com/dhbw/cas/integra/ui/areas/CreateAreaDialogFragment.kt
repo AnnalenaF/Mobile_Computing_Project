@@ -9,8 +9,13 @@ import android.widget.Spinner
 import androidx.fragment.app.DialogFragment
 import com.dhbw.cas.integra.R
 
-class CreateAreaDialogFragment(private var labelArray: ArrayList<Int>) : DialogFragment() {
+class CreateAreaDialogFragment() : DialogFragment() {
     private lateinit var listener: CreateAreaDialogListener
+
+    companion object {
+        // save labelArray as companion because it survives recreation when orientation changes
+        private lateinit var labelArray: ArrayList<Int>
+    }
 
     interface CreateAreaDialogListener {
         fun onCreateDialogPositiveClick(dialog: DialogFragment, view: View)
@@ -48,5 +53,9 @@ class CreateAreaDialogFragment(private var labelArray: ArrayList<Int>) : DialogF
             return builder.create()
 
         } ?: throw IllegalStateException("Activity cannot be null")
+    }
+
+    fun setLabelArray(labelArrayNew: ArrayList<Int>){
+        labelArray = labelArrayNew
     }
 }

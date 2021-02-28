@@ -59,7 +59,8 @@ class AreasFragment : Fragment(), CreateAreaDialogFragment.CreateAreaDialogListe
             if (areasAdapter.getAreas().size == 10) { // limit number of areas to 10
                 Snackbar.make(buttonView, R.string.max_num_areas, Snackbar.LENGTH_LONG).show()
             } else { // create and open dialog to create area
-                val dialogFrag = CreateAreaDialogFragment(areasAdapter.getLabelArray())
+                val dialogFrag = CreateAreaDialogFragment()
+                dialogFrag.setLabelArray(areasAdapter.getLabelArray())
                 dialogFrag.setTargetFragment(this, 1)
                 dialogFrag.show(parentFragmentManager, "CreateAreaDialogFragment")
             }
