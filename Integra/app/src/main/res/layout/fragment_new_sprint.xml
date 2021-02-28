@@ -13,11 +13,11 @@
             android:id="@+id/heading_date_picker"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/grey_dark"
+            android:background="?colorSecondaryVariant"
             android:padding="8dp"
             android:text="@string/heading_date_picker"
             android:textAppearance="?attr/textAppearanceListItem"
-            android:textColor="@color/white"
+            android:textColor="?colorOnPrimary"
             android:textStyle="bold" />
 
         <com.savvi.rangedatepicker.CalendarPickerView
@@ -27,19 +27,19 @@
             android:clipToPadding="false"
             android:padding="8dp"
             android:scrollbarStyle="outsideOverlay"
-            app:tsquare_dividerColor="@color/white"
-            app:tsquare_headerTextColor="@color/black"
+            app:tsquare_dividerColor="?colorOnPrimary"
+            app:tsquare_headerTextColor="?colorOnSecondary"
             app:tsquare_orientation_horizontal="true" />
 
         <TextView
             android:id="@+id/heading_areas_capacity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/grey_dark"
+            android:background="?colorSecondaryVariant"
             android:padding="8dp"
             android:text="@string/heading_areas_capacity"
             android:textAppearance="?attr/textAppearanceListItem"
-            android:textColor="@color/white"
+            android:textColor="?colorOnPrimary"
             android:textStyle="bold" />
 
         <androidx.recyclerview.widget.RecyclerView
