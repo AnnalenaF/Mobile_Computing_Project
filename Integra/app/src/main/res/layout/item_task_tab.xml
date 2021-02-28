@@ -79,6 +79,6 @@
         android:layout_alignParentEnd="true"
         android:gravity="center"
         android:src="@drawable/ic_baseline_more_vert_24"
-        android:background="@color/white"
+        android:background="@android:color/transparent"
         android:contentDescription="@string/button_task_menu_descr"/>
 </RelativeLayout>
