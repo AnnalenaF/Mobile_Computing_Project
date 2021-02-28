@@ -9,6 +9,7 @@ import android.view.*
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Spinner
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -19,7 +20,7 @@ import com.dhbw.cas.integra.data.Area
 import com.dhbw.cas.integra.ui.areas.AreasViewModel
 import com.dhbw.cas.integra.ui.catalogue.CatalogueViewModel
 import com.dhbw.cas.integra.data.Task
-import com.google.android.material.textview.MaterialTextView
+import com.dhbw.cas.integra.databinding.FragmentTaskBinding
 
 
 class TaskFragment : Fragment() {
@@ -29,35 +30,41 @@ class TaskFragment : Fragment() {
     private var editMode: Boolean = false
     private lateinit var title: EditText
     private lateinit var areaSpinner : Spinner
-    private lateinit var areaDisplay : MaterialTextView
-    private lateinit var areaLabel : MaterialTextView
+    private lateinit var areaDisplay : TextView
+    private lateinit var areaLabel : TextView
     private lateinit var priority : EditText
     private lateinit var expectedDuration : EditText
     private lateinit var description : EditText
     private lateinit var args: TaskFragmentArgs
     private lateinit var areasList: List<Area>
+    private var _binding: FragmentTaskBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val root = inflater.inflate(R.layout.fragment_task, container, false)
+    ): View {
+        // get view binding
+        _binding = FragmentTaskBinding.inflate(inflater, container, false)
+        val view = binding.root
+
+        // get view models
         areasViewModel =
             ViewModelProvider(this).get(AreasViewModel::class.java)
         val main : AppCompatActivity = activity as AppCompatActivity
         catalogueViewModel =
             ViewModelProvider(main).get(CatalogueViewModel::class.java)
-        return root
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        title = view.findViewById(R.id.task_title)
-        areaSpinner = view.findViewById(R.id.task_area_spinner)
-        areaDisplay = view.findViewById(R.id.task_area)
-        priority = view.findViewById(R.id.task_prio)
-        expectedDuration = view.findViewById(R.id.task_duration)
-        description = view.findViewById(R.id.task_descr)
+        title = binding.taskTitle
+        areaSpinner = binding.taskAreaSpinner
+        areaDisplay = binding.taskArea
+        priority = binding.taskPrio
+        expectedDuration = binding.taskDuration
+        description = binding.taskDescr
         val argsLocal: TaskFragmentArgs by navArgs()
         args = argsLocal
         // set adapter for areas spinner
@@ -77,7 +84,7 @@ class TaskFragment : Fragment() {
         setValuesFromArgs()
 
         // disable editing
-        areaLabel = view.findViewById(R.id.task_area_label)
+        areaLabel = binding.taskAreaLabel
         areaLabel.isVisible = false
         areaSpinner.isVisible = false
         backgroundEdit = title.background
@@ -263,5 +270,10 @@ class TaskFragment : Fragment() {
                 true
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

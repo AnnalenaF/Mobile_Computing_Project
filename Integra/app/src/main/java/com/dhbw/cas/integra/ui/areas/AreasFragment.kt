@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.*
+import com.dhbw.cas.integra.databinding.FragmentAreasBinding
 import com.dhbw.cas.integra.ui.catalogue.CatalogueViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
@@ -21,6 +22,9 @@ class AreasFragment : Fragment() {
     private lateinit var areasAdapter: AreasAdapter
     private val catalogueViewModel: CatalogueViewModel by activityViewModels()
 
+    private var _binding: FragmentAreasBinding? = null
+    private val binding get() = _binding!!
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -28,13 +32,15 @@ class AreasFragment : Fragment() {
     ): View {
         areasViewModel =
                 ViewModelProvider(this).get(AreasViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_areas, container, false)
+        //get view binding
+        _binding = FragmentAreasBinding.inflate(inflater, container, false)
+        val view = binding.root
 
         // get recycler view containing area list, set adapter and observe areas
-        val recyclerView: RecyclerView = root.findViewById(R.id.areas_list)
+        val recyclerView: RecyclerView = binding.areasList
         val main : AppCompatActivity = activity as AppCompatActivity
 
-        areasAdapter = AreasAdapter(root, areasViewModel, catalogueViewModel, main)
+        areasAdapter = AreasAdapter(binding.root, areasViewModel, catalogueViewModel, main)
         recyclerView.adapter = areasAdapter
         areasViewModel.areasWithTasks.observe(main) { areas -> areasAdapter.setAreas(areas) }
 
@@ -47,10 +53,10 @@ class AreasFragment : Fragment() {
         recyclerView.addItemDecoration(dividerItemDecoration)
 
         // add Listener to Add Button
-        val fab: FloatingActionButton = root.findViewById(R.id.action_add_area)
-        fab.setOnClickListener { view ->
+        val fab: FloatingActionButton = binding.actionAddArea
+        fab.setOnClickListener { buttonView ->
             if (areasAdapter.getAreas().size == 10){ // limit number of areas to 10
-                Snackbar.make(view, R.string.max_num_areas, Snackbar.LENGTH_LONG ).show()
+                Snackbar.make(buttonView, R.string.max_num_areas, Snackbar.LENGTH_LONG ).show()
             } else { // create and open dialog to create area
                 val builder = AlertDialog.Builder(view.context)
                 builder.apply {
@@ -74,7 +80,7 @@ class AreasFragment : Fragment() {
                 dialog.new_area_label_spinner.adapter = spinnerAdapter
             }
         }
-        return root
+        return view
     }
 
     private fun createArea() {
@@ -114,5 +120,10 @@ class AreasFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

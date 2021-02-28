@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dhbw.cas.integra.R
+import com.dhbw.cas.integra.databinding.FragmentCatalogueBinding
 import com.dhbw.cas.integra.ui.areas.AreasViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.dialog_new_task.*
@@ -21,25 +22,28 @@ class CatalogueFragment : Fragment() {
 
     private lateinit var catalogueViewModel: CatalogueViewModel
     private lateinit var dialog: AlertDialog
+    private var _binding: FragmentCatalogueBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // get View Models
         catalogueViewModel =
                 ViewModelProvider(this).get(CatalogueViewModel::class.java)
         val areasViewModel =
                 ViewModelProvider(this).get(AreasViewModel::class.java)
 
-        // get view and activity
-        val root = inflater.inflate(R.layout.fragment_catalogue, container, false)
+        // get view binding and activity
+        _binding = FragmentCatalogueBinding.inflate(inflater, container, false)
+        val view = binding.root
         val main : AppCompatActivity = activity as AppCompatActivity
 
         // get recycler view containing task list, set adapter and its data by observing
-        val recyclerView: RecyclerView = root.findViewById(R.id.task_list)
-        val catalogueAdapter = CatalogueAdapter(root, main, catalogueViewModel)
+        val recyclerView: RecyclerView = binding.taskList
+        val catalogueAdapter = CatalogueAdapter(binding.root, main, catalogueViewModel)
         recyclerView.adapter = catalogueAdapter
         catalogueViewModel.tasks.observe(main) { tasks -> catalogueAdapter.setTasks(tasks) }
         areasViewModel.areas.observe(main) { areas -> catalogueAdapter.setAreas(areas) }
@@ -53,10 +57,10 @@ class CatalogueFragment : Fragment() {
         recyclerView.addItemDecoration(dividerItemDecoration)
 
         // add Listener to Add Button
-        val fab: FloatingActionButton = root.findViewById(R.id.action_add_task)
-        fab.setOnClickListener { view ->
+        val fab: FloatingActionButton = binding.actionAddTask
+        fab.setOnClickListener { buttonView ->
             //create and open dialog to create task
-            val builder = AlertDialog.Builder(view.context)
+            val builder = AlertDialog.Builder(buttonView.context)
             builder.apply {
                 setTitle(R.string.new_task)
                 setView(R.layout.dialog_new_task)
@@ -80,7 +84,7 @@ class CatalogueFragment : Fragment() {
             })
         }
 
-        return root
+        return view
     }
 
     // validate that title and duration are not empty
@@ -121,5 +125,10 @@ class CatalogueFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

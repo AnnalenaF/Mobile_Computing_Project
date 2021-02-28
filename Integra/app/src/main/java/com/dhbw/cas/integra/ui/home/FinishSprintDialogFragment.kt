@@ -5,11 +5,8 @@ import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.view.View
-import android.widget.CheckBox
-import androidx.databinding.DataBindingUtil.setContentView
 import androidx.fragment.app.DialogFragment
 import com.dhbw.cas.integra.R
-import com.google.android.material.checkbox.MaterialCheckBox
 
 class FinishSprintDialogFragment() : DialogFragment() {
     private lateinit var listener: FinishSprintDialogListener
@@ -45,5 +42,4 @@ class FinishSprintDialogFragment() : DialogFragment() {
             builder.create()
         } ?: throw IllegalStateException("Activity cannot be null")
     }
-
 }

@@ -3,19 +3,17 @@ package com.dhbw.cas.integra.ui.home
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
-import android.widget.Button
-import android.widget.ProgressBar
-import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import androidx.viewpager2.widget.ViewPager2
 import com.dhbw.cas.integra.MainActivity
 import com.dhbw.cas.integra.R
 import com.dhbw.cas.integra.data.Sprint
+import com.dhbw.cas.integra.databinding.FragmentNoActiveSprintBinding
+import com.dhbw.cas.integra.databinding.FragmentSprintBinding
 import com.google.android.material.checkbox.MaterialCheckBox
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
@@ -27,12 +25,15 @@ import java.util.concurrent.TimeUnit
 class HomeFragment : Fragment(), FinishSprintDialogFragment.FinishSprintDialogListener {
 
     private lateinit var sprintViewModel: SprintViewModel
-    private lateinit var root: View
     private lateinit var menuItemFinishSprint: MenuItem
     private lateinit var tabLayout: TabLayout
     private lateinit var viewPagerAdapter: TabsViewPagerAdapter
     private var activeSprint: Any? = Any()
     private var sprintActive: Boolean = false
+    private var _bindingSprint: FragmentSprintBinding? = null
+    private val bindingSprint get() = _bindingSprint!!
+    private var _bindingNoSprint: FragmentNoActiveSprintBinding? = null
+    private val bindingNoSprint get() = _bindingNoSprint!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,12 +44,14 @@ class HomeFragment : Fragment(), FinishSprintDialogFragment.FinishSprintDialogLi
             ViewModelProvider(this).get(SprintViewModel::class.java)
         activeSprint = sprintViewModel.activeSprint
         sprintActive = activeSprint is Sprint
+        val view: View
 
         if (sprintActive) {
-            root = inflater.inflate(R.layout.fragment_sprint, container, false)
+            _bindingSprint = FragmentSprintBinding.inflate(inflater, container, false)
+            view = bindingSprint.root
 
             // display current sprint date range
-            val sprintDuration = root.findViewById<TextView>(R.id.sprint_daterange)
+            val sprintDuration = bindingSprint.sprintDaterange
             val startDate = Date((activeSprint as Sprint).startDate)
             val startDateString: String =
                 SimpleDateFormat("dd.MM.yy", Locale.getDefault()).format(startDate)
@@ -75,17 +78,17 @@ class HomeFragment : Fragment(), FinishSprintDialogFragment.FinishSprintDialogLi
             var passedDays: Long = today.time - startDate.time
             passedDays = TimeUnit.MILLISECONDS.toDays(passedDays) + 1
             // display days in textview
-            val sprintProgressLabel = root.findViewById<TextView>(R.id.sprint_progress_label)
+            val sprintProgressLabel = bindingSprint.sprintProgressLabel
             sprintProgressLabel.text =
                 getString(R.string.sprint_progress_label, passedDays, totalDays)
             // display days in progress bar
-            val sprintProgress = root.findViewById<ProgressBar>(R.id.sprint_progress)
+            val sprintProgress = bindingSprint.sprintProgress
             sprintProgress.max = totalDays.toInt()
             sprintProgress.progress = passedDays.toInt()
 
             // create and assign adapter to tablayout and viewpager
-            tabLayout = root.findViewById(R.id.tablayout_sprint)
-            val viewPager = root.findViewById<ViewPager2>(R.id.viewpager_tabs)
+            tabLayout = bindingSprint.tablayoutSprint
+            val viewPager = bindingSprint.viewpagerTabs
             viewPagerAdapter = TabsViewPagerAdapter(requireActivity())
             viewPager.adapter = viewPagerAdapter
             tabLayout.addOnTabSelectedListener(object : OnTabSelectedListener {
@@ -116,16 +119,17 @@ class HomeFragment : Fragment(), FinishSprintDialogFragment.FinishSprintDialogLi
             tabLayout.tabGravity = TabLayout.GRAVITY_FILL
 
         } else {
-            root = inflater.inflate(R.layout.fragment_no_active_sprint, container, false)
+            _bindingNoSprint = FragmentNoActiveSprintBinding.inflate(inflater, container, false)
+            view = bindingNoSprint.root
 
-            val buttonPlanSprint = root.findViewById<Button>(R.id.button_plan_sprint)
+            val buttonPlanSprint = bindingNoSprint.buttonPlanSprint
             buttonPlanSprint.setOnClickListener {
                 val action = HomeFragmentDirections.actionNavHomeToNavNewSprint()
-                root.findNavController().navigate(action)
+                view.findNavController().navigate(action)
             }
         }
 
-        return root
+        return view
     }
 
     // instantiate tab fragment
@@ -191,11 +195,17 @@ class HomeFragment : Fragment(), FinishSprintDialogFragment.FinishSprintDialogLi
         sprintViewModel.deleteSprint(activeSprint)
 
         // restart activity
-        val intent = Intent(root.context, MainActivity::class.java)
+        val intent = Intent(view.context, MainActivity::class.java)
         intent.addFlags(
             Intent.FLAG_ACTIVITY_CLEAR_TOP
                     or Intent.FLAG_ACTIVITY_NEW_TASK
         )
         startActivity(intent)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _bindingSprint = null
+        _bindingNoSprint = null
     }
 }

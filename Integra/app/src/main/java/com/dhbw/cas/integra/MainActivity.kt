@@ -20,9 +20,8 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.navigation.NavController
-import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
-import com.dhbw.cas.integra.ui.home.HomeFragmentDirections
+import com.dhbw.cas.integra.databinding.ActivityMainBinding
 import com.dhbw.cas.integra.ui.home.SprintViewModel
 import com.google.android.material.navigation.NavigationView
 import java.util.*
@@ -30,12 +29,18 @@ import java.util.*
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
+    private lateinit var binding: ActivityMainBinding
     private val sprintViewModel: SprintViewModel by viewModels()
     private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+
+        // get view binding
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
+
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
@@ -45,10 +50,10 @@ class MainActivity : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.nav_home, R.id.nav_catalogue, R.id.nav_areas
-            ), findViewById(R.id.drawer_layout)
+            ), binding.drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
-        val navView: NavigationView = findViewById(R.id.nav_view)
+        val navView: NavigationView = binding.navView
         navView.setupWithNavController(navController)
 
         // create notification channel to be able to send notifications

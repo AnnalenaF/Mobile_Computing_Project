@@ -9,6 +9,7 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.dhbw.cas.integra.R
 import com.dhbw.cas.integra.data.Areas
+import com.dhbw.cas.integra.databinding.FragmentNewSprintBinding
 import com.dhbw.cas.integra.ui.areas.AreasViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.savvi.rangedatepicker.CalendarPickerView
@@ -16,10 +17,11 @@ import kotlinx.android.synthetic.main.fragment_new_sprint.*
 import java.util.*
 
 class NewSprintFragment: Fragment() {
-    private lateinit var root: View
     private lateinit var today: Date
     private lateinit var areasViewModel: AreasViewModel
     private lateinit var areasCapacityAdapter: AreasCapacityAdapter
+    private var _binding: FragmentNewSprintBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,12 +30,13 @@ class NewSprintFragment: Fragment() {
     ): View {
         areasViewModel =
             ViewModelProvider(this).get(AreasViewModel::class.java)
-        root = inflater.inflate(R.layout.fragment_new_sprint, container, false)
-        val recyclerView: RecyclerView = root.findViewById(R.id.new_sprint_areas)
+        _binding = FragmentNewSprintBinding.inflate(inflater, container, false)
+        val view = binding.root
+
+        val recyclerView: RecyclerView = binding.newSprintAreas
         areasCapacityAdapter = AreasCapacityAdapter()
         recyclerView.adapter = areasCapacityAdapter
         areasViewModel.areas.observe(viewLifecycleOwner, { areas -> areasCapacityAdapter.setAreas(areas) })
-
 
         // instantiate calender to pick sprint duration
         val calendar = Calendar.getInstance()
@@ -49,12 +52,12 @@ class NewSprintFragment: Fragment() {
         //maximum sprint duration is 1 year = 365 days
         calendar.add(Calendar.DAY_OF_YEAR, 364)
         val maxDate = calendar.time
-        val calendarView = root.findViewById<CalendarPickerView>(R.id.calendar_sprint_duration)
+        val calendarView = binding.calendarSprintDuration
         calendarView.init(today, maxDate)
             .inMode(CalendarPickerView.SelectionMode.RANGE)
             .withSelectedDates(listOf<Date>(today, defaultSprintEnd))
 
-        return root
+        return view
     }
 
     // enable fragment to display options menu
@@ -79,14 +82,14 @@ class NewSprintFragment: Fragment() {
                 val selectedDates = calendar_sprint_duration.selectedDates
                 when {
                     selectedDates[0] != today -> {
-                        Snackbar.make(root, R.string.sprint_start_error, Snackbar.LENGTH_LONG)
-                            .setTextColor(ContextCompat.getColor(root.context, R.color.red_error))
+                        Snackbar.make(binding.root, R.string.sprint_start_error, Snackbar.LENGTH_LONG)
+                            .setTextColor(ContextCompat.getColor(binding.root.context, R.color.red_error))
                             .show()
                     }
                     selectedDates.size < 5 -> {
-                        Snackbar.make(root, getString(R.string.sprint_length_error, 5),
+                        Snackbar.make(binding.root, getString(R.string.sprint_length_error, 5),
                             Snackbar.LENGTH_LONG)
-                            .setTextColor(ContextCompat.getColor(root.context, R.color.red_error))
+                            .setTextColor(ContextCompat.getColor(binding.root.context, R.color.red_error))
                             .show()
                     }
                     else -> {
@@ -102,12 +105,17 @@ class NewSprintFragment: Fragment() {
                         }
                         val action = NewSprintFragmentDirections.actionNavNewSprintToNavNewSprintTasks(
                             areas, selectedDates[0].time, selectedDates[selectedDates.size-1].time)
-                        root.findNavController().navigate(action)
+                        binding.root.findNavController().navigate(action)
                     }
                 }
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

@@ -10,9 +10,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.dhbw.cas.integra.R
 import com.dhbw.cas.integra.data.Task
+import com.dhbw.cas.integra.databinding.FragmentCurrentSprintTabBinding
 import com.dhbw.cas.integra.ui.catalogue.CatalogueViewModel
 
 class TabPageFragment() : Fragment(),
@@ -20,6 +20,8 @@ class TabPageFragment() : Fragment(),
     private lateinit var taskListAdapter: TabTaskListAdapter
     private lateinit var catalogueViewModel: CatalogueViewModel
     private var tabPosition: Int = 0
+    private var _binding: FragmentCurrentSprintTabBinding? = null
+    private val binding get() = _binding!!
 
     companion object {
         fun newInstance(tabPosition: Int): Fragment {
@@ -33,13 +35,15 @@ class TabPageFragment() : Fragment(),
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val root = inflater.inflate(R.layout.fragment_current_sprint_tab, container, false)
+        _binding = FragmentCurrentSprintTabBinding.inflate(inflater, container, false)
+        val view = binding.root
+
         val homeViewModel =
             ViewModelProvider(this).get(SprintViewModel::class.java)
         catalogueViewModel =
             ViewModelProvider(this).get(CatalogueViewModel::class.java)
 
-        val recyclerView = root.findViewById<RecyclerView>(R.id.tab_task_list)
+        val recyclerView = binding.tabTaskList
         taskListAdapter = TabTaskListAdapter(catalogueViewModel, this, parentFragmentManager)
         recyclerView.adapter = taskListAdapter
         homeViewModel.activeSprintLive.observe(viewLifecycleOwner, {
@@ -82,7 +86,7 @@ class TabPageFragment() : Fragment(),
         )
         recyclerView.addItemDecoration(dividerItemDecoration)
 
-        return root
+        return view
     }
 
     override fun onLogDialogPositiveClick(dialog: DialogFragment, task: Task) {
@@ -90,5 +94,10 @@ class TabPageFragment() : Fragment(),
             dialog.dialog!!.findViewById<EditText>(R.id.logged_time_input).text.toString().toInt()
         task.loggedDuration = task.loggedDuration + loggedWork
         catalogueViewModel.updateTask(task)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

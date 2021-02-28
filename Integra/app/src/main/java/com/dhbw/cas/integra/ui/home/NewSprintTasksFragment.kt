@@ -3,7 +3,6 @@ package com.dhbw.cas.integra.ui.home
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
-import android.widget.ImageButton
 import android.widget.RadioGroup
 import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
@@ -17,23 +16,27 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dhbw.cas.integra.MainActivity
 import com.dhbw.cas.integra.R
+import com.dhbw.cas.integra.databinding.FragmentNewSprintTasksBinding
 import com.dhbw.cas.integra.ui.areas.AreasViewModel
 import com.dhbw.cas.integra.ui.catalogue.CatalogueViewModel
 import com.google.android.material.snackbar.Snackbar
 
 
 class NewSprintTasksFragment : Fragment(), SortTasksDialogFragment.SortDialogListener {
-    private lateinit var root: View
     private lateinit var taskListAdapter: TaskListAdapter
     private lateinit var areasViewModel: AreasViewModel
     private lateinit var sprintViewModel: SprintViewModel
+    private var _binding: FragmentNewSprintTasksBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        root = inflater.inflate(R.layout.fragment_new_sprint_tasks, container, false)
+        _binding = FragmentNewSprintTasksBinding.inflate(inflater, container, false)
+        val view = binding.root
+
         val main = activity as AppCompatActivity
         val catalogueViewModel =
             ViewModelProvider(this).get(CatalogueViewModel::class.java)
@@ -43,7 +46,7 @@ class NewSprintTasksFragment : Fragment(), SortTasksDialogFragment.SortDialogLis
             ViewModelProvider(this).get(SprintViewModel::class.java)
 
         // get recycler view containing task list, set adapter and its data by observing
-        val recyclerViewTasks: RecyclerView = root.findViewById(R.id.task_list_new_sprint)
+        val recyclerViewTasks: RecyclerView = binding.taskListNewSprint
         taskListAdapter = TaskListAdapter(areasViewModel)
         recyclerViewTasks.adapter = taskListAdapter
         catalogueViewModel.tasks.observe(
@@ -64,14 +67,14 @@ class NewSprintTasksFragment : Fragment(), SortTasksDialogFragment.SortDialogLis
         taskListAdapter.setAreas(areas)
 
         // get recycler view containing area capacities, set adapter and its data by observing
-        val recyclerViewAreas: RecyclerView = root.findViewById(R.id.available_capacities)
+        val recyclerViewAreas: RecyclerView = binding.availableCapacities
         val areasCapacityAvailAdapter = AreasCapacityAvailAdapter()
         recyclerViewAreas.adapter = areasCapacityAvailAdapter
         areasViewModel.areas.observe(main) { liveAreas ->
             areasCapacityAvailAdapter.setAreas(liveAreas)
         }
 
-        val sortButton = root.findViewById<ImageButton>(R.id.button_sort_tasks)
+        val sortButton = binding.buttonSortTasks
 
         sortButton.setOnClickListener {
             val dialogFrag = SortTasksDialogFragment()
@@ -80,7 +83,7 @@ class NewSprintTasksFragment : Fragment(), SortTasksDialogFragment.SortDialogLis
         }
 
         // set query listener for task search
-        val searchView = root.findViewById<SearchView>(R.id.task_search)
+        val searchView = binding.taskSearch
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return false
@@ -92,7 +95,7 @@ class NewSprintTasksFragment : Fragment(), SortTasksDialogFragment.SortDialogLis
             }
         })
 
-        return root
+        return view
     }
 
     // enable fragment to display options menu
@@ -116,8 +119,8 @@ class NewSprintTasksFragment : Fragment(), SortTasksDialogFragment.SortDialogLis
             R.id.action_start -> { // save sprint and display current sprint
                 // check tasks assigned to sprint
                 if (taskListAdapter.selectedTasks.size == 0){
-                    val snackbarError = Snackbar.make(root, R.string.sprint_no_tasks, Snackbar.LENGTH_LONG )
-                    snackbarError.setTextColor(ContextCompat.getColor(root.context, R.color.red_error))
+                    val snackbarError = Snackbar.make(binding.root, R.string.sprint_no_tasks, Snackbar.LENGTH_LONG )
+                    snackbarError.setTextColor(ContextCompat.getColor(binding.root.context, R.color.red_error))
                     snackbarError.show()
                 } else {
                     // reset capacities of areas
@@ -134,7 +137,7 @@ class NewSprintTasksFragment : Fragment(), SortTasksDialogFragment.SortDialogLis
                         taskListAdapter.selectedTasks
                     )
                     // restart activity
-                    val intent = Intent(root.context, MainActivity::class.java)
+                    val intent = Intent(binding.root.context, MainActivity::class.java)
                     intent.addFlags(
                         Intent.FLAG_ACTIVITY_CLEAR_TOP
                                 or Intent.FLAG_ACTIVITY_NEW_TASK
@@ -156,5 +159,10 @@ class NewSprintTasksFragment : Fragment(), SortTasksDialogFragment.SortDialogLis
         val checkedDirectionButtonId = radioGroupDirection.checkedRadioButtonId
         val tasks = taskListAdapter.getTasks()
         taskListAdapter.setTasks(tasks, checkedCriterionButtonId, checkedDirectionButtonId)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
