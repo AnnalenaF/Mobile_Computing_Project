@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,16 +17,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dhbw.cas.integra.MainActivity
 import com.dhbw.cas.integra.R
 import com.dhbw.cas.integra.databinding.FragmentNewSprintTasksBinding
-import com.dhbw.cas.integra.ui.areas.AreasViewModel
-import com.dhbw.cas.integra.ui.catalogue.CatalogueViewModel
-import com.dhbw.cas.integra.ui.sprint.*
+import com.dhbw.cas.integra.ui.MainViewModel
 import com.google.android.material.snackbar.Snackbar
 
 
 class NewSprintTasksFragment : Fragment(), SortTasksDialogFragment.SortDialogListener {
     private lateinit var taskListAdapter: TaskListAdapter
-    private lateinit var areasViewModel: AreasViewModel
-    private lateinit var sprintViewModel: SprintViewModel
+    private val mainViewModel: MainViewModel by activityViewModels()
     private var _binding: FragmentNewSprintTasksBinding? = null
     private val binding get() = _binding!!
 
@@ -39,18 +36,12 @@ class NewSprintTasksFragment : Fragment(), SortTasksDialogFragment.SortDialogLis
         val view = binding.root
 
         val main = activity as AppCompatActivity
-        val catalogueViewModel =
-            ViewModelProvider(this).get(CatalogueViewModel::class.java)
-        areasViewModel =
-            ViewModelProvider(this).get(AreasViewModel::class.java)
-        sprintViewModel =
-            ViewModelProvider(this).get(SprintViewModel::class.java)
 
         // get recycler view containing task list, set adapter and its data by observing
         val recyclerViewTasks: RecyclerView = binding.taskListNewSprint
-        taskListAdapter = TaskListAdapter(areasViewModel)
+        taskListAdapter = TaskListAdapter(mainViewModel)
         recyclerViewTasks.adapter = taskListAdapter
-        catalogueViewModel.tasks.observe(
+        mainViewModel.tasks.observe(
             viewLifecycleOwner,
             { tasks -> taskListAdapter.setTasks(tasks) })
 
@@ -71,7 +62,7 @@ class NewSprintTasksFragment : Fragment(), SortTasksDialogFragment.SortDialogLis
         val recyclerViewAreas: RecyclerView = binding.availableCapacities
         val areasCapacityAvailAdapter = AreasCapacityAvailAdapter()
         recyclerViewAreas.adapter = areasCapacityAvailAdapter
-        areasViewModel.areas.observe(main) { liveAreas ->
+        mainViewModel.areas.observe(main) { liveAreas ->
             areasCapacityAvailAdapter.setAreas(liveAreas)
         }
 
@@ -129,10 +120,10 @@ class NewSprintTasksFragment : Fragment(), SortTasksDialogFragment.SortDialogLis
                     for (area in args.areas) {
                         area.totalCapacity = 0
                         area.remainingCapacity = 0
-                        areasViewModel.updateArea(area)
+                        mainViewModel.updateArea(area)
                     }
                     // save sprint
-                    sprintViewModel.createSprintWithTasks(
+                    mainViewModel.createSprintWithTasks(
                         args.startDate,
                         args.endDate,
                         taskListAdapter.selectedTasks

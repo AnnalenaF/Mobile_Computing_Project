@@ -8,10 +8,9 @@ import androidx.appcompat.app.*
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.*
 import com.dhbw.cas.integra.databinding.FragmentAreasBinding
-import com.dhbw.cas.integra.ui.catalogue.CatalogueViewModel
+import com.dhbw.cas.integra.ui.MainViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.dialog_new_area.*
@@ -19,9 +18,8 @@ import kotlinx.android.synthetic.main.dialog_new_area.*
 
 class AreasFragment : Fragment(), CreateAreaDialogFragment.CreateAreaDialogListener {
 
-    private lateinit var areasViewModel: AreasViewModel
     private lateinit var areasAdapter: AreasAdapter
-    private val catalogueViewModel: CatalogueViewModel by activityViewModels()
+    private val mainViewModel: MainViewModel by activityViewModels()
 
     private var _binding: FragmentAreasBinding? = null
     private val binding get() = _binding!!
@@ -31,8 +29,6 @@ class AreasFragment : Fragment(), CreateAreaDialogFragment.CreateAreaDialogListe
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        areasViewModel =
-            ViewModelProvider(this).get(AreasViewModel::class.java)
         //get view binding
         _binding = FragmentAreasBinding.inflate(inflater, container, false)
         val view = binding.root
@@ -41,9 +37,9 @@ class AreasFragment : Fragment(), CreateAreaDialogFragment.CreateAreaDialogListe
         val recyclerView: RecyclerView = binding.areasList
         val main: AppCompatActivity = activity as AppCompatActivity
 
-        areasAdapter = AreasAdapter(binding.root, areasViewModel, catalogueViewModel, main)
+        areasAdapter = AreasAdapter(binding.root, main, mainViewModel)
         recyclerView.adapter = areasAdapter
-        areasViewModel.areasWithTasks.observe(main) { areas -> areasAdapter.setAreas(areas) }
+        mainViewModel.areasWithTasks.observe(main) { areas -> areasAdapter.setAreas(areas) }
 
         // add divider to recycler view list
         val layoutManager: LinearLayoutManager = recyclerView.layoutManager as LinearLayoutManager
@@ -69,7 +65,7 @@ class AreasFragment : Fragment(), CreateAreaDialogFragment.CreateAreaDialogListe
     }
 
     private fun createArea(text: String, label: Int) {
-        areasViewModel.createArea(text, label)
+        mainViewModel.createArea(text, label)
     }
 
     // validate text of to-be-created area to be not initial and not already used in another area

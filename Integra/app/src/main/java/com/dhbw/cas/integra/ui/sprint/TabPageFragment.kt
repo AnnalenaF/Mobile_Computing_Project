@@ -7,21 +7,21 @@ import android.view.ViewGroup
 import android.widget.EditText
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dhbw.cas.integra.R
 import com.dhbw.cas.integra.data.Task
 import com.dhbw.cas.integra.databinding.FragmentCurrentSprintTabBinding
-import com.dhbw.cas.integra.ui.catalogue.CatalogueViewModel
+import com.dhbw.cas.integra.ui.MainViewModel
 
-class TabPageFragment() : Fragment(),
+class TabPageFragment : Fragment(),
     LogWorkDialogFragment.LogWorkDialogListener {
     private lateinit var taskListAdapter: TabTaskListAdapter
-    private lateinit var catalogueViewModel: CatalogueViewModel
     private var tabPosition: Int = 0
     private var _binding: FragmentCurrentSprintTabBinding? = null
     private val binding get() = _binding!!
+    private val mainViewModel: MainViewModel by activityViewModels()
 
     companion object {
         fun newInstance(tabPosition: Int): Fragment {
@@ -38,15 +38,10 @@ class TabPageFragment() : Fragment(),
         _binding = FragmentCurrentSprintTabBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        val homeViewModel =
-            ViewModelProvider(this).get(SprintViewModel::class.java)
-        catalogueViewModel =
-            ViewModelProvider(this).get(CatalogueViewModel::class.java)
-
         val recyclerView = binding.tabTaskList
-        taskListAdapter = TabTaskListAdapter(catalogueViewModel, this, parentFragmentManager)
+        taskListAdapter = TabTaskListAdapter(mainViewModel, this, parentFragmentManager)
         recyclerView.adapter = taskListAdapter
-        homeViewModel.activeSprintLive.observe(viewLifecycleOwner, {
+        mainViewModel.activeSprintLive.observe(viewLifecycleOwner, {
             if (it != null) {
 
                 val tasks = ArrayList<Task>()
@@ -73,7 +68,7 @@ class TabPageFragment() : Fragment(),
                 taskListAdapter.setTasks(tasks)
             }
         })
-        homeViewModel.areas.observe(viewLifecycleOwner, {
+        mainViewModel.areas.observe(viewLifecycleOwner, {
             taskListAdapter.setAreas(it)
         })
 
@@ -93,7 +88,7 @@ class TabPageFragment() : Fragment(),
         val loggedWork =
             dialog.dialog!!.findViewById<EditText>(R.id.logged_time_input).text.toString().toInt()
         task.loggedDuration = task.loggedDuration + loggedWork
-        catalogueViewModel.updateTask(task)
+        mainViewModel.updateTask(task)
     }
 
     override fun onDestroyView() {

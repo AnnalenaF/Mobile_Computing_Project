@@ -9,19 +9,19 @@ import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dhbw.cas.integra.R
 import com.dhbw.cas.integra.databinding.FragmentCatalogueBinding
-import com.dhbw.cas.integra.ui.areas.AreasViewModel
+import com.dhbw.cas.integra.ui.MainViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.dialog_new_task.*
 
 class CatalogueFragment : Fragment(), CreateTaskDialogFragment.CreateTaskDialogListener {
 
-    private lateinit var catalogueViewModel: CatalogueViewModel
+    private val mainViewModel: MainViewModel by activityViewModels()
     private var _binding: FragmentCatalogueBinding? = null
     private val binding get() = _binding!!
 
@@ -30,12 +30,6 @@ class CatalogueFragment : Fragment(), CreateTaskDialogFragment.CreateTaskDialogL
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // get View Models
-        catalogueViewModel =
-            ViewModelProvider(this).get(CatalogueViewModel::class.java)
-        val areasViewModel =
-            ViewModelProvider(this).get(AreasViewModel::class.java)
-
         // get view binding and activity
         _binding = FragmentCatalogueBinding.inflate(inflater, container, false)
         val view = binding.root
@@ -43,10 +37,10 @@ class CatalogueFragment : Fragment(), CreateTaskDialogFragment.CreateTaskDialogL
 
         // get recycler view containing task list, set adapter and its data by observing
         val recyclerView: RecyclerView = binding.taskList
-        val catalogueAdapter = CatalogueAdapter(binding.root, main, catalogueViewModel)
+        val catalogueAdapter = CatalogueAdapter(binding.root, main, mainViewModel)
         recyclerView.adapter = catalogueAdapter
-        catalogueViewModel.tasks.observe(main) { tasks -> catalogueAdapter.setTasks(tasks) }
-        areasViewModel.areas.observe(main) { areas -> catalogueAdapter.setAreas(areas) }
+        mainViewModel.tasks.observe(main) { tasks -> catalogueAdapter.setTasks(tasks) }
+        mainViewModel.areas.observe(main) { areas -> catalogueAdapter.setAreas(areas) }
 
         // add divider to recycler view list
         val layoutManager: LinearLayoutManager = recyclerView.layoutManager as LinearLayoutManager
@@ -65,7 +59,7 @@ class CatalogueFragment : Fragment(), CreateTaskDialogFragment.CreateTaskDialogL
             dialogFrag.show(parentFragmentManager, "CreateTaskDialogFragment")
 
             // set adapter for areas spinner
-            areasViewModel.getAreaTexts().observe(viewLifecycleOwner, { spinnerData ->
+            mainViewModel.getAreaTexts().observe(viewLifecycleOwner, { spinnerData ->
                 val spinnerAdapter =
                     ArrayAdapter(
                         activity as AppCompatActivity,
@@ -110,7 +104,7 @@ class CatalogueFragment : Fragment(), CreateTaskDialogFragment.CreateTaskDialogL
         }
         val duration = dialog.new_task_duration.text.toString().toInt()
         val area = dialog.new_task_area_spinner.selectedItem as String
-        catalogueViewModel.createTask(title, descr, prioInt, area, duration)
+        mainViewModel.createTask(title, descr, prioInt, area, duration)
     }
 
     // enable fragment to display options menu

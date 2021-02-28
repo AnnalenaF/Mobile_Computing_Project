@@ -3,99 +3,129 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Einstellungen</string>
 
+    <!-- main menu entries -->
     <string name="menu_sprint">Aktueller Sprint</string>
     <string name="menu_catalogue">Aufgabenkatalog</string>
     <string name="menu_areas">Lebensbereiche</string>
 
+    <!-- area related strings -->
     <string name="button_create_area">Neuen Lebensbereich anlegen</string>
     <string name="button_edit_area">Lebensbereich bearbeiten</string>
     <string name="button_cancel_edit_area">Bearbeiten Abbrechen</string>
     <string name="button_save_area">Lebensbereich Speichern</string>
+
     <string name="area_text_hint">Lebensbereich</string>
     <string name="area_text_autofill_hint">Lebensbereich</string>
-    <string name="menu_item_delete">Löschen</string>
+    <string name="new_area">Neuer Lebensbereich</string>
+
     <string name="message_area_deleted">%1$d Lebensbereich mit %2$d Aufgaben gelöscht</string>
     <string name="message_areas_deleted">%1$d Lebensbereiche mit %2$d Aufgaben gelöscht</string>
     <string name="message_area_no_deletion">Das Löschen aller Lebensbereiche ist nicht möglich</string>
-    <string name="action_undo">Rückgängig</string>
-    <string name="new_area">Neuer Lebensbereich</string>
-    <string name="okay">OK</string>
-    <string name="cancel">Abbrechen</string>
+
     <string name="area_text_empty_error">Bitte Bezeichnung eintragen</string>
     <string name="area_text_not_unique_error">Ein Lebensbereich mit diesem Namen existiert bereits</string>
     <string name="area_label_not_unique_error">Ein Lebensbereich mit dieser Farbe exisiert bereits</string>
     <string name="max_num_areas">Maximale Anzahl Lebensbereiche erreicht</string>
+
+    <!-- generic menu items, actions and button texts -->
+    <string name="menu_item_delete">Löschen</string>
+    <string name="menu_item_edit">Bearbeiten</string>
+    <string name="menu_item_save">Speichern</string>
+    <string name="menu_item_cancel">Abbrechen</string>
+    <string name="menu_item_continue">Weiter</string>
+    <string name="action_undo">Rückgängig</string>
+
+    <string name="okay">OK</string>
+    <string name="cancel">Abbrechen</string>
+
+    <!-- task related strings -->
+    <string name="task">Aufgabe</string>
+
     <string name="button_create_task">Neue Aufgabe anlegen</string>
     <string name="new_task">Neue Aufgabe</string>
     <string name="task_title_hint">Titel</string>
     <string name="task_title_autofill_hint">Titel</string>
+    <string name="task_descr_label">Beschreibung:</string>
     <string name="task_descr_hint">Beschreibung</string>
     <string name="task_descr_autofill_hint">Beschreibung</string>
-    <string name="new_task_prio_label">Priorität:</string>
+    <string name="task_prio_label">Priorität:</string>
+    <string name="task_prio_hint">Priorität</string>
     <string name="task_prio_autofill_hint">1, 2, 3, …</string>
-    <string name="new_task_area_label">Lebensbereich:</string>
-    <string name="new_task_duration_label">Dauer in min:</string>
+    <string name="task_area_label">Lebensbereich:</string>
+    <string name="task_duration_label">Dauer in min:</string>
+    <string name="task_dur_hint">Dauer in min</string>
     <string name="task_dur_autofill_hint">z.B. 30, 60, 120, …</string>
+
     <string name="task_title_empty_error">Bitte Titel eintragen</string>
     <string name="task_duration_empty_error">Bitte geschätzte Dauer eintragen</string>
+
     <string name="message_task_deleted">%1$d Aufgabe gelöscht</string>
     <string name="message_tasks_deleted">%1$d Aufgaben gelöscht</string>
-    <string name="task">Aufgabe</string>
-    <string name="task_descr_label">Beschreibung:</string>
-    <string name="menu_item_edit">Bearbeiten</string>
-    <string name="menu_item_save">Speichern</string>
-    <string name="menu_item_cancel">Abbrechen</string>
+
     <string name="placeholder_no_task">Du hast aktuell keine Aufgaben :)</string>
+
+    <!-- sprint planning related strings -->
     <string name="button_plan_sprint">Neuen Sprint planen</string>
     <string name="menu_new_sprint_overview">Neuer Sprint - Übersicht</string>
     <string name="menu_new_sprint_tasks">Neuer Sprint - Aufgaben</string>
-    <string name="menu_item_continue">Weiter</string>
     <string name="menu_item_start_sprint">Sprint starten!</string>
     <string name="sprint_start_error">Bitte starte deinen Sprint heute</string>
     <string name="sprint_length_error">Bitte plane einen Sprint von mindestens %1$d Tagen</string>
     <string name="heading_date_picker">Sprintdauer:</string>
+
     <string name="heading_areas_capacity">Zeitkapazität je Lebensbereich in h:</string>
     <string name="area_capa_autofill_hint">1, 3, 6, 12, …</string>
     <string name="area_capa_hint">Kapa</string>
     <string name="label_available_capacities">Verfügbare Kapazitäten:</string>
-    <string name="button_sort_tasks">Sortierreihenfolge</string>
+    <string name="capacity_negative">Lebensbereich überplant</string>
 
+    <string name="button_sort_tasks">Sortierreihenfolge</string>
     <string name="radio_sort_prio">Prioriät und Titel</string>
     <string name="radio_sort_duration">Dauer und Titel</string>
     <string name="radio_sort_title">Titel</string>
     <string name="radio_sort_asc">Aufsteigend</string>
     <string name="radio_sort_desc">Absteigend</string>
-    <string name="capacity_negative">Lebensbereich überplant</string>
+
     <string name="sprint_no_tasks">Bitte für Deinem Sprint Aufgaben hinzu</string>
 
+    <!-- sprint related strings -->
     <string name="tab_open">Offen</string>
     <string name="tab_in_process">Im Gange</string>
     <string name="tab_done">Fertig</string>
     <string name="tab_blocked">Inaktiv</string>
-    <string name="task_progress_label">Fortschritt:</string>
+
     <string name="action_set_open">Aufgabe ist offen</string>
     <string name="action_set_progress">Aufgabe ist im Gange</string>
     <string name="action_set_done">Aufgabe ist fertig</string>
     <string name="action_set_blocked">Aufgabe ist inaktiv</string>
     <string name="action_log_work">Logge Zeit</string>
+
     <string name="button_task_menu_descr">Optionen für Aufgabe</string>
+
     <string name="logged_time_label">Zeit in min loggen:</string>
     <string name="logged_time_autoFillHints">15, 30, 60, -60, …</string>
+
     <string name="finish_sprint">Sprint Beenden</string>
     <string name="delete_label">Welche Aufgaben sollen bei Beenden des Sprints gelöscht werden?</string>
     <string name="checkbox_delete_open">Offene Aufgaben</string>
     <string name="checkbox_delete_in_process">Aufgaben im Gange</string>
     <string name="checkbox_delete_done">Fertige Aufgaben</string>
     <string name="checkbox_delete_blocked">Blockierte Aufgaben</string>
+
     <string name="sprint_daterange_label">Zeitraum: %1$s</string>
     <string name="sprint_progress_label">Tag %1$d/%2$d:</string>
+    <string name="task_progress_label">Fortschritt:</string>
 
+    <!-- notification related strings -->
     <string name="notification_channel_name">Notification Channel Integra App</string>
     <string name="notification_channel_description">This is the notification channel for Integra App.</string>
+
     <string name="notification_title_plan">Lossprinten?</string>
     <string name="notification_text_plan">Starte durch und plane Deinen nächsten Sprint</string>
     <string name="notification_title_exec">Warst du  heute schon produktiv?</string>
     <string name="notification_text_exec">Schaue doch mal in deinen Sprint</string>
+
+    <!-- preferences related strings -->
     <string name="preference_notif_plan_title">Sprintplanung</string>
     <string name="preference_notif_exec_title">Aktiver Sprint</string>
     <string name="preference_notif_plan">Erinnere mich an die Sprintplanung, wenn länger kein Sprint aktiv ist</string>
@@ -103,6 +133,4 @@
     <string name="preferences_notif">Benachrichtigungen</string>
     <string name="notifications_planning_pref_key">NOTIF_PLAN</string>
     <string name="notifications_execution_pref_key">NOTIF_EXEC</string>
-    <string name="new_task_prio_hint">Priorität</string>
-    <string name="new_task_dur_hint">Dauer in min</string>
 </resources>

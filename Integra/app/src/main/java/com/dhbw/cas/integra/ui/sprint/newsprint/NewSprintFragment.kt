@@ -4,13 +4,13 @@ import android.os.Bundle
 import android.view.*
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.dhbw.cas.integra.R
 import com.dhbw.cas.integra.data.Areas
 import com.dhbw.cas.integra.databinding.FragmentNewSprintBinding
-import com.dhbw.cas.integra.ui.areas.AreasViewModel
+import com.dhbw.cas.integra.ui.MainViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.savvi.rangedatepicker.CalendarPickerView
 import kotlinx.android.synthetic.main.fragment_new_sprint.*
@@ -18,8 +18,8 @@ import java.util.*
 
 class NewSprintFragment: Fragment() {
     private lateinit var today: Date
-    private lateinit var areasViewModel: AreasViewModel
     private lateinit var areasCapacityAdapter: AreasCapacityAdapter
+    private val mainViewModel: MainViewModel by activityViewModels()
     private var _binding: FragmentNewSprintBinding? = null
     private val binding get() = _binding!!
 
@@ -28,15 +28,13 @@ class NewSprintFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        areasViewModel =
-            ViewModelProvider(this).get(AreasViewModel::class.java)
         _binding = FragmentNewSprintBinding.inflate(inflater, container, false)
         val view = binding.root
 
         val recyclerView: RecyclerView = binding.newSprintAreas
         areasCapacityAdapter = AreasCapacityAdapter()
         recyclerView.adapter = areasCapacityAdapter
-        areasViewModel.areas.observe(viewLifecycleOwner, { areas -> areasCapacityAdapter.setAreas(areas) })
+        mainViewModel.areas.observe(viewLifecycleOwner, { areas -> areasCapacityAdapter.setAreas(areas) })
 
         // instantiate calender to pick sprint duration
         val calendar = Calendar.getInstance()
@@ -101,7 +99,7 @@ class NewSprintFragment: Fragment() {
                         val areas = Areas()
                         areas.addAll(areasNew)
                         for (area in areas){
-                            areasViewModel.updateArea(area)
+                            mainViewModel.updateArea(area)
                         }
                         val action =
                             NewSprintFragmentDirections.actionNavNewSprintToNavNewSprintTasks(

@@ -41,7 +41,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:labelFor="@+id/task_area_spinner"
-                android:text="@string/new_task_area_label"
+                android:text="@string/task_area_label"
                 android:textAppearance="?attr/textAppearanceBody1"
                 android:textStyle="bold" />
 
@@ -63,7 +63,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:labelFor="@+id/task_prio"
-                android:text="@string/new_task_prio_label"
+                android:text="@string/task_prio_label"
                 android:textAppearance="?attr/textAppearanceBody1"
                 android:textStyle="bold" />
 
@@ -87,7 +87,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:labelFor="@+id/task_duration"
-                android:text="@string/new_task_duration_label"
+                android:text="@string/task_duration_label"
                 android:textAppearance="?attr/textAppearanceBody1"
                 android:textStyle="bold" />
 

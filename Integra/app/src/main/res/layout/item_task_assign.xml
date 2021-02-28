@@ -33,7 +33,7 @@
         android:layout_below="@id/task_title"
         android:layout_alignParentStart="true"
         android:labelFor="@+id/task_duration"
-        android:text="@string/new_task_duration_label"
+        android:text="@string/task_duration_label"
         android:layout_marginEnd="4dp"/>
 
     <TextView
@@ -55,7 +55,7 @@
         android:layout_alignBottom="@id/task_duration_label"
         android:layout_toEndOf="@id/task_duration"
         android:labelFor="@+id/task_prio"
-        android:text="@string/new_task_prio_label"
+        android:text="@string/task_prio_label"
         android:layout_below="@id/task_area"
         android:layout_marginEnd="4dp" />
 
