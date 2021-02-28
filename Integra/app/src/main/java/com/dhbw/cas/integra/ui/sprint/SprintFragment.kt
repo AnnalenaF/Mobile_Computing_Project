@@ -6,7 +6,7 @@ import android.view.*
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.dhbw.cas.integra.MainActivity
@@ -25,10 +25,10 @@ import java.util.concurrent.TimeUnit
 
 class SprintFragment : Fragment(), FinishSprintDialogFragment.FinishSprintDialogListener {
 
-    private lateinit var mainViewModel: MainViewModel
     private lateinit var menuItemFinishSprint: MenuItem
     private lateinit var tabLayout: TabLayout
     private lateinit var viewPagerAdapter: TabsViewPagerAdapter
+    private val mainViewModel: MainViewModel by activityViewModels()
     private var activeSprint: Any? = Any()
     private var sprintActive: Boolean = false
     private var _bindingSprint: FragmentSprintBinding? = null
@@ -41,8 +41,6 @@ class SprintFragment : Fragment(), FinishSprintDialogFragment.FinishSprintDialog
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        mainViewModel =
-            ViewModelProvider(this).get(MainViewModel::class.java)
         activeSprint = mainViewModel.activeSprint
         sprintActive = activeSprint is Sprint
         val view: View
