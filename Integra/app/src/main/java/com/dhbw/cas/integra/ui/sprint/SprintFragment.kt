@@ -16,7 +16,6 @@ import com.dhbw.cas.integra.databinding.FragmentNoActiveSprintBinding
 import com.dhbw.cas.integra.databinding.FragmentSprintBinding
 import com.google.android.material.checkbox.MaterialCheckBox
 import com.google.android.material.tabs.TabLayout
-import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.google.android.material.tabs.TabLayoutMediator
 import java.text.SimpleDateFormat
 import java.util.*
