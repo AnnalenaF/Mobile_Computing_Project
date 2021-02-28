@@ -15,11 +15,19 @@ import com.dhbw.cas.integra.R
 import com.dhbw.cas.integra.data.Task
 import com.dhbw.cas.integra.ui.catalogue.CatalogueViewModel
 
-class TabPageFragment(private var tabPosition: Int) : Fragment(),
+class TabPageFragment() : Fragment(),
     LogWorkDialogFragment.LogWorkDialogListener {
     private lateinit var taskListAdapter: TabTaskListAdapter
     private lateinit var catalogueViewModel: CatalogueViewModel
+    private var tabPosition: Int = 0
 
+    companion object {
+        fun newInstance(tabPosition: Int): Fragment {
+            val instance = TabPageFragment()
+            instance.tabPosition = tabPosition
+            return instance
+        }
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

@@ -108,4 +108,6 @@
     <string name="preferences_notif">Benachrichtigungen</string>
     <string name="notifications_planning_pref_key">NOTIF_PLAN</string>
     <string name="notifications_execution_pref_key">NOTIF_EXEC</string>
+    <string name="new_task_prio_hint">Priorität</string>
+    <string name="new_task_dur_hint">Dauer in min</string>
 </resources>

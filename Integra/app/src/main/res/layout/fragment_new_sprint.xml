@@ -1,47 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/heading_date_picker"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/grey_dark"
-        android:textColor="@color/white"
-        android:text="@string/heading_date_picker"
-        android:textAppearance="?attr/textAppearanceListItem"
-        android:textStyle="bold"
-        android:padding="8dp"/>
+        android:orientation="vertical">
 
-    <com.savvi.rangedatepicker.CalendarPickerView
-        android:id="@+id/calendar_sprint_duration"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scrollbarStyle="outsideOverlay"
-        android:clipToPadding="false"
-        android:padding="8dp"
-        app:tsquare_orientation_horizontal="true"
-        app:tsquare_dividerColor="@color/white"
-        app:tsquare_headerTextColor="@color/black"/>
+        <TextView
+            android:id="@+id/heading_date_picker"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/grey_dark"
+            android:padding="8dp"
+            android:text="@string/heading_date_picker"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/heading_areas_capacity"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/grey_dark"
-        android:textColor="@color/white"
-        android:text="@string/heading_areas_capacity"
-        android:textAppearance="?attr/textAppearanceListItem"
-        android:textStyle="bold"
-        android:padding="8dp"/>
+        <com.savvi.rangedatepicker.CalendarPickerView
+            android:id="@+id/calendar_sprint_duration"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:padding="8dp"
+            android:scrollbarStyle="outsideOverlay"
+            app:tsquare_dividerColor="@color/white"
+            app:tsquare_headerTextColor="@color/black"
+            app:tsquare_orientation_horizontal="true" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/new_sprint_areas"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layoutManager="LinearLayoutManager" />
-</LinearLayout>
+        <TextView
+            android:id="@+id/heading_areas_capacity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/grey_dark"
+            android:padding="8dp"
+            android:text="@string/heading_areas_capacity"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/new_sprint_areas"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layoutManager="LinearLayoutManager" />
+    </LinearLayout>
+</ScrollView>
