@@ -4,7 +4,6 @@ import com.dhbw.cas.integra.R
 import android.content.Context
 import androidx.core.content.ContextCompat
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.appcompat.view.ActionMode
 import android.view.*
 import androidx.recyclerview.widget.RecyclerView
@@ -37,6 +36,7 @@ class AreasAdapter(
         val areaLabelSpinner: Spinner = itemView.area_label_spinner
         private val areaEditButton = itemView.area_edit_button
         private val areaCancelEditButton = itemView.area_edit_cancel_button
+        private val areaSaveButton = itemView.area_save_button
 
         // instantiate private variables
         private var areaTextValue: CharSequence = ""
@@ -53,66 +53,64 @@ class AreasAdapter(
             // set adapter for label spinner with complete color label list
             areaLabelSpinner.adapter = AreaLabelSpinnerAdapter(itemView.context, labelArray)
 
-            areaEditButton.setOnClickListener { itemViewEdit ->
-                if (!editMode) { //edit button pressed
-
-                    switchDisplayEditMode(itemViewEdit.context)
+            areaEditButton.setOnClickListener {
+                switchDisplayEditMode()
 
                     //remember current values to return to when cancel editing
                     areaTextValue = areaText.text.toString()
                     areaLabelSelected = areaLabelSpinner.selectedItemPosition
+            }
 
-                } else { //changes shall be applied
-                    val pos = adapterPosition
-                    val areaToBeChanged = areas[pos]
-                    when {
-                        //check area text is not empty and display error directly on text field
-                        areaText.text.toString().isEmpty() -> {
-                            areaText.requestFocus()
-                            areaText.error = context.getString(R.string.area_text_empty_error)
-                        }
-                        //check area text is not already used by other area and display error directly on text field
-                        areas.find { (it.area.text == areaText.text.toString()) && it.area.text != areaToBeChanged.area.text } != null -> {
-                            areaText.requestFocus()
-                            areaText.error = context.getString(R.string.area_text_not_unique_error)
-                        }
-                        //check area label is not already used by other area and display error using snackbar
-                        areas.find { (it.area.label == areaLabelSpinner.selectedItem as Int) && (it.area.text != areaToBeChanged.area.text) } != null -> {
-                            val snackbarError = Snackbar.make(
-                                view,
-                                R.string.area_label_not_unique_error,
-                                Snackbar.LENGTH_LONG
+            areaSaveButton.setOnClickListener {
+                val pos = adapterPosition
+                val areaToBeChanged = areas[pos]
+                when {
+                    //check area text is not empty and display error directly on text field
+                    areaText.text.toString().isEmpty() -> {
+                        areaText.requestFocus()
+                        areaText.error = context.getString(R.string.area_text_empty_error)
+                    }
+                    //check area text is not already used by other area and display error directly on text field
+                    areas.find { (it.area.text == areaText.text.toString()) && it.area.text != areaToBeChanged.area.text } != null -> {
+                        areaText.requestFocus()
+                        areaText.error = context.getString(R.string.area_text_not_unique_error)
+                    }
+                    //check area label is not already used by other area and display error using snackbar
+                    areas.find { (it.area.label == areaLabelSpinner.selectedItem as Int) && (it.area.text != areaToBeChanged.area.text) } != null -> {
+                        val snackbarError = Snackbar.make(
+                            view,
+                            R.string.area_label_not_unique_error,
+                            Snackbar.LENGTH_LONG
+                        )
+                        snackbarError.setTextColor(
+                            ContextCompat.getColor(
+                                context,
+                                R.color.red_error
                             )
-                            snackbarError.setTextColor(
-                                ContextCompat.getColor(
-                                    context,
-                                    R.color.red_error
-                                )
-                            )
-                            snackbarError.show()
-                        }
-                        else -> { //no error found --> apply changes and leave edit mode
-                            switchDisplayEditMode(itemViewEdit.context)
+                        )
+                        snackbarError.show()
+                    }
+                    else -> { //no error found --> apply changes and leave edit mode
+                        switchDisplayEditMode()
 
-                            //save changes
-                            areaToBeChanged.area.text = areaText.text.toString()
-                            areaToBeChanged.area.label = areaLabelSpinner.selectedItem as Int
-                            areasViewModel.updateArea(areas[pos].area)
-                            notifyDataSetChanged()
-                        }
+                        //save changes
+                        areaToBeChanged.area.text = areaText.text.toString()
+                        areaToBeChanged.area.label = areaLabelSpinner.selectedItem as Int
+                        areasViewModel.updateArea(areas[pos].area)
+                        notifyDataSetChanged()
                     }
                 }
             }
 
-            areaCancelEditButton.setOnClickListener { itemViewCanc ->
+            areaCancelEditButton.setOnClickListener {
                 //set text and label to old values and leave edit mode
                 areaLabelSpinner.setSelection(areaLabelSelected)
                 areaText.setText(areaTextValue)
-                switchDisplayEditMode(itemViewCanc.context)
+                switchDisplayEditMode()
             }
         }
 
-        private fun switchDisplayEditMode(context: Context) {
+        private fun switchDisplayEditMode() {
             if (!editMode) { //switch to Edit mode
                 editMode = true
                 areaLabelSpinner.isEnabled = true
@@ -124,13 +122,9 @@ class AreasAdapter(
                     isFocusableInTouchMode = true
                     background = areaTextBackground
                 }
-                //change icon on button and display cancel button
-                areaEditButton.setImageDrawable(
-                    getDrawable(
-                        context,
-                        R.drawable.ic_baseline_check_24
-                    )
-                )
+                // display save and cancel button and hide edit button
+                areaEditButton.visibility = View.GONE
+                areaSaveButton.visibility = View.VISIBLE
                 areaCancelEditButton.visibility = View.VISIBLE
             } else { // switch to display mode
                 editMode = false
@@ -143,13 +137,9 @@ class AreasAdapter(
                     isFocusableInTouchMode = false
                     background = null
                 }
-                //change icon on button and hide cancel button
-                areaEditButton.setImageDrawable(
-                    getDrawable(
-                        context,
-                        R.drawable.ic_baseline_edit_24
-                    )
-                )
+                // display edit button and hide save and cancel button
+                areaEditButton.visibility = View.VISIBLE
+                areaSaveButton.visibility = View.GONE
                 areaCancelEditButton.visibility = View.GONE
             }
         }
