@@ -15,6 +15,10 @@ interface AreaDao {
     @Query("SELECT label FROM areas WHERE text = :text")
     fun getLabelByText(text: String): Int
 
+    @Transaction
+    @Query("SELECT * FROM areas ORDER BY text ASC")
+    fun getAreasWithTasks(): LiveData<List<AreaWithTasks>>
+
     @Insert(onConflict =OnConflictStrategy.ABORT )
     @Throws(SQLiteConstraintException::class)
     suspend fun insert(area: Area)

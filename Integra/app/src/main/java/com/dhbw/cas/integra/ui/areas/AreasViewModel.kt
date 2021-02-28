@@ -10,6 +10,7 @@ class AreasViewModel(application: Application) : AndroidViewModel(application) {
     private var areaDao = AppDatabase.getDatabase(application).areaDao()
 
     val areas = areaDao.getAreas()
+    val areasWithTasks = areaDao.getAreasWithTasks()
 
     fun createArea(text: String, label: Int)
         = viewModelScope.launch { areaDao.insert(Area(text, label)) }
