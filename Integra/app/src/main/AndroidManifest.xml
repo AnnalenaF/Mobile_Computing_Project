@@ -8,7 +8,8 @@
         android:label="@string/app_name"
         android:roundIcon="@drawable/integra_icon_circle"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Integra">
+        android:theme="@style/Theme.Integra"
+        android:configChanges="orientation">
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
