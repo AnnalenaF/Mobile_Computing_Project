@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dhbw.cas.integra.R
 import com.dhbw.cas.integra.data.Area
 import com.dhbw.cas.integra.data.Task
+import com.dhbw.cas.integra.ui.MainViewModel
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.item_empty_task.view.*
 import kotlinx.android.synthetic.main.item_task.view.*
@@ -19,7 +20,7 @@ import kotlinx.android.synthetic.main.item_task.view.*
 class CatalogueAdapter(
     private val view: View,
     private val activity: AppCompatActivity,
-    private val catalogueViewModel: CatalogueViewModel
+    private val mainViewModel: MainViewModel
 ):
         RecyclerView.Adapter<CatalogueAdapter.BaseViewHolder<*>>(), ActionMode.Callback {
 
@@ -195,7 +196,7 @@ class CatalogueAdapter(
             val tasksDel = mutableListOf<Task>()
             for (selItem in selectedItems) {
                 tasksDel.add(selItem)
-                catalogueViewModel.deleteTask(selItem)
+                mainViewModel.deleteTask(selItem)
             }
 
             // show success message containing number of deleted areas
@@ -208,7 +209,7 @@ class CatalogueAdapter(
             // enable undo action on success message snackbar
             snackbarSuccess.setAction(R.string.action_undo) {
                 for (taskDel in tasksDel) {
-                    catalogueViewModel.createTask(
+                    mainViewModel.createTask(
                         title = taskDel.title,
                         description = taskDel.description,
                         priority = taskDel.priority,

@@ -10,22 +10,18 @@ import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Spinner
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.navArgs
 import com.dhbw.cas.integra.R
 import com.dhbw.cas.integra.data.Area
-import com.dhbw.cas.integra.ui.areas.AreasViewModel
-import com.dhbw.cas.integra.ui.catalogue.CatalogueViewModel
 import com.dhbw.cas.integra.data.Task
 import com.dhbw.cas.integra.databinding.FragmentTaskBinding
+import com.dhbw.cas.integra.ui.MainViewModel
 
 
 class TaskFragment : Fragment() {
-    private lateinit var areasViewModel: AreasViewModel
-    private lateinit var catalogueViewModel: CatalogueViewModel
     private lateinit var backgroundEdit: Drawable
     private var editMode: Boolean = false
     private lateinit var title: EditText
@@ -39,6 +35,7 @@ class TaskFragment : Fragment() {
     private lateinit var areasList: List<Area>
     private var _binding: FragmentTaskBinding? = null
     private val binding get() = _binding!!
+    private val mainViewModel: MainViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,15 +44,8 @@ class TaskFragment : Fragment() {
     ): View {
         // get view binding
         _binding = FragmentTaskBinding.inflate(inflater, container, false)
-        val view = binding.root
 
-        // get view models
-        areasViewModel =
-            ViewModelProvider(this).get(AreasViewModel::class.java)
-        val main : AppCompatActivity = activity as AppCompatActivity
-        catalogueViewModel =
-            ViewModelProvider(main).get(CatalogueViewModel::class.java)
-        return view
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -68,7 +58,7 @@ class TaskFragment : Fragment() {
         val argsLocal: TaskFragmentArgs by navArgs()
         args = argsLocal
         // set adapter for areas spinner
-        areasViewModel.getAreaTexts().observe(viewLifecycleOwner, { spinnerData ->
+        mainViewModel.getAreaTexts().observe(viewLifecycleOwner, { spinnerData ->
             val spinnerAdapter = ArrayAdapter(
                 view.context,
                 android.R.layout.simple_spinner_item,
@@ -78,7 +68,7 @@ class TaskFragment : Fragment() {
         })
 
         // observe areas
-        areasViewModel.areas.observe(viewLifecycleOwner, { areas ->
+        mainViewModel.areas.observe(viewLifecycleOwner, { areas ->
             areasList = areas
         })
         setValuesFromArgs()
@@ -170,7 +160,7 @@ class TaskFragment : Fragment() {
                     if (priority.text.toString().isNotEmpty()){
                         prio = priority.text.toString().toInt()
                     }
-                    catalogueViewModel.updateTask(Task(title.text.toString(),
+                    mainViewModel.updateTask(Task(title.text.toString(),
                                                         description.text.toString(),
                                                         prio,
                                                         areaSpinner.selectedItem as String,

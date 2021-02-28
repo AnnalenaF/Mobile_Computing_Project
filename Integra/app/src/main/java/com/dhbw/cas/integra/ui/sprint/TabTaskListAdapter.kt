@@ -13,12 +13,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dhbw.cas.integra.R
 import com.dhbw.cas.integra.data.Area
 import com.dhbw.cas.integra.data.Task
-import com.dhbw.cas.integra.ui.catalogue.CatalogueViewModel
+import com.dhbw.cas.integra.ui.MainViewModel
 import kotlinx.android.synthetic.main.item_task_tab.view.*
 
 
 class TabTaskListAdapter(
-    private var catalogueViewModel: CatalogueViewModel,
+    private var mainViewModel: MainViewModel,
     private var fragment: Fragment,
     private var fragmentManager: FragmentManager
 ) :
@@ -41,25 +41,25 @@ class TabTaskListAdapter(
                     when (item.itemId) {
                         R.id.action_set_open -> {
                             tasks[adapterPosition].state = 0
-                            catalogueViewModel.updateTask(tasks[adapterPosition])
+                            mainViewModel.updateTask(tasks[adapterPosition])
                             notifyDataSetChanged()
                             true
                         }
                         R.id.action_set_progress -> {
                             tasks[adapterPosition].state = 1
-                            catalogueViewModel.updateTask(tasks[adapterPosition])
+                            mainViewModel.updateTask(tasks[adapterPosition])
                             notifyDataSetChanged()
                             true
                         }
                         R.id.action_set_done -> {
                             tasks[adapterPosition].state = 2
-                            catalogueViewModel.updateTask(tasks[adapterPosition])
+                            mainViewModel.updateTask(tasks[adapterPosition])
                             notifyDataSetChanged()
                             true
                         }
                         R.id.action_set_blocked -> {
                             tasks[adapterPosition].state = 3
-                            catalogueViewModel.updateTask(tasks[adapterPosition])
+                            mainViewModel.updateTask(tasks[adapterPosition])
                             notifyDataSetChanged()
                             true
                         }

@@ -12,12 +12,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dhbw.cas.integra.R
 import com.dhbw.cas.integra.data.Area
 import com.dhbw.cas.integra.data.Task
-import com.dhbw.cas.integra.ui.areas.AreasViewModel
+import com.dhbw.cas.integra.ui.MainViewModel
 import kotlinx.android.synthetic.main.item_task_assign.view.*
 import java.util.*
 import kotlin.collections.ArrayList
 
-class TaskListAdapter(private var areasViewModel: AreasViewModel) :
+class TaskListAdapter(private var mainViewModel: MainViewModel) :
     RecyclerView.Adapter<TaskListAdapter.TaskListViewHolder>(), Filterable {
 
     private lateinit var context: Context
@@ -47,7 +47,7 @@ class TaskListAdapter(private var areasViewModel: AreasViewModel) :
                     currentArea!!.remainingCapacity =
                         currentArea.remainingCapacity!! + currentTask.expectedDuration
                 }
-                areasViewModel.updateArea(currentArea)
+                mainViewModel.updateArea(currentArea)
             }
         }
     }
@@ -136,8 +136,8 @@ class TaskListAdapter(private var areasViewModel: AreasViewModel) :
             override fun performFiltering(constraint: CharSequence?): FilterResults {
                 val tasksArrayList: ArrayList<Task> = tasks as ArrayList<Task>
                 val charSearch = constraint.toString()
-                if (charSearch.isEmpty()) {
-                    tasksFilterList = tasksArrayList
+                tasksFilterList = if (charSearch.isEmpty()) {
+                    tasksArrayList
                 } else {
                     val resultList = ArrayList<Task>()
                     for (row in tasks) {
@@ -149,7 +149,7 @@ class TaskListAdapter(private var areasViewModel: AreasViewModel) :
                             resultList.add(row)
                         }
                     }
-                    tasksFilterList = resultList
+                    resultList
                 }
                 val filterResults = FilterResults()
                 filterResults.values = tasksFilterList

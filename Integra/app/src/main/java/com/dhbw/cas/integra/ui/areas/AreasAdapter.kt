@@ -14,14 +14,13 @@ import android.widget.Spinner
 import com.dhbw.cas.integra.data.Area
 import com.dhbw.cas.integra.data.AreaWithTasks
 import com.dhbw.cas.integra.data.Task
-import com.dhbw.cas.integra.ui.catalogue.CatalogueViewModel
+import com.dhbw.cas.integra.ui.MainViewModel
 import com.google.android.material.snackbar.Snackbar
 
 class AreasAdapter(
     private val view: View,
-    private val areasViewModel: AreasViewModel,
-    private val catalogueViewModel: CatalogueViewModel,
-    private val activity: AppCompatActivity
+    private val activity: AppCompatActivity,
+    private val mainViewModel: MainViewModel
 ) :
     RecyclerView.Adapter<AreasAdapter.AreasViewHolder>(), ActionMode.Callback {
     private lateinit var context: Context
@@ -96,7 +95,7 @@ class AreasAdapter(
                         //save changes
                         areaToBeChanged.area.text = areaText.text.toString()
                         areaToBeChanged.area.label = areaLabelSpinner.selectedItem as Int
-                        areasViewModel.updateArea(areas[pos].area)
+                        mainViewModel.updateArea(areas[pos].area)
                         notifyDataSetChanged()
                     }
                 }
@@ -207,7 +206,7 @@ class AreasAdapter(
                 for (selItem in selectedItems) {
                     areasDel.add(selItem.area)
                     tasksDel.addAll(selItem.tasks)
-                    areasViewModel.deleteArea(selItem.area)
+                    mainViewModel.deleteArea(selItem.area)
                 }
 
                 // show success message containing number of deleted areas
@@ -224,10 +223,10 @@ class AreasAdapter(
                 // enable undo action on success message snackbar
                 snackbarSuccess.setAction(R.string.action_undo) {
                     for (areaDel in areasDel) {
-                        areasViewModel.createArea(text = areaDel.text, label = areaDel.label)
+                        mainViewModel.createArea(text = areaDel.text, label = areaDel.label)
                     }
                     for (taskDel in tasksDel) {
-                        catalogueViewModel.createTask(
+                        mainViewModel.createTask(
                             taskDel.title,
                             taskDel.description,
                             taskDel.priority,

@@ -14,6 +14,7 @@ import com.dhbw.cas.integra.R
 import com.dhbw.cas.integra.data.Sprint
 import com.dhbw.cas.integra.databinding.FragmentNoActiveSprintBinding
 import com.dhbw.cas.integra.databinding.FragmentSprintBinding
+import com.dhbw.cas.integra.ui.MainViewModel
 import com.google.android.material.checkbox.MaterialCheckBox
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -24,7 +25,7 @@ import java.util.concurrent.TimeUnit
 
 class SprintFragment : Fragment(), FinishSprintDialogFragment.FinishSprintDialogListener {
 
-    private lateinit var sprintViewModel: SprintViewModel
+    private lateinit var mainViewModel: MainViewModel
     private lateinit var menuItemFinishSprint: MenuItem
     private lateinit var tabLayout: TabLayout
     private lateinit var viewPagerAdapter: TabsViewPagerAdapter
@@ -40,9 +41,9 @@ class SprintFragment : Fragment(), FinishSprintDialogFragment.FinishSprintDialog
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        sprintViewModel =
-            ViewModelProvider(this).get(SprintViewModel::class.java)
-        activeSprint = sprintViewModel.activeSprint
+        mainViewModel =
+            ViewModelProvider(this).get(MainViewModel::class.java)
+        activeSprint = mainViewModel.activeSprint
         sprintActive = activeSprint is Sprint
         val view: View
 
@@ -171,23 +172,23 @@ class SprintFragment : Fragment(), FinishSprintDialogFragment.FinishSprintDialog
 
         // delete tasks by selected states
         if (delOpen) {
-            sprintViewModel.deleteSprintTasksByState(activeSprint.id, 0)
+            mainViewModel.deleteSprintTasksByState(activeSprint.id, 0)
         }
         if (delProgress) {
-            sprintViewModel.deleteSprintTasksByState(activeSprint.id, 1)
+            mainViewModel.deleteSprintTasksByState(activeSprint.id, 1)
         }
         if (delDone) {
-            sprintViewModel.deleteSprintTasksByState(activeSprint.id, 2)
+            mainViewModel.deleteSprintTasksByState(activeSprint.id, 2)
         }
         if (delBlocked) {
-            sprintViewModel.deleteSprintTasksByState(activeSprint.id, 3)
+            mainViewModel.deleteSprintTasksByState(activeSprint.id, 3)
         }
 
         // reset state of tasks
-        sprintViewModel.resetTaskStates()
+        mainViewModel.resetTaskStates()
 
         // delete Sprint (possible adjustment: in case sprint persistent is required: just remove active tag)
-        sprintViewModel.deleteSprint(activeSprint)
+        mainViewModel.deleteSprint(activeSprint)
 
         // restart activity
         val intent = Intent(view.context, MainActivity::class.java)

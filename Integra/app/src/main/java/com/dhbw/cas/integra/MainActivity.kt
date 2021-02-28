@@ -22,7 +22,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.navigation.NavController
 import androidx.preference.PreferenceManager
 import com.dhbw.cas.integra.databinding.ActivityMainBinding
-import com.dhbw.cas.integra.ui.sprint.SprintViewModel
+import com.dhbw.cas.integra.ui.MainViewModel
 import com.google.android.material.navigation.NavigationView
 import java.util.*
 
@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
-    private val sprintViewModel: SprintViewModel by viewModels()
+    private val mainViewModel: MainViewModel by viewModels()
     private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -89,7 +89,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStop() {
         super.onStop()
-        val notificationType: String = if (sprintViewModel.activeSprint != null) {
+        val notificationType: String = if (mainViewModel.activeSprint != null) {
             "EXECUTE"
         } else {
             "PLAN"
