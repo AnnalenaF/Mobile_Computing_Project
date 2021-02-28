@@ -15,7 +15,7 @@ import com.dhbw.cas.integra.data.Task
 import com.dhbw.cas.integra.databinding.FragmentCurrentSprintTabBinding
 import com.dhbw.cas.integra.ui.MainViewModel
 
-class TabPageFragment() : Fragment(),
+class TabPageFragment : Fragment(),
     LogWorkDialogFragment.LogWorkDialogListener {
     private lateinit var taskListAdapter: TabTaskListAdapter
     private var tabPosition: Int = 0

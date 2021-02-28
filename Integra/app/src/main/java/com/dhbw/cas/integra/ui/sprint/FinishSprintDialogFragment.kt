@@ -8,7 +8,7 @@ import android.view.View
 import androidx.fragment.app.DialogFragment
 import com.dhbw.cas.integra.R
 
-class FinishSprintDialogFragment() : DialogFragment() {
+class FinishSprintDialogFragment : DialogFragment() {
     private lateinit var listener: FinishSprintDialogListener
 
     interface FinishSprintDialogListener {

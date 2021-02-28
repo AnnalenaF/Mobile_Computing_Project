@@ -9,7 +9,7 @@ import android.widget.Spinner
 import androidx.fragment.app.DialogFragment
 import com.dhbw.cas.integra.R
 
-class CreateAreaDialogFragment() : DialogFragment() {
+class CreateAreaDialogFragment : DialogFragment() {
     private lateinit var listener: CreateAreaDialogListener
 
     companion object {
