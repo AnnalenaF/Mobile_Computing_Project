@@ -17,8 +17,8 @@
     <string name="area_text_hint">Lebensbereich</string>
     <string name="area_text_autofill_hint">Lebensbereich</string>
     <string name="menu_item_delete">Löschen</string>
-    <string name="message_area_deleted">%1$d Lebensbereich gelöscht</string>
-    <string name="message_areas_deleted">%1$d Lebensbereiche gelöscht</string>
+    <string name="message_area_deleted">%1$d Lebensbereich mit %2$d Aufgaben gelöscht</string>
+    <string name="message_areas_deleted">%1$d Lebensbereiche mit %2$d Aufgaben gelöscht</string>
     <string name="message_area_no_deletion">Das Löschen aller Lebensbereiche ist nicht möglich</string>
     <string name="action_undo">Rückgängig</string>
     <string name="new_area">Neuer Lebensbereich</string>

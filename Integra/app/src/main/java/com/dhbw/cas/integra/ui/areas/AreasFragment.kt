@@ -5,8 +5,10 @@ import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.*
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.*
+import com.dhbw.cas.integra.ui.catalogue.CatalogueViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.dialog_new_area.*
@@ -17,6 +19,7 @@ class AreasFragment : Fragment() {
     private lateinit var areasViewModel: AreasViewModel
     private lateinit var dialog: AlertDialog
     private lateinit var areasAdapter: AreasAdapter
+    private val catalogueViewModel: CatalogueViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,9 +34,9 @@ class AreasFragment : Fragment() {
         val recyclerView: RecyclerView = root.findViewById(R.id.areas_list)
         val main : AppCompatActivity = activity as AppCompatActivity
 
-        areasAdapter = AreasAdapter(root, areasViewModel, main)
+        areasAdapter = AreasAdapter(root, areasViewModel, catalogueViewModel, main)
         recyclerView.adapter = areasAdapter
-        areasViewModel.areas.observe(main) { areas -> areasAdapter.setAreas(areas) }
+        areasViewModel.areasWithTasks.observe(main) { areas -> areasAdapter.setAreas(areas) }
 
         // add divider to recycler view list
         val layoutManager : LinearLayoutManager = recyclerView.layoutManager as LinearLayoutManager
