@@ -17,6 +17,7 @@ import com.dhbw.cas.integra.databinding.FragmentSprintBinding
 import com.google.android.material.checkbox.MaterialCheckBox
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
+import com.google.android.material.tabs.TabLayoutMediator
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -91,14 +92,9 @@ class SprintFragment : Fragment(), FinishSprintDialogFragment.FinishSprintDialog
             val viewPager = bindingSprint.viewpagerTabs
             viewPagerAdapter = TabsViewPagerAdapter(requireActivity())
             viewPager.adapter = viewPagerAdapter
-            tabLayout.addOnTabSelectedListener(object : OnTabSelectedListener {
-                override fun onTabSelected(tab: TabLayout.Tab) {
-                    viewPager.currentItem = tab.position
-                }
-
-                override fun onTabUnselected(tab: TabLayout.Tab) {}
-                override fun onTabReselected(tab: TabLayout.Tab) {}
-            })
+            TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+                tab.text = "OBJECT ${(position + 1)}"
+            }.attach()
             // create tabs
             val tabBlocked: TabLayout.Tab = tabLayout.newTab()
             tabBlocked.text = getString(R.string.tab_blocked)
