@@ -9,7 +9,7 @@
         android:roundIcon="@drawable/integra_icon_circle"
         android:supportsRtl="true"
         android:theme="@style/Theme.Integra"
-        android:configChanges="orientation|screenSize">
+        android:configChanges="orientation|screenSize|keyboardHidden">
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
