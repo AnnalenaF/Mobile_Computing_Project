@@ -3,7 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="8dp">
 
     <!--Title-->
     <EditText
@@ -24,7 +25,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/new_task_area_label"
-            android:labelFor="@+id/new_task_area_spinner"/>
+            android:labelFor="@+id/new_task_area_spinner"
+            android:textAppearance="?android:textAppearanceListItem"/>
         <Spinner
             android:id="@+id/new_task_area_spinner"
             android:layout_width="match_parent"
@@ -40,6 +42,7 @@
             android:id="@+id/new_task_prio_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textAppearance="?android:textAppearanceListItem"
             android:text="@string/new_task_prio_label"/>
 
         <EditText
@@ -60,7 +63,8 @@
             android:id="@+id/new_task_duration_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/new_task_duration_label"/>
+            android:text="@string/new_task_duration_label"
+            android:textAppearance="?android:textAppearanceListItem"/>
         <EditText
             android:id="@+id/new_task_duration"
             android:layout_width="match_parent"
