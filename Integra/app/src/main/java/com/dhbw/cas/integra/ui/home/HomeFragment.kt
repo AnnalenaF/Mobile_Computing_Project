@@ -131,7 +131,7 @@ class HomeFragment : Fragment(), FinishSprintDialogFragment.FinishSprintDialogLi
     // instantiate tab fragment
     private inner class TabsViewPagerAdapter(fa: FragmentActivity) : FragmentStateAdapter(fa) {
         override fun getItemCount(): Int = tabLayout.tabCount
-        override fun createFragment(position: Int): Fragment = TabPageFragment(position)
+        override fun createFragment(position: Int): Fragment = TabPageFragment.newInstance(position)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -153,7 +153,8 @@ class HomeFragment : Fragment(), FinishSprintDialogFragment.FinishSprintDialogLi
                 dialogFrag.setTargetFragment(this, 1)
                 dialogFrag.show(parentFragmentManager, "FinishSprintDialogFragment")
                 true
-            } else -> super.onOptionsItemSelected(item)
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 
