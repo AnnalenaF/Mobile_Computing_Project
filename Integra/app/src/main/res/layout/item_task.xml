@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:labelFor="@+id/task_duration"
-            android:text="@string/new_task_duration_label" />
+            android:text="@string/task_duration_label" />
         <TextView
             android:id="@+id/task_duration"
             android:layout_width="wrap_content"
@@ -53,7 +53,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:labelFor="@+id/task_prio"
-            android:text="@string/new_task_prio_label" />
+            android:text="@string/task_prio_label" />
         <TextView
             android:id="@+id/task_prio"
             android:layout_width="wrap_content"

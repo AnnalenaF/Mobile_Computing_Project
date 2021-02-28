@@ -24,7 +24,7 @@
             android:id="@+id/new_task_area_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/new_task_area_label"
+            android:text="@string/task_area_label"
             android:labelFor="@+id/new_task_area_spinner"
             android:textAppearance="?android:textAppearanceListItem"/>
         <Spinner
@@ -43,14 +43,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:textAppearanceListItem"
-            android:text="@string/new_task_prio_label"/>
+            android:text="@string/task_prio_label"/>
 
         <EditText
             android:id="@+id/new_task_prio"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:autofillHints="@string/task_prio_autofill_hint"
-            android:hint="@string/new_task_prio_hint"
+            android:hint="@string/task_prio_hint"
             android:inputType="number" />
     </LinearLayout>
 
@@ -63,14 +63,14 @@
             android:id="@+id/new_task_duration_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/new_task_duration_label"
+            android:text="@string/task_duration_label"
             android:textAppearance="?android:textAppearanceListItem"/>
         <EditText
             android:id="@+id/new_task_duration"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:autofillHints="@string/task_dur_autofill_hint"
-            android:hint="@string/new_task_dur_hint"
+            android:hint="@string/task_dur_hint"
             android:inputType="number" />
     </LinearLayout>
 

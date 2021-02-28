@@ -57,7 +57,7 @@
         android:layout_alignBottom="@id/duration_progress"
         android:layout_toEndOf="@id/duration_progress"
         android:labelFor="@+id/task_prio"
-        android:text="@string/new_task_prio_label"
+        android:text="@string/task_prio_label"
         android:layout_below="@id/task_area"
         android:layout_marginEnd="4dp" />
 
