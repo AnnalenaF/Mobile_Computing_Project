@@ -54,11 +54,38 @@ class AreasFragment : Fragment(), CreateAreaDialogFragment.CreateAreaDialogListe
         fab.setOnClickListener { buttonView ->
             if (areasAdapter.getAreas().size == 10) { // limit number of areas to 10
                 Snackbar.make(buttonView, R.string.max_num_areas, Snackbar.LENGTH_LONG).show()
-            } else { // create and open dialog to create area
-                val dialogFrag = CreateAreaDialogFragment()
+            } else {
+                // create and open dialog to create area WITHOUT FRAGMENT
+                val builder = AlertDialog.Builder(view.context)
+                builder.apply {
+                    setTitle(R.string.new_area)
+                    setView(R.layout.dialog_new_area)
+                    setPositiveButton(R.string.okay, null)
+                    setNegativeButton(R.string.cancel, null)
+                }
+                val dialog = builder.create()
+                dialog.show()
+                //check and create area when dialog is left via "OK"
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+                    val correct = validateArea(dialog.new_area_text)
+                    if (correct) {
+                        createArea(
+                            dialog.new_area_text.text.toString(),
+                            dialog.new_area_label_spinner.selectedItem as Int
+                        )
+                        dialog.dismiss()
+                    }
+                }
+                // set adapter for label spinner containing only color labels left
+                val spinnerAdapter =
+                    AreaLabelSpinnerAdapter(view.context, areasAdapter.getLabelArray())
+                dialog.new_area_label_spinner.adapter = spinnerAdapter
+
+                // create and open dialog to create area WITH FRAGMENT
+                /*val dialogFrag = CreateAreaDialogFragment()
                 dialogFrag.setLabelArray(areasAdapter.getLabelArray())
                 dialogFrag.setTargetFragment(this, 1)
-                dialogFrag.show(parentFragmentManager, "CreateAreaDialogFragment")
+                dialogFrag.show(parentFragmentManager, "CreateAreaDialogFragment")*/
             }
         }
         return view
